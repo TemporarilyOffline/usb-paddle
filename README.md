@@ -1,2 +1,20 @@
 # usb-paddle
 Adaptor to make your Iambic Paddle a USB keyboard input
+
+
+# Original Idea
+Full credit for the design on this goes to these guys:  https://www.nycresistor.com/2012/02/20/morse-code-keyboard/
+
+But everytime I get asked about it, I have to go hunt this page down, so I'm consilidating my notes here.  
+
+You can see my comment on the bottom of the page where I detail the very minor touch ups I've done here.
+
+I hope this helps somebody in the future that wants to build this little guy.  Its a fantastic toy and really makes practice easy.
+
+# The build
+
+I ordered a Teensy 2.0 off of amazon fairly easy enough.  The code loaded on much like any other Arduino software would load.  Its a quite elegant design that uses some pins for input, some pins for speaker output and re-uses the USB port to connect to the computer. I took a few extra steps and put a 1/8in stereo jack on it and dropped the works into a case for the earbuds that came with a samsung phone of mine.
+
+# The video
+
+Video link here: <insert video link when done>
