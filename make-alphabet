@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+print "static const uint8_t morse[256] PROGMEM = {\n";
+
+while (<DATA>)
+{
+	chomp;
+	my ($c,$m,$real) = split;
+	my $v = 1;
+
+	for my $b (split //, $m)
+	{
+		$v <<= 1;
+		$v |= 1 if $b eq '-';
+	}
+
+	my $modbit = "";
+	if ($real)
+	{
+		$m = "$real $m";
+		$modbit = " | 0x80";
+	}
+
+	printf "\t[0x%04x] = KEY_%s%s, // %s\n",
+		$v,
+		$c,
+		$modbit,
+		$m,
+		;
+}
+
+print "};\n";
+
+__DATA__
+A .-
+B -...
+C -.-.
+D -..
+E .
+F ..-.
+G --.
+H ....
+I ..
+J .---
+K -.-
+L .-..
+M --
+N -.
+O ---
+P .--.
+Q --.-
+R .-.
+S ...
+T -
+U ..-
+V ...-
+W .--
+X -..-
+Y -.--
+Z --..
+1 .----
+2 ..---
+3 ...--
+4 ....-
+5 .....
+6 -....
+7 --...
+8 ---..
+9 ----.
+0 -----
+PERIOD .-.-.-
+COMMA --..--
+SLASH ..--.. ?
+QUOTE .----.
+1 -.-.-- !
+SLASH -..-.
+9 -.--. (
+0 -.--.- )
+7 .-... &
+SEMICOLON ---... :
+SEMICOLON -.-.-.
+EQUAL -..-
+EQUAL .-.-. +
+MINUS -....-
+MINUS ..--.- _
+QUOTE .-..-. "
+4 ...-..- $
+2 .--.-. @

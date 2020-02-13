@@ -1,0 +1,1479 @@
+   1               		.file	"iambic.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.led_on,"ax",@progbits
+  12               	led_on:
+  13               	.LFB7:
+  14               		.file 1 "iambic.c"
+   1:iambic.c      **** /** \file
+   2:iambic.c      ****  * Iambic USB keyer.
+   3:iambic.c      ****  *
+   4:iambic.c      ****  * Read an iambic keyer on port D and generate key press events
+   5:iambic.c      ****  * based on the Morse code input.
+   6:iambic.c      ****  *
+   7:iambic.c      ****  * (c) 2012 Trammell Hudson <hudson@osresearch.net>
+   8:iambic.c      ****  *
+   9:iambic.c      ****  * Based on the
+  10:iambic.c      ****  * Keyboard example with debug channel, for Teensy USB Development Board
+  11:iambic.c      ****  * http://www.pjrc.com/teensy/usb_keyboard.html
+  12:iambic.c      ****  * Copyright (c) 2008 PJRC.COM, LLC
+  13:iambic.c      ****  * 
+  14:iambic.c      ****  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  15:iambic.c      ****  * of this software and associated documentation files (the "Software"), to deal
+  16:iambic.c      ****  * in the Software without restriction, including without limitation the rights
+  17:iambic.c      ****  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  18:iambic.c      ****  * copies of the Software, and to permit persons to whom the Software is
+  19:iambic.c      ****  * furnished to do so, subject to the following conditions:
+  20:iambic.c      ****  * 
+  21:iambic.c      ****  * The above copyright notice and this permission notice shall be included in
+  22:iambic.c      ****  * all copies or substantial portions of the Software.
+  23:iambic.c      ****  * 
+  24:iambic.c      ****  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  25:iambic.c      ****  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  26:iambic.c      ****  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  27:iambic.c      ****  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  28:iambic.c      ****  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  29:iambic.c      ****  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  30:iambic.c      ****  * THE SOFTWARE.
+  31:iambic.c      ****  */
+  32:iambic.c      **** 
+  33:iambic.c      **** #include <avr/io.h>
+  34:iambic.c      **** #include <avr/pgmspace.h>
+  35:iambic.c      **** #include <avr/interrupt.h>
+  36:iambic.c      **** #include <util/delay.h>
+  37:iambic.c      **** #include "usb_keyboard_debug.h"
+  38:iambic.c      **** #include "print.h"
+  39:iambic.c      **** 
+  40:iambic.c      **** #define CPU_PRESCALE(n)	(CLKPR = 0x80, CLKPR = (n))
+  41:iambic.c      **** 
+  42:iambic.c      **** #define LED_PIN (1 << 6)
+  43:iambic.c      **** 
+  44:iambic.c      **** static inline void
+  45:iambic.c      **** led_on(void)
+  46:iambic.c      **** {
+  15               		.loc 1 46 1 view -0
+  16               		.cfi_startproc
+  17               	/* prologue: function */
+  18               	/* frame size = 0 */
+  19               	/* stack size = 0 */
+  20               	.L__stack_usage = 0
+  47:iambic.c      **** 	PORTD |= LED_PIN;
+  21               		.loc 1 47 2 view .LVU1
+  22               		.loc 1 47 8 is_stmt 0 view .LVU2
+  23 0000 5E9A      		sbi 0xb,6
+  48:iambic.c      **** 	DDRB |=  1 << 7; // OC0A enabled
+  24               		.loc 1 48 2 is_stmt 1 view .LVU3
+  25               		.loc 1 48 7 is_stmt 0 view .LVU4
+  26 0002 279A      		sbi 0x4,7
+  27               	/* epilogue start */
+  49:iambic.c      **** }
+  28               		.loc 1 49 1 view .LVU5
+  29 0004 0895      		ret
+  30               		.cfi_endproc
+  31               	.LFE7:
+  33               		.section	.text.led_off,"ax",@progbits
+  35               	led_off:
+  36               	.LFB8:
+  50:iambic.c      **** 
+  51:iambic.c      **** static inline void
+  52:iambic.c      **** led_off(void)
+  53:iambic.c      **** {
+  37               		.loc 1 53 1 is_stmt 1 view -0
+  38               		.cfi_startproc
+  39               	/* prologue: function */
+  40               	/* frame size = 0 */
+  41               	/* stack size = 0 */
+  42               	.L__stack_usage = 0
+  54:iambic.c      **** 	PORTD &= ~LED_PIN;
+  43               		.loc 1 54 2 view .LVU7
+  44               		.loc 1 54 8 is_stmt 0 view .LVU8
+  45 0000 5E98      		cbi 0xb,6
+  55:iambic.c      **** 	DDRB &=  ~(1 << 7); // OC0A disabled
+  46               		.loc 1 55 2 is_stmt 1 view .LVU9
+  47               		.loc 1 55 7 is_stmt 0 view .LVU10
+  48 0002 2798      		cbi 0x4,7
+  49               	/* epilogue start */
+  56:iambic.c      **** }
+  50               		.loc 1 56 1 view .LVU11
+  51 0004 0895      		ret
+  52               		.cfi_endproc
+  53               	.LFE8:
+  55               		.section	.text.busy_wait,"ax",@progbits
+  57               	busy_wait:
+  58               	.LVL0:
+  59               	.LFB12:
+  57:iambic.c      **** 
+  58:iambic.c      **** static inline void
+  59:iambic.c      **** led_config(void)
+  60:iambic.c      **** {
+  61:iambic.c      **** 	DDRD |= LED_PIN;
+  62:iambic.c      **** }
+  63:iambic.c      **** 
+  64:iambic.c      **** uint8_t number_keys[10]=
+  65:iambic.c      **** 	{KEY_0,KEY_1,KEY_2,KEY_3,KEY_4,KEY_5,KEY_6,KEY_7,KEY_8,KEY_9};
+  66:iambic.c      **** 
+  67:iambic.c      **** uint16_t idle_count=0;
+  68:iambic.c      **** 
+  69:iambic.c      **** 
+  70:iambic.c      **** static inline int
+  71:iambic.c      **** is_dah(
+  72:iambic.c      **** 	const uint8_t value
+  73:iambic.c      **** )
+  74:iambic.c      **** {
+  75:iambic.c      **** 	return bit_is_clear(value, 4);
+  76:iambic.c      **** }
+  77:iambic.c      **** 
+  78:iambic.c      **** 
+  79:iambic.c      **** static inline int
+  80:iambic.c      **** is_dit(
+  81:iambic.c      **** 	const uint8_t value
+  82:iambic.c      **** )
+  83:iambic.c      **** {
+  84:iambic.c      **** 	return bit_is_clear(value, 5);
+  85:iambic.c      **** }
+  86:iambic.c      **** 
+  87:iambic.c      **** static uint16_t dah_count;
+  88:iambic.c      **** static uint16_t dit_count;
+  89:iambic.c      **** 
+  90:iambic.c      **** 
+  91:iambic.c      **** static void
+  92:iambic.c      **** busy_wait(
+  93:iambic.c      **** 	uint16_t delay_ticks
+  94:iambic.c      **** )
+  95:iambic.c      **** {
+  60               		.loc 1 95 1 is_stmt 1 view -0
+  61               		.cfi_startproc
+  62               		.loc 1 95 1 is_stmt 0 view .LVU13
+  63 0000 CF93      		push r28
+  64               	.LCFI0:
+  65               		.cfi_def_cfa_offset 3
+  66               		.cfi_offset 28, -2
+  67 0002 DF93      		push r29
+  68               	.LCFI1:
+  69               		.cfi_def_cfa_offset 4
+  70               		.cfi_offset 29, -3
+  71 0004 0F92      		push __tmp_reg__
+  72               	.LCFI2:
+  73               		.cfi_def_cfa_offset 5
+  74 0006 CDB7      		in r28,__SP_L__
+  75 0008 DEB7      		in r29,__SP_H__
+  76               	.LCFI3:
+  77               		.cfi_def_cfa_register 28
+  78               	/* prologue: function */
+  79               	/* frame size = 1 */
+  80               	/* stack size = 3 */
+  81               	.L__stack_usage = 3
+  96:iambic.c      **** 	OCR1A = TCNT1 + delay_ticks;
+  82               		.loc 1 96 2 is_stmt 1 view .LVU14
+  83               		.loc 1 96 10 is_stmt 0 view .LVU15
+  84 000a 2091 8400 		lds r18,132
+  85 000e 3091 8500 		lds r19,132+1
+  86               		.loc 1 96 16 view .LVU16
+  87 0012 820F      		add r24,r18
+  88 0014 931F      		adc r25,r19
+  89               	.LVL1:
+  90               		.loc 1 96 8 view .LVU17
+  91 0016 9093 8900 		sts 136+1,r25
+  92 001a 8093 8800 		sts 136,r24
+  97:iambic.c      **** 	TIFR1 |= (1 << OCF1A);
+  93               		.loc 1 97 2 is_stmt 1 view .LVU18
+  94               		.loc 1 97 8 is_stmt 0 view .LVU19
+  95 001e B19A      		sbi 0x16,1
+  98:iambic.c      **** 
+  99:iambic.c      **** 	while (bit_is_clear(TIFR1, OCF1A))
+  96               		.loc 1 99 2 is_stmt 1 view .LVU20
+  97               	.L6:
+  98               		.loc 1 99 8 is_stmt 0 view .LVU21
+  99 0020 B19B      		sbis 0x16,1
+ 100 0022 00C0      		rjmp .L7
+ 101               	/* epilogue start */
+ 100:iambic.c      **** 	{
+ 101:iambic.c      **** 		const uint8_t port = PINB;
+ 102:iambic.c      **** 		if (is_dah(port))
+ 103:iambic.c      **** 			dah_count++;
+ 104:iambic.c      **** 		if (is_dit(port))
+ 105:iambic.c      **** 			dit_count++;
+ 106:iambic.c      **** 	}
+ 107:iambic.c      **** }
+ 102               		.loc 1 107 1 view .LVU22
+ 103 0024 0F90      		pop __tmp_reg__
+ 104 0026 DF91      		pop r29
+ 105 0028 CF91      		pop r28
+ 106 002a 0895      		ret
+ 107               	.L7:
+ 108               	.LBB34:
+ 101:iambic.c      **** 		if (is_dah(port))
+ 109               		.loc 1 101 3 is_stmt 1 view .LVU23
+ 101:iambic.c      **** 		if (is_dah(port))
+ 110               		.loc 1 101 17 is_stmt 0 view .LVU24
+ 111 002c 23B1      		in r18,0x3
+ 112               	.LVL2:
+ 102:iambic.c      **** 			dah_count++;
+ 113               		.loc 1 102 3 is_stmt 1 view .LVU25
+ 114 002e 2983      		std Y+1,r18
+ 115               	.LVL3:
+ 116               	.LBB35:
+ 117               	.LBI35:
+  71:iambic.c      **** 	const uint8_t value
+ 118               		.loc 1 71 1 view .LVU26
+ 119               	.LBB36:
+  75:iambic.c      **** }
+ 120               		.loc 1 75 2 view .LVU27
+  75:iambic.c      **** }
+ 121               		.loc 1 75 9 is_stmt 0 view .LVU28
+ 122 0030 8981      		ldd r24,Y+1
+ 123               	.LVL4:
+  75:iambic.c      **** }
+ 124               		.loc 1 75 9 view .LVU29
+ 125               	.LBE36:
+ 126               	.LBE35:
+ 102:iambic.c      **** 			dah_count++;
+ 127               		.loc 1 102 6 view .LVU30
+ 128 0032 84FD      		sbrc r24,4
+ 129 0034 00C0      		rjmp .L5
+ 103:iambic.c      **** 		if (is_dit(port))
+ 130               		.loc 1 103 4 is_stmt 1 view .LVU31
+ 103:iambic.c      **** 		if (is_dit(port))
+ 131               		.loc 1 103 13 is_stmt 0 view .LVU32
+ 132 0036 8091 0000 		lds r24,dah_count
+ 133 003a 9091 0000 		lds r25,dah_count+1
+ 134 003e 0196      		adiw r24,1
+ 135 0040 9093 0000 		sts dah_count+1,r25
+ 136 0044 8093 0000 		sts dah_count,r24
+ 137               	.L5:
+ 104:iambic.c      **** 			dit_count++;
+ 138               		.loc 1 104 3 is_stmt 1 view .LVU33
+ 139 0048 2983      		std Y+1,r18
+ 140               	.LVL5:
+ 141               	.LBB37:
+ 142               	.LBI37:
+  80:iambic.c      **** 	const uint8_t value
+ 143               		.loc 1 80 1 view .LVU34
+ 144               	.LBB38:
+  84:iambic.c      **** }
+ 145               		.loc 1 84 2 view .LVU35
+  84:iambic.c      **** }
+ 146               		.loc 1 84 9 is_stmt 0 view .LVU36
+ 147 004a 8981      		ldd r24,Y+1
+ 148               	.LVL6:
+  84:iambic.c      **** }
+ 149               		.loc 1 84 9 view .LVU37
+ 150               	.LBE38:
+ 151               	.LBE37:
+ 104:iambic.c      **** 			dit_count++;
+ 152               		.loc 1 104 6 view .LVU38
+ 153 004c 85FD      		sbrc r24,5
+ 154 004e 00C0      		rjmp .L6
+ 105:iambic.c      **** 	}
+ 155               		.loc 1 105 4 is_stmt 1 view .LVU39
+ 105:iambic.c      **** 	}
+ 156               		.loc 1 105 13 is_stmt 0 view .LVU40
+ 157 0050 8091 0000 		lds r24,dit_count
+ 158 0054 9091 0000 		lds r25,dit_count+1
+ 159 0058 0196      		adiw r24,1
+ 160 005a 9093 0000 		sts dit_count+1,r25
+ 161 005e 8093 0000 		sts dit_count,r24
+ 162 0062 00C0      		rjmp .L6
+ 163               	.LBE34:
+ 164               		.cfi_endproc
+ 165               	.LFE12:
+ 167               		.section	.text.bad_input,"ax",@progbits
+ 169               	bad_input:
+ 170               	.LFB14:
+ 108:iambic.c      **** 
+ 109:iambic.c      **** 
+ 110:iambic.c      **** static void
+ 111:iambic.c      **** wait(
+ 112:iambic.c      **** 	uint16_t on_ticks,
+ 113:iambic.c      **** 	uint16_t off_ticks
+ 114:iambic.c      **** )
+ 115:iambic.c      **** {
+ 116:iambic.c      **** 	dit_count = dah_count = 0;
+ 117:iambic.c      **** 
+ 118:iambic.c      **** 	led_on();
+ 119:iambic.c      **** 	busy_wait(on_ticks);
+ 120:iambic.c      **** 
+ 121:iambic.c      **** 	led_off();
+ 122:iambic.c      **** 	busy_wait(off_ticks);
+ 123:iambic.c      **** }
+ 124:iambic.c      **** 
+ 125:iambic.c      **** 
+ 126:iambic.c      **** static void
+ 127:iambic.c      **** bad_input(void)
+ 128:iambic.c      **** {
+ 171               		.loc 1 128 1 is_stmt 1 view -0
+ 172               		.cfi_startproc
+ 173 0000 CF93      		push r28
+ 174               	.LCFI4:
+ 175               		.cfi_def_cfa_offset 3
+ 176               		.cfi_offset 28, -2
+ 177               	/* prologue: function */
+ 178               	/* frame size = 0 */
+ 179               	/* stack size = 1 */
+ 180               	.L__stack_usage = 1
+ 129:iambic.c      **** 	uint8_t tccr0b = TCCR0B;
+ 181               		.loc 1 129 2 view .LVU42
+ 182               		.loc 1 129 10 is_stmt 0 view .LVU43
+ 183 0002 C5B5      		in r28,0x25
+ 184               	.LVL7:
+ 130:iambic.c      **** 	TCCR0B = 0x04; // Clk/256
+ 185               		.loc 1 130 2 is_stmt 1 view .LVU44
+ 186               		.loc 1 130 9 is_stmt 0 view .LVU45
+ 187 0004 84E0      		ldi r24,lo8(4)
+ 188 0006 85BD      		out 0x25,r24
+ 131:iambic.c      **** 	led_on();
+ 189               		.loc 1 131 2 is_stmt 1 view .LVU46
+ 190 0008 0E94 0000 		call led_on
+ 191               	.LVL8:
+ 132:iambic.c      **** 	print("!!!\n");
+ 192               		.loc 1 132 2 view .LVU47
+ 193               	.LBB39:
+ 194               		.loc 1 132 2 view .LVU48
+ 195               		.loc 1 132 2 view .LVU49
+ 196               	.LBE39:
+ 197 000c 80E0      		ldi r24,lo8(__c.1886)
+ 198 000e 90E0      		ldi r25,hi8(__c.1886)
+ 199 0010 0E94 0000 		call print_P
+ 200               	.LVL9:
+ 133:iambic.c      **** 	_delay_ms(40);
+ 201               		.loc 1 133 2 view .LVU50
+ 202               	.LBB40:
+ 203               	.LBI40:
+ 204               		.file 2 "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h"
+   1:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+   6:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+   9:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  12:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      distribution.
+  16:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  17:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  21:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  33:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /* $Id: delay.h.in 2506 2016-02-08 10:05:45Z joerg_wunsch $ */
+  34:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  35:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  38:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #ifndef __DOXYGEN__
+  39:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
+  40:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
+  41:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #  endif
+  42:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #endif  /* __DOXYGEN__ */
+  43:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  44:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #include <inttypes.h>
+  45:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #include <util/delay_basic.h>
+  46:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #include <math.h>
+  47:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  48:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /** \file */
+  49:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  50:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \code
+  51:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  52:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  53:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     #include <util/delay.h>
+  54:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \endcode
+  55:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  56:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  57:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  58:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  59:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     used.
+  60:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  61:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  62:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  63:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  64:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  65:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  66:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  67:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  68:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  69:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  70:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  71:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  72:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  73:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  74:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  75:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  76:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  77:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     routines linked into the application.
+  78:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  79:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  80:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  81:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  82:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  83:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** */
+  84:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  85:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  86:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
+  87:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
+  88:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #endif
+  89:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  90:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #ifndef F_CPU
+  91:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  92:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  93:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /** \ingroup util_delay
+  94:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \def F_CPU
+  95:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     \brief CPU frequency in Hz
+  96:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+  97:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
+  98:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     the delay macros.  This macro is normally supplied by the
+  99:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     environment (e.g. from within a project header, or the project's
+ 100:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
+ 101:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     fallback if no such user-provided definition could be found.
+ 102:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 103:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
+ 104:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
+ 105:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
+ 106:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****     integer value.
+ 107:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****  */
+ 108:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** # define F_CPU 1000000UL
+ 109:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #endif
+ 110:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 111:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+ 112:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+ 113:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #endif
+ 114:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 115:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 116:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 117:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 118:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #  include <math.h>
+ 119:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #endif
+ 120:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 121:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** /**
+ 122:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    \ingroup util_delay
+ 123:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 124:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 125:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 126:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 127:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 128:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 129:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 130:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 131:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 132:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 133:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 134:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 135:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 136:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 137:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
+ 138:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 139:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 140:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 141:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 142:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
+ 143:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
+ 144:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
+ 145:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    microseconds of delay.
+ 146:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 147:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
+ 148:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
+ 149:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
+ 150:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    respectively.
+ 151:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 152:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    \note
+ 153:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 154:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    The implementation of _delay_ms() based on
+ 155:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
+ 156:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    implementations.  In order to get functionality backward compatible
+ 157:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
+ 158:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    must be defined before including this header file. Also, the
+ 159:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    backward compatible algorithm will be chosen if the code is
+ 160:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
+ 161:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
+ 162:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****    not available to the compiler then.
+ 163:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 164:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****  */
+ 165:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** void
+ 166:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** _delay_ms(double __ms)
+ 205               		.loc 2 166 1 view .LVU51
+ 206               	.LBB41:
+ 167:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** {
+ 168:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	double __tmp ;
+ 207               		.loc 2 168 2 view .LVU52
+ 169:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 170:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 171:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h ****   __STDC_HOSTED__
+ 172:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 208               		.loc 2 172 2 view .LVU53
+ 173:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 209               		.loc 2 173 2 view .LVU54
+ 174:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 210               		.loc 2 174 2 view .LVU55
+ 175:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 176:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 177:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 178:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 179:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 180:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 181:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 182:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	#else
+ 183:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 		//round up by default
+ 184:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 211               		.loc 2 184 3 view .LVU56
+ 185:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	#endif
+ 186:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 187:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 212               		.loc 2 187 2 view .LVU57
+ 213 0014 2FEF      		ldi r18,lo8(127999)
+ 214 0016 83EF      		ldi r24,hi8(127999)
+ 215 0018 91E0      		ldi r25,hlo8(127999)
+ 216 001a 2150      	1:	subi r18,1
+ 217 001c 8040      		sbci r24,0
+ 218 001e 9040      		sbci r25,0
+ 219 0020 01F4      		brne 1b
+ 220 0022 00C0      		rjmp .
+ 221 0024 0000      		nop
+ 222               	.LVL10:
+ 223               		.loc 2 187 2 is_stmt 0 view .LVU58
+ 224               	.LBE41:
+ 225               	.LBE40:
+ 134:iambic.c      **** 	led_off();
+ 226               		.loc 1 134 2 is_stmt 1 view .LVU59
+ 227 0026 0E94 0000 		call led_off
+ 228               	.LVL11:
+ 135:iambic.c      **** 
+ 136:iambic.c      **** 	// Restore the old timer
+ 137:iambic.c      **** 	TCCR0B = tccr0b;
+ 229               		.loc 1 137 2 view .LVU60
+ 230               		.loc 1 137 9 is_stmt 0 view .LVU61
+ 231 002a C5BD      		out 0x25,r28
+ 232               	/* epilogue start */
+ 138:iambic.c      **** }
+ 233               		.loc 1 138 1 view .LVU62
+ 234 002c CF91      		pop r28
+ 235               	.LVL12:
+ 236               		.loc 1 138 1 view .LVU63
+ 237 002e 0895      		ret
+ 238               		.cfi_endproc
+ 239               	.LFE14:
+ 241               		.section	.text.startup.main,"ax",@progbits
+ 242               	.global	main
+ 244               	main:
+ 245               	.LFB15:
+ 139:iambic.c      **** 
+ 140:iambic.c      **** 
+ 141:iambic.c      **** int main(void)
+ 142:iambic.c      **** {
+ 246               		.loc 1 142 1 is_stmt 1 view -0
+ 247               		.cfi_startproc
+ 248 0000 0F92      		push __tmp_reg__
+ 249               	.LCFI5:
+ 250               		.cfi_def_cfa_offset 3
+ 251 0002 CDB7      		in r28,__SP_L__
+ 252 0004 DEB7      		in r29,__SP_H__
+ 253               	.LCFI6:
+ 254               		.cfi_def_cfa_register 28
+ 255               	/* prologue: function */
+ 256               	/* frame size = 1 */
+ 257               	/* stack size = 1 */
+ 258               	.L__stack_usage = 1
+ 143:iambic.c      **** 	uint8_t b, d, mask, i, reset_idle;
+ 259               		.loc 1 143 2 view .LVU65
+ 144:iambic.c      **** 	uint8_t b_prev=0xFF, d_prev=0xFF;
+ 260               		.loc 1 144 2 view .LVU66
+ 261               	.LVL13:
+ 145:iambic.c      **** 
+ 146:iambic.c      **** 	// set for 16 MHz clock
+ 147:iambic.c      **** 	CPU_PRESCALE(0);
+ 262               		.loc 1 147 2 view .LVU67
+ 263 0006 80E8      		ldi r24,lo8(-128)
+ 264 0008 8093 6100 		sts 97,r24
+ 265 000c 1092 6100 		sts 97,__zero_reg__
+ 148:iambic.c      **** 	led_config();
+ 266               		.loc 1 148 2 view .LVU68
+ 267               	.LBB64:
+ 268               	.LBI64:
+  59:iambic.c      **** {
+ 269               		.loc 1 59 1 view .LVU69
+ 270               	.LBB65:
+  61:iambic.c      **** }
+ 271               		.loc 1 61 2 view .LVU70
+  61:iambic.c      **** }
+ 272               		.loc 1 61 7 is_stmt 0 view .LVU71
+ 273 0010 569A      		sbi 0xa,6
+ 274               	.LBE65:
+ 275               	.LBE64:
+ 149:iambic.c      **** 
+ 150:iambic.c      **** 	// Configure all port B and port D pins as inputs with pullup resistors.
+ 151:iambic.c      **** 	// See the "Using I/O Pins" page for details.
+ 152:iambic.c      **** 	// http://www.pjrc.com/teensy/pins.html
+ 153:iambic.c      **** 	DDRD = 0x00;
+ 276               		.loc 1 153 2 is_stmt 1 view .LVU72
+ 277               		.loc 1 153 7 is_stmt 0 view .LVU73
+ 278 0012 1AB8      		out 0xa,__zero_reg__
+ 154:iambic.c      **** 	DDRB = 0x00;
+ 279               		.loc 1 154 2 is_stmt 1 view .LVU74
+ 280               		.loc 1 154 7 is_stmt 0 view .LVU75
+ 281 0014 14B8      		out 0x4,__zero_reg__
+ 155:iambic.c      **** 	PORTB = 0xFF;
+ 282               		.loc 1 155 2 is_stmt 1 view .LVU76
+ 283               		.loc 1 155 8 is_stmt 0 view .LVU77
+ 284 0016 8FEF      		ldi r24,lo8(-1)
+ 285 0018 85B9      		out 0x5,r24
+ 156:iambic.c      **** 	PORTD = 0xFF;
+ 286               		.loc 1 156 2 is_stmt 1 view .LVU78
+ 287               		.loc 1 156 8 is_stmt 0 view .LVU79
+ 288 001a 8BB9      		out 0xb,r24
+ 157:iambic.c      **** 
+ 158:iambic.c      **** 	// Initialize the USB, and then wait for the host to set configuration.
+ 159:iambic.c      **** 	// If the Teensy is powered without a PC connected to the USB port,
+ 160:iambic.c      **** 	// this will wait forever.
+ 161:iambic.c      **** 	usb_init();
+ 289               		.loc 1 161 2 is_stmt 1 view .LVU80
+ 290 001c 0E94 0000 		call usb_init
+ 291               	.LVL14:
+ 162:iambic.c      **** 	while (!usb_configured())
+ 292               		.loc 1 162 2 view .LVU81
+ 293               	.L11:
+ 163:iambic.c      **** 	{
+ 164:iambic.c      **** 		/* busy wait */
+ 165:iambic.c      **** 	}
+ 294               		.loc 1 165 2 discriminator 1 view .LVU82
+ 162:iambic.c      **** 	while (!usb_configured())
+ 295               		.loc 1 162 10 is_stmt 0 discriminator 1 view .LVU83
+ 296 0020 0E94 0000 		call usb_configured
+ 297               	.LVL15:
+ 162:iambic.c      **** 	while (!usb_configured())
+ 298               		.loc 1 162 8 discriminator 1 view .LVU84
+ 299 0024 8823      		tst r24
+ 300 0026 01F0      		breq .L11
+ 166:iambic.c      **** 
+ 167:iambic.c      **** 	// Wait an extra second for the PC's operating system to load drivers
+ 168:iambic.c      **** 	// and do whatever it does to actually be ready for input
+ 169:iambic.c      **** 	_delay_ms(1000);
+ 301               		.loc 1 169 2 is_stmt 1 view .LVU85
+ 302               	.LVL16:
+ 303               	.LBB66:
+ 304               	.LBI66:
+ 166:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** {
+ 305               		.loc 2 166 1 view .LVU86
+ 306               	.LBB67:
+ 168:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 307               		.loc 2 168 2 view .LVU87
+ 172:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 308               		.loc 2 172 2 view .LVU88
+ 173:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 309               		.loc 2 173 2 view .LVU89
+ 174:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 
+ 310               		.loc 2 174 2 view .LVU90
+ 184:/usr/local/Cellar/avr-gcc/8.2.0/avr/include/util/delay.h **** 	#endif
+ 311               		.loc 2 184 3 view .LVU91
+ 312               		.loc 2 187 2 view .LVU92
+ 313 0028 2FEF      		ldi r18,lo8(3199999)
+ 314 002a 83ED      		ldi r24,hi8(3199999)
+ 315 002c 90E3      		ldi r25,hlo8(3199999)
+ 316 002e 2150      	1:	subi r18,1
+ 317 0030 8040      		sbci r24,0
+ 318 0032 9040      		sbci r25,0
+ 319 0034 01F4      		brne 1b
+ 320 0036 00C0      		rjmp .
+ 321 0038 0000      		nop
+ 322               	.LVL17:
+ 323               		.loc 2 187 2 is_stmt 0 view .LVU93
+ 324               	.LBE67:
+ 325               	.LBE66:
+ 326               		.file 3 "morse.h"
+   1:morse.h       **** static const uint8_t morse[256] PROGMEM = {
+ 327               		.loc 3 1 1 is_stmt 1 view .LVU94
+ 170:iambic.c      **** 
+ 171:iambic.c      **** /*
+ 172:iambic.c      **** * http://en.wikipedia.org/wiki/Morse_code#Representation.2C_timing_and_speeds
+ 173:iambic.c      **** *
+ 174:iambic.c      **** * International Morse code is composed of five elements:
+ 175:iambic.c      **** *
+ 176:iambic.c      **** * short mark, dot or 'dit' (·) — 'dot duration' is one unit long
+ 177:iambic.c      **** * longer mark, dash or 'dah' (–) — three units long
+ 178:iambic.c      **** * inter-element gap between the dots and dashes within a character
+ 179:iambic.c      **** *   - one dot duration or one unit long
+ 180:iambic.c      **** * short gap (between letters) — three units long
+ 181:iambic.c      **** * medium gap (between words) — seven units long[19]
+ 182:iambic.c      **** *
+ 183:iambic.c      **** * Based upon a 50 dot duration standard word such as PARIS, the time
+ 184:iambic.c      **** * for one dot duration or one unit can be computed by the formula:
+ 185:iambic.c      **** * T = 1200 / W
+ 186:iambic.c      **** * or
+ 187:iambic.c      **** * T = 6000 / C
+ 188:iambic.c      **** * Where: T is the unit time, or dot duration, in milliseconds,
+ 189:iambic.c      **** * W is the speed in wpm, and C is the speed in cpm.
+ 190:iambic.c      **** */
+ 191:iambic.c      **** 
+ 192:iambic.c      **** #include "morse.h"
+ 193:iambic.c      **** 
+ 194:iambic.c      **** 	// 
+ 195:iambic.c      **** 	// 256*1024 clock cycles, or approx 61 Hz when using 16 MHz clock
+ 196:iambic.c      **** 	// This demonstrates how to use interrupts to implement a simple
+ 197:iambic.c      **** 	// inactivity timeout.
+ 198:iambic.c      **** 	TCCR0A = 0x00;
+ 328               		.loc 1 198 2 view .LVU95
+ 329               		.loc 1 198 9 is_stmt 0 view .LVU96
+ 330 003a 14BC      		out 0x24,__zero_reg__
+ 199:iambic.c      **** 	TCCR0B = 0x05;
+ 331               		.loc 1 199 2 is_stmt 1 view .LVU97
+ 332               		.loc 1 199 9 is_stmt 0 view .LVU98
+ 333 003c 85E0      		ldi r24,lo8(5)
+ 334 003e 85BD      		out 0x25,r24
+ 200:iambic.c      **** 	//TIMSK0 = (1<<TOIE0);
+ 201:iambic.c      **** 
+ 202:iambic.c      **** 	// TCNT1 runs at CLK/1024, which is 0.064 ms per tick
+ 203:iambic.c      **** 	// This is pretty close to 16 ticks/ms.  The output compare
+ 204:iambic.c      **** 	// sets OCF flag on match
+ 205:iambic.c      **** 	TCCR1B = 5; // clk/1024
+ 335               		.loc 1 205 2 is_stmt 1 view .LVU99
+ 336               		.loc 1 205 9 is_stmt 0 view .LVU100
+ 337 0040 8093 8100 		sts 129,r24
+ 206:iambic.c      ****         // const uint8_t cpm = 15;
+ 207:iambic.c      **** 	const uint8_t cpm = 25;
+ 338               		.loc 1 207 2 is_stmt 1 view .LVU101
+ 339               	.LVL18:
+ 208:iambic.c      **** 	const uint16_t dit_time = (1600 / cpm) * 16;
+ 340               		.loc 1 208 2 view .LVU102
+ 209:iambic.c      **** 	const uint16_t button_threshold = 16384; // dit_time * 1024 * 4;
+ 341               		.loc 1 209 2 view .LVU103
+ 210:iambic.c      **** 
+ 211:iambic.c      **** 	// TCNT0 is configured for a 500 Hz tone on OC0A
+ 212:iambic.c      **** 	// At CLK/64, this is turns on and off each time
+ 213:iambic.c      **** 	// a full counter is made, which creates a 488 Hz
+ 214:iambic.c      **** 	// square wave.
+ 215:iambic.c      **** 	TCCR0A = (1 << COM0A0) | (1 << COM0A1) | 0x03;
+ 342               		.loc 1 215 2 view .LVU104
+ 343               		.loc 1 215 9 is_stmt 0 view .LVU105
+ 344 0044 83EC      		ldi r24,lo8(-61)
+ 345 0046 84BD      		out 0x24,r24
+ 216:iambic.c      **** 	TCCR0B = 0x03; // CLK/64
+ 346               		.loc 1 216 2 is_stmt 1 view .LVU106
+ 347               		.loc 1 216 9 is_stmt 0 view .LVU107
+ 348 0048 83E0      		ldi r24,lo8(3)
+ 349 004a 85BD      		out 0x25,r24
+ 217:iambic.c      **** 	OCR0A = 0x80; // low volume
+ 350               		.loc 1 217 2 is_stmt 1 view .LVU108
+ 351               		.loc 1 217 8 is_stmt 0 view .LVU109
+ 352 004c 80E8      		ldi r24,lo8(-128)
+ 353 004e 87BD      		out 0x27,r24
+ 218:iambic.c      **** 
+ 219:iambic.c      **** 	// Set mode to fast, inverted PWM
+ 220:iambic.c      **** 	
+ 221:iambic.c      **** 	led_off();
+ 354               		.loc 1 221 2 is_stmt 1 view .LVU110
+ 355 0050 0E94 0000 		call led_off
+ 356               	.LVL19:
+ 222:iambic.c      **** 
+ 223:iambic.c      **** 	uint8_t value = 1;
+ 357               		.loc 1 223 2 view .LVU111
+ 224:iambic.c      **** 	uint8_t bits = 0;
+ 358               		.loc 1 224 2 view .LVU112
+ 225:iambic.c      **** 	uint8_t last_bit = 0;
+ 359               		.loc 1 225 2 view .LVU113
+ 226:iambic.c      **** 
+ 227:iambic.c      **** 	while (1)
+ 360               		.loc 1 227 2 view .LVU114
+ 361               	.LBB68:
+ 228:iambic.c      **** 	{
+ 229:iambic.c      **** 		// Read PINB, which has both input pins
+ 230:iambic.c      **** 		// since there is a pull-up, the pins will be pulled
+ 231:iambic.c      **** 		// to ground when the switch is hit.
+ 232:iambic.c      **** 
+ 233:iambic.c      **** 		if (bits > 7)
+ 362               		.loc 1 233 3 view .LVU115
+ 363               	.L35:
+ 234:iambic.c      **** 		{
+ 235:iambic.c      **** 			// Too many symbols.  Ignore it
+ 236:iambic.c      **** 			bad_input();
+ 237:iambic.c      **** 			goto reset;
+ 364               		.loc 1 237 4 view .LVU116
+ 238:iambic.c      **** 		} else
+ 239:iambic.c      **** 		if (is_dit(PINB))
+ 240:iambic.c      **** 		{
+ 241:iambic.c      **** 			// The dit key is held down and
+ 242:iambic.c      **** 			// If the last bit sent was also a dit and the
+ 243:iambic.c      **** 			// dah switch is enabled, send a dah instead.
+ 244:iambic.c      **** start_dit_bit:
+ 245:iambic.c      **** 			bits++;
+ 246:iambic.c      **** 			value <<= 1;
+ 247:iambic.c      **** 			print(".");
+ 248:iambic.c      **** 
+ 249:iambic.c      **** 			wait(dit_time, dit_time);
+ 250:iambic.c      **** 			if (dah_count > button_threshold)
+ 251:iambic.c      **** 				goto start_dah_bit;
+ 252:iambic.c      **** 
+ 253:iambic.c      **** 			continue;
+ 254:iambic.c      **** 		} else
+ 255:iambic.c      **** 		if (is_dah(PINB))
+ 256:iambic.c      **** 		{
+ 257:iambic.c      **** start_dah_bit:
+ 258:iambic.c      **** 			bits++;
+ 259:iambic.c      **** 			value = (value << 1) | 1;
+ 260:iambic.c      **** 			print("-");
+ 261:iambic.c      **** 
+ 262:iambic.c      **** 			wait(3*dit_time, dit_time);
+ 263:iambic.c      **** 			if (dit_count > button_threshold)
+ 264:iambic.c      **** 				goto start_dit_bit;
+ 265:iambic.c      **** 
+ 266:iambic.c      **** 			continue;
+ 267:iambic.c      **** 		} else
+ 268:iambic.c      **** 		if (bits == 0)
+ 269:iambic.c      **** 		{
+ 270:iambic.c      **** 
+ 271:iambic.c      **** #if 0
+ 272:iambic.c      **** 			if (last_send_time && now() > last_send_time)
+ 273:iambic.c      **** 				usb_keyboard_press(KEY_SPACE, 0);
+ 274:iambic.c      **** 			last_send_time = 0;
+ 275:iambic.c      **** #endif
+ 276:iambic.c      **** 			continue;
+ 277:iambic.c      **** 		}
+ 278:iambic.c      **** 
+ 279:iambic.c      **** 		// Neither key is held down and the single space time
+ 280:iambic.c      **** 		// has elapsed (since wait_delay is blocking).
+ 281:iambic.c      **** 
+ 282:iambic.c      **** 		// Delay one more cycle to be sure, abort the delay
+ 283:iambic.c      **** 		// as soon as a button is pressed
+ 284:iambic.c      **** 		OCR1A = TCNT1 + dit_time * 2;
+ 285:iambic.c      **** 		TIFR1 |= (1 << OCF1A);
+ 286:iambic.c      **** 
+ 287:iambic.c      **** 		while (bit_is_clear(TIFR1, OCF1A))
+ 288:iambic.c      **** 		{
+ 289:iambic.c      **** 			const uint8_t port = PINB;
+ 290:iambic.c      **** 			if (is_dah(port))
+ 291:iambic.c      **** 				goto start_dah_bit;
+ 292:iambic.c      **** 			if (is_dit(port))
+ 293:iambic.c      **** 				goto start_dit_bit;
+ 294:iambic.c      **** 		}
+ 295:iambic.c      **** 
+ 296:iambic.c      **** 		// Timeout has passed; check to see if the
+ 297:iambic.c      **** 		// value exist in the map
+ 298:iambic.c      **** 		uint8_t c = pgm_read_byte(&morse[value]);
+ 299:iambic.c      **** 
+ 300:iambic.c      **** 		//last_send_time = now();
+ 301:iambic.c      **** 		print(" = ");
+ 302:iambic.c      **** 		phex(value);
+ 303:iambic.c      **** 
+ 304:iambic.c      **** 		if (!c)
+ 305:iambic.c      **** 		{
+ 306:iambic.c      **** 			bad_input();
+ 307:iambic.c      **** 			goto reset;
+ 308:iambic.c      **** 		}
+ 309:iambic.c      **** 
+ 310:iambic.c      **** 		pchar('\n');
+ 311:iambic.c      **** 		
+ 312:iambic.c      **** 		const uint8_t modbit = c & 0x80 ? KEY_SHIFT : 0;
+ 313:iambic.c      **** 		c &= ~0x80;
+ 314:iambic.c      **** 		usb_keyboard_press(c, modbit);
+ 315:iambic.c      **** 
+ 316:iambic.c      **** reset:
+ 317:iambic.c      **** 		bits = 0;
+ 365               		.loc 1 317 8 is_stmt 0 view .LVU117
+ 366 0054 00E0      		ldi r16,0
+ 318:iambic.c      **** 		value = 1;
+ 367               		.loc 1 318 9 view .LVU118
+ 368 0056 11E0      		ldi r17,lo8(1)
+ 369               	.L14:
+ 239:iambic.c      **** 		{
+ 370               		.loc 1 239 3 is_stmt 1 view .LVU119
+ 239:iambic.c      **** 		{
+ 371               		.loc 1 239 7 is_stmt 0 view .LVU120
+ 372 0058 83B1      		in r24,0x3
+ 373 005a 8983      		std Y+1,r24
+ 374               	.LVL20:
+ 375               	.LBB69:
+ 376               	.LBI69:
+  80:iambic.c      **** 	const uint8_t value
+ 377               		.loc 1 80 1 is_stmt 1 view .LVU121
+ 378               	.LBB70:
+  84:iambic.c      **** }
+ 379               		.loc 1 84 2 view .LVU122
+  84:iambic.c      **** }
+ 380               		.loc 1 84 9 is_stmt 0 view .LVU123
+ 381 005c 8981      		ldd r24,Y+1
+ 382               	.LVL21:
+  84:iambic.c      **** }
+ 383               		.loc 1 84 9 view .LVU124
+ 384               	.LBE70:
+ 385               	.LBE69:
+ 239:iambic.c      **** 		{
+ 386               		.loc 1 239 6 view .LVU125
+ 387 005e 85FD      		sbrc r24,5
+ 388 0060 00C0      		rjmp .L15
+ 389               	.L16:
+ 390               	.LVL22:
+ 245:iambic.c      **** 			value <<= 1;
+ 391               		.loc 1 245 4 is_stmt 1 view .LVU126
+ 245:iambic.c      **** 			value <<= 1;
+ 392               		.loc 1 245 8 is_stmt 0 view .LVU127
+ 393 0062 0F5F      		subi r16,lo8(-(1))
+ 394               	.LVL23:
+ 246:iambic.c      **** 			print(".");
+ 395               		.loc 1 246 4 is_stmt 1 view .LVU128
+ 246:iambic.c      **** 			print(".");
+ 396               		.loc 1 246 10 is_stmt 0 view .LVU129
+ 397 0064 110F      		lsl r17
+ 398               	.LVL24:
+ 247:iambic.c      **** 
+ 399               		.loc 1 247 4 is_stmt 1 view .LVU130
+ 400               	.LBB71:
+ 247:iambic.c      **** 
+ 401               		.loc 1 247 4 view .LVU131
+ 247:iambic.c      **** 
+ 402               		.loc 1 247 4 view .LVU132
+ 403               	.LBE71:
+ 404 0066 80E0      		ldi r24,lo8(__c.1910)
+ 405 0068 90E0      		ldi r25,hi8(__c.1910)
+ 406 006a 0E94 0000 		call print_P
+ 407               	.LVL25:
+ 249:iambic.c      **** 			if (dah_count > button_threshold)
+ 408               		.loc 1 249 4 view .LVU133
+ 409               	.LBB72:
+ 410               	.LBI72:
+ 111:iambic.c      **** 	uint16_t on_ticks,
+ 411               		.loc 1 111 1 view .LVU134
+ 412               	.LBB73:
+ 116:iambic.c      **** 
+ 413               		.loc 1 116 2 view .LVU135
+ 116:iambic.c      **** 
+ 414               		.loc 1 116 24 is_stmt 0 view .LVU136
+ 415 006e 1092 0000 		sts dah_count+1,__zero_reg__
+ 416 0072 1092 0000 		sts dah_count,__zero_reg__
+ 116:iambic.c      **** 
+ 417               		.loc 1 116 12 view .LVU137
+ 418 0076 1092 0000 		sts dit_count+1,__zero_reg__
+ 419 007a 1092 0000 		sts dit_count,__zero_reg__
+ 118:iambic.c      **** 	busy_wait(on_ticks);
+ 420               		.loc 1 118 2 is_stmt 1 view .LVU138
+ 421 007e 0E94 0000 		call led_on
+ 422               	.LVL26:
+ 119:iambic.c      **** 
+ 423               		.loc 1 119 2 view .LVU139
+ 424 0082 80E0      		ldi r24,0
+ 425 0084 94E0      		ldi r25,lo8(4)
+ 426 0086 0E94 0000 		call busy_wait
+ 427               	.LVL27:
+ 121:iambic.c      **** 	busy_wait(off_ticks);
+ 428               		.loc 1 121 2 view .LVU140
+ 429 008a 0E94 0000 		call led_off
+ 430               	.LVL28:
+ 122:iambic.c      **** }
+ 431               		.loc 1 122 2 view .LVU141
+ 432 008e 80E0      		ldi r24,0
+ 433 0090 94E0      		ldi r25,lo8(4)
+ 434 0092 0E94 0000 		call busy_wait
+ 435               	.LVL29:
+ 122:iambic.c      **** }
+ 436               		.loc 1 122 2 is_stmt 0 view .LVU142
+ 437               	.LBE73:
+ 438               	.LBE72:
+ 250:iambic.c      **** 				goto start_dah_bit;
+ 439               		.loc 1 250 4 is_stmt 1 view .LVU143
+ 250:iambic.c      **** 				goto start_dah_bit;
+ 440               		.loc 1 250 7 is_stmt 0 view .LVU144
+ 441 0096 8091 0000 		lds r24,dah_count
+ 442 009a 9091 0000 		lds r25,dah_count+1
+ 443 009e 8130      		cpi r24,1
+ 444 00a0 9044      		sbci r25,64
+ 445 00a2 00F4      		brsh .L17
+ 446               	.L18:
+ 250:iambic.c      **** 				goto start_dah_bit;
+ 447               		.loc 1 250 7 view .LVU145
+ 448               	.LBE68:
+ 227:iambic.c      **** 	{
+ 449               		.loc 1 227 2 is_stmt 1 view .LVU146
+ 450               	.LBB86:
+ 233:iambic.c      **** 		{
+ 451               		.loc 1 233 3 view .LVU147
+ 233:iambic.c      **** 		{
+ 452               		.loc 1 233 6 is_stmt 0 view .LVU148
+ 453 00a4 0830      		cpi r16,lo8(8)
+ 454 00a6 00F0      		brlo .L14
+ 236:iambic.c      **** 			goto reset;
+ 455               		.loc 1 236 4 is_stmt 1 view .LVU149
+ 456 00a8 0E94 0000 		call bad_input
+ 457               	.LVL30:
+ 458 00ac 00C0      		rjmp .L35
+ 459               	.LVL31:
+ 460               	.L15:
+ 255:iambic.c      **** 		{
+ 461               		.loc 1 255 3 view .LVU150
+ 255:iambic.c      **** 		{
+ 462               		.loc 1 255 7 is_stmt 0 view .LVU151
+ 463 00ae 83B1      		in r24,0x3
+ 464 00b0 8983      		std Y+1,r24
+ 465               	.LVL32:
+ 466               	.LBB74:
+ 467               	.LBI74:
+  71:iambic.c      **** 	const uint8_t value
+ 468               		.loc 1 71 1 is_stmt 1 view .LVU152
+ 469               	.LBB75:
+  75:iambic.c      **** }
+ 470               		.loc 1 75 2 view .LVU153
+  75:iambic.c      **** }
+ 471               		.loc 1 75 9 is_stmt 0 view .LVU154
+ 472 00b2 8981      		ldd r24,Y+1
+ 473               	.LVL33:
+  75:iambic.c      **** }
+ 474               		.loc 1 75 9 view .LVU155
+ 475               	.LBE75:
+ 476               	.LBE74:
+ 255:iambic.c      **** 		{
+ 477               		.loc 1 255 6 view .LVU156
+ 478 00b4 84FD      		sbrc r24,4
+ 479 00b6 00C0      		rjmp .L19
+ 480               	.L17:
+ 481               	.LVL34:
+ 258:iambic.c      **** 			value = (value << 1) | 1;
+ 482               		.loc 1 258 4 is_stmt 1 view .LVU157
+ 258:iambic.c      **** 			value = (value << 1) | 1;
+ 483               		.loc 1 258 8 is_stmt 0 view .LVU158
+ 484 00b8 0F5F      		subi r16,lo8(-(1))
+ 485               	.LVL35:
+ 259:iambic.c      **** 			print("-");
+ 486               		.loc 1 259 4 is_stmt 1 view .LVU159
+ 259:iambic.c      **** 			print("-");
+ 487               		.loc 1 259 19 is_stmt 0 view .LVU160
+ 488 00ba 110F      		lsl r17
+ 489               	.LVL36:
+ 259:iambic.c      **** 			print("-");
+ 490               		.loc 1 259 25 view .LVU161
+ 491 00bc 1160      		ori r17,lo8(1)
+ 492               	.LVL37:
+ 260:iambic.c      **** 
+ 493               		.loc 1 260 4 is_stmt 1 view .LVU162
+ 494               	.LBB76:
+ 260:iambic.c      **** 
+ 495               		.loc 1 260 4 view .LVU163
+ 260:iambic.c      **** 
+ 496               		.loc 1 260 4 view .LVU164
+ 497               	.LBE76:
+ 498 00be 80E0      		ldi r24,lo8(__c.1914)
+ 499 00c0 90E0      		ldi r25,hi8(__c.1914)
+ 500 00c2 0E94 0000 		call print_P
+ 501               	.LVL38:
+ 262:iambic.c      **** 			if (dit_count > button_threshold)
+ 502               		.loc 1 262 4 view .LVU165
+ 503               	.LBB77:
+ 504               	.LBI77:
+ 111:iambic.c      **** 	uint16_t on_ticks,
+ 505               		.loc 1 111 1 view .LVU166
+ 506               	.LBB78:
+ 116:iambic.c      **** 
+ 507               		.loc 1 116 2 view .LVU167
+ 116:iambic.c      **** 
+ 508               		.loc 1 116 24 is_stmt 0 view .LVU168
+ 509 00c6 1092 0000 		sts dah_count+1,__zero_reg__
+ 510 00ca 1092 0000 		sts dah_count,__zero_reg__
+ 116:iambic.c      **** 
+ 511               		.loc 1 116 12 view .LVU169
+ 512 00ce 1092 0000 		sts dit_count+1,__zero_reg__
+ 513 00d2 1092 0000 		sts dit_count,__zero_reg__
+ 118:iambic.c      **** 	busy_wait(on_ticks);
+ 514               		.loc 1 118 2 is_stmt 1 view .LVU170
+ 515 00d6 0E94 0000 		call led_on
+ 516               	.LVL39:
+ 119:iambic.c      **** 
+ 517               		.loc 1 119 2 view .LVU171
+ 518 00da 80E0      		ldi r24,0
+ 519 00dc 9CE0      		ldi r25,lo8(12)
+ 520 00de 0E94 0000 		call busy_wait
+ 521               	.LVL40:
+ 121:iambic.c      **** 	busy_wait(off_ticks);
+ 522               		.loc 1 121 2 view .LVU172
+ 523 00e2 0E94 0000 		call led_off
+ 524               	.LVL41:
+ 122:iambic.c      **** }
+ 525               		.loc 1 122 2 view .LVU173
+ 526 00e6 80E0      		ldi r24,0
+ 527 00e8 94E0      		ldi r25,lo8(4)
+ 528 00ea 0E94 0000 		call busy_wait
+ 529               	.LVL42:
+ 122:iambic.c      **** }
+ 530               		.loc 1 122 2 is_stmt 0 view .LVU174
+ 531               	.LBE78:
+ 532               	.LBE77:
+ 263:iambic.c      **** 				goto start_dit_bit;
+ 533               		.loc 1 263 4 is_stmt 1 view .LVU175
+ 263:iambic.c      **** 				goto start_dit_bit;
+ 534               		.loc 1 263 7 is_stmt 0 view .LVU176
+ 535 00ee 8091 0000 		lds r24,dit_count
+ 536 00f2 9091 0000 		lds r25,dit_count+1
+ 537 00f6 8130      		cpi r24,1
+ 538 00f8 9044      		sbci r25,64
+ 539 00fa 00F0      		brlo .+2
+ 540 00fc 00C0      		rjmp .L16
+ 541 00fe 00C0      		rjmp .L18
+ 542               	.LVL43:
+ 543               	.L19:
+ 268:iambic.c      **** 		{
+ 544               		.loc 1 268 3 is_stmt 1 view .LVU177
+ 268:iambic.c      **** 		{
+ 545               		.loc 1 268 6 is_stmt 0 view .LVU178
+ 546 0100 0023      		tst r16
+ 547 0102 01F4      		brne .+2
+ 548 0104 00C0      		rjmp .L14
+ 284:iambic.c      **** 		TIFR1 |= (1 << OCF1A);
+ 549               		.loc 1 284 3 is_stmt 1 view .LVU179
+ 284:iambic.c      **** 		TIFR1 |= (1 << OCF1A);
+ 550               		.loc 1 284 11 is_stmt 0 view .LVU180
+ 551 0106 8091 8400 		lds r24,132
+ 552 010a 9091 8500 		lds r25,132+1
+ 284:iambic.c      **** 		TIFR1 |= (1 << OCF1A);
+ 553               		.loc 1 284 17 view .LVU181
+ 554 010e 985F      		subi r25,-8
+ 284:iambic.c      **** 		TIFR1 |= (1 << OCF1A);
+ 555               		.loc 1 284 9 view .LVU182
+ 556 0110 9093 8900 		sts 136+1,r25
+ 557 0114 8093 8800 		sts 136,r24
+ 285:iambic.c      **** 
+ 558               		.loc 1 285 3 is_stmt 1 view .LVU183
+ 285:iambic.c      **** 
+ 559               		.loc 1 285 9 is_stmt 0 view .LVU184
+ 560 0118 B19A      		sbi 0x16,1
+ 287:iambic.c      **** 		{
+ 561               		.loc 1 287 3 is_stmt 1 view .LVU185
+ 562               	.L20:
+ 287:iambic.c      **** 		{
+ 563               		.loc 1 287 9 is_stmt 0 view .LVU186
+ 564 011a B19B      		sbis 0x16,1
+ 565 011c 00C0      		rjmp .L21
+ 298:iambic.c      **** 
+ 566               		.loc 1 298 3 is_stmt 1 view .LVU187
+ 567               	.LBB79:
+ 298:iambic.c      **** 
+ 568               		.loc 1 298 15 view .LVU188
+ 569               	.LVL44:
+ 298:iambic.c      **** 
+ 570               		.loc 1 298 15 view .LVU189
+ 298:iambic.c      **** 
+ 571               		.loc 1 298 15 view .LVU190
+ 572 011e E12F      		mov r30,r17
+ 573 0120 F0E0      		ldi r31,0
+ 574 0122 E050      		subi r30,lo8(-(morse.1901))
+ 575 0124 F040      		sbci r31,hi8(-(morse.1901))
+ 576               	/* #APP */
+ 577               	 ;  298 "iambic.c" 1
+ 578 0126 0491      		lpm r16, Z
+ 579               		
+ 580               	 ;  0 "" 2
+ 581               	.LVL45:
+ 298:iambic.c      **** 
+ 582               		.loc 1 298 15 view .LVU191
+ 298:iambic.c      **** 
+ 583               		.loc 1 298 15 is_stmt 0 view .LVU192
+ 584               	/* #NOAPP */
+ 585               	.LBE79:
+ 301:iambic.c      **** 		phex(value);
+ 586               		.loc 1 301 3 is_stmt 1 view .LVU193
+ 587               	.LBB80:
+ 301:iambic.c      **** 		phex(value);
+ 588               		.loc 1 301 3 view .LVU194
+ 301:iambic.c      **** 		phex(value);
+ 589               		.loc 1 301 3 view .LVU195
+ 590               	.LBE80:
+ 591 0128 80E0      		ldi r24,lo8(__c.1924)
+ 592 012a 90E0      		ldi r25,hi8(__c.1924)
+ 593 012c 0E94 0000 		call print_P
+ 594               	.LVL46:
+ 302:iambic.c      **** 
+ 595               		.loc 1 302 3 view .LVU196
+ 596 0130 812F      		mov r24,r17
+ 597 0132 0E94 0000 		call phex
+ 598               	.LVL47:
+ 304:iambic.c      **** 		{
+ 599               		.loc 1 304 3 view .LVU197
+ 304:iambic.c      **** 		{
+ 600               		.loc 1 304 6 is_stmt 0 view .LVU198
+ 601 0136 0111      		cpse r16,__zero_reg__
+ 602 0138 00C0      		rjmp .L22
+ 306:iambic.c      **** 			goto reset;
+ 603               		.loc 1 306 4 is_stmt 1 view .LVU199
+ 604 013a 0E94 0000 		call bad_input
+ 605               	.LVL48:
+ 307:iambic.c      **** 		}
+ 606               		.loc 1 307 4 view .LVU200
+ 607               	.L23:
+ 307:iambic.c      **** 		}
+ 608               		.loc 1 307 4 is_stmt 0 view .LVU201
+ 609 013e 11E0      		ldi r17,lo8(1)
+ 610               	.LVL49:
+ 307:iambic.c      **** 		}
+ 611               		.loc 1 307 4 view .LVU202
+ 612 0140 00E0      		ldi r16,0
+ 613               	.LVL50:
+ 307:iambic.c      **** 		}
+ 614               		.loc 1 307 4 view .LVU203
+ 615 0142 00C0      		rjmp .L14
+ 616               	.L21:
+ 617               	.LBB81:
+ 289:iambic.c      **** 			if (is_dah(port))
+ 618               		.loc 1 289 4 is_stmt 1 view .LVU204
+ 289:iambic.c      **** 			if (is_dah(port))
+ 619               		.loc 1 289 18 is_stmt 0 view .LVU205
+ 620 0144 83B1      		in r24,0x3
+ 621               	.LVL51:
+ 290:iambic.c      **** 				goto start_dah_bit;
+ 622               		.loc 1 290 4 is_stmt 1 view .LVU206
+ 623 0146 8983      		std Y+1,r24
+ 624               	.LVL52:
+ 625               	.LBB82:
+ 626               	.LBI82:
+  71:iambic.c      **** 	const uint8_t value
+ 627               		.loc 1 71 1 view .LVU207
+ 628               	.LBB83:
+  75:iambic.c      **** }
+ 629               		.loc 1 75 2 view .LVU208
+  75:iambic.c      **** }
+ 630               		.loc 1 75 9 is_stmt 0 view .LVU209
+ 631 0148 8981      		ldd r24,Y+1
+ 632               	.LVL53:
+  75:iambic.c      **** }
+ 633               		.loc 1 75 9 view .LVU210
+ 634               	.LBE83:
+ 635               	.LBE82:
+ 290:iambic.c      **** 				goto start_dah_bit;
+ 636               		.loc 1 290 7 view .LVU211
+ 637 014a 84FF      		sbrs r24,4
+ 638 014c 00C0      		rjmp .L17
+ 292:iambic.c      **** 				goto start_dit_bit;
+ 639               		.loc 1 292 4 is_stmt 1 view .LVU212
+ 640               	.LVL54:
+ 641               	.LBB84:
+ 642               	.LBI84:
+  80:iambic.c      **** 	const uint8_t value
+ 643               		.loc 1 80 1 view .LVU213
+ 644               	.LBB85:
+  84:iambic.c      **** }
+ 645               		.loc 1 84 2 view .LVU214
+  84:iambic.c      **** }
+ 646               		.loc 1 84 9 is_stmt 0 view .LVU215
+ 647 014e 8981      		ldd r24,Y+1
+ 648               	.LVL55:
+  84:iambic.c      **** }
+ 649               		.loc 1 84 9 view .LVU216
+ 650               	.LBE85:
+ 651               	.LBE84:
+ 292:iambic.c      **** 				goto start_dit_bit;
+ 652               		.loc 1 292 7 view .LVU217
+ 653 0150 85FD      		sbrc r24,5
+ 654 0152 00C0      		rjmp .L20
+ 655 0154 00C0      		rjmp .L16
+ 656               	.LVL56:
+ 657               	.L22:
+ 292:iambic.c      **** 				goto start_dit_bit;
+ 658               		.loc 1 292 7 view .LVU218
+ 659               	.LBE81:
+ 310:iambic.c      **** 		
+ 660               		.loc 1 310 3 is_stmt 1 view .LVU219
+ 661 0156 8AE0      		ldi r24,lo8(10)
+ 662 0158 0E94 0000 		call usb_debug_putchar
+ 663               	.LVL57:
+ 312:iambic.c      **** 		c &= ~0x80;
+ 664               		.loc 1 312 3 view .LVU220
+ 313:iambic.c      **** 		usb_keyboard_press(c, modbit);
+ 665               		.loc 1 313 3 view .LVU221
+ 314:iambic.c      **** 
+ 666               		.loc 1 314 3 view .LVU222
+ 312:iambic.c      **** 		c &= ~0x80;
+ 667               		.loc 1 312 47 is_stmt 0 view .LVU223
+ 668 015c 602F      		mov r22,r16
+ 669 015e 66FB      		bst r22,6
+ 670 0160 660F      		lsl r22
+ 671 0162 660B      		sbc r22,r22
+ 672 0164 60F9      		bld r22,0
+ 312:iambic.c      **** 		c &= ~0x80;
+ 673               		.loc 1 312 17 view .LVU224
+ 674 0166 6270      		andi r22,lo8(2)
+ 675               	.LVL58:
+ 314:iambic.c      **** 
+ 676               		.loc 1 314 3 view .LVU225
+ 677 0168 802F      		mov r24,r16
+ 678 016a 8F77      		andi r24,lo8(127)
+ 679               	.LVL59:
+ 314:iambic.c      **** 
+ 680               		.loc 1 314 3 view .LVU226
+ 681 016c 0E94 0000 		call usb_keyboard_press
+ 682               	.LVL60:
+ 314:iambic.c      **** 
+ 683               		.loc 1 314 3 view .LVU227
+ 684 0170 00C0      		rjmp .L23
+ 685               	.LBE86:
+ 686               		.cfi_endproc
+ 687               	.LFE15:
+ 689               		.section	.progmem.data,"a",@progbits
+ 692               	__c.1886:
+ 693 0000 2121 210A 		.string	"!!!\n"
+ 693      00
+ 696               	__c.1924:
+ 697 0005 203D 2000 		.string	" = "
+ 700               	morse.1901:
+ 701 0009 0000      		.zero	2
+ 702 000b 08        		.byte	8
+ 703 000c 17        		.byte	23
+ 704 000d 0C        		.byte	12
+ 705 000e 04        		.byte	4
+ 706 000f 11        		.byte	17
+ 707 0010 10        		.byte	16
+ 708 0011 16        		.byte	22
+ 709 0012 18        		.byte	24
+ 710 0013 15        		.byte	21
+ 711 0014 1A        		.byte	26
+ 712 0015 07        		.byte	7
+ 713 0016 0E        		.byte	14
+ 714 0017 0A        		.byte	10
+ 715 0018 12        		.byte	18
+ 716 0019 0B        		.byte	11
+ 717 001a 19        		.byte	25
+ 718 001b 09        		.byte	9
+ 719 001c 00        		.zero	1
+ 720 001d 0F        		.byte	15
+ 721 001e 00        		.zero	1
+ 722 001f 13        		.byte	19
+ 723 0020 0D        		.byte	13
+ 724 0021 05        		.byte	5
+ 725 0022 1B        		.byte	27
+ 726 0023 06        		.byte	6
+ 727 0024 1C        		.byte	28
+ 728 0025 1D        		.byte	29
+ 729 0026 14        		.byte	20
+ 730 0027 0000      		.zero	2
+ 731 0029 22        		.byte	34
+ 732 002a 21        		.byte	33
+ 733 002b 00        		.zero	1
+ 734 002c 20        		.byte	32
+ 735 002d 0000 00   		.zero	3
+ 736 0030 1F        		.byte	31
+ 737 0031 A4        		.byte	-92
+ 738 0032 00        		.zero	1
+ 739 0033 AE        		.byte	-82
+ 740 0034 0000 0000 		.zero	4
+ 741 0038 1E        		.byte	30
+ 742 0039 23        		.byte	35
+ 743 003a 2E        		.byte	46
+ 744 003b 38        		.byte	56
+ 745 003c 0000 00   		.zero	3
+ 746 003f A6        		.byte	-90
+ 747 0040 00        		.zero	1
+ 748 0041 24        		.byte	36
+ 749 0042 0000 00   		.zero	3
+ 750 0045 25        		.byte	37
+ 751 0046 00        		.zero	1
+ 752 0047 26        		.byte	38
+ 753 0048 27        		.byte	39
+ 754 0049 0000 0000 		.zero	12
+ 754      0000 0000 
+ 754      0000 0000 
+ 755 0055 B8        		.byte	-72
+ 756 0056 AD        		.byte	-83
+ 757 0057 0000 0000 		.zero	4
+ 758 005b B4        		.byte	-76
+ 759 005c 0000      		.zero	2
+ 760 005e 37        		.byte	55
+ 761 005f 0000 0000 		.zero	4
+ 762 0063 9F        		.byte	-97
+ 763 0064 0000 00   		.zero	3
+ 764 0067 34        		.byte	52
+ 765 0068 0000      		.zero	2
+ 766 006a 2D        		.byte	45
+ 767 006b 0000 0000 		.zero	8
+ 767      0000 0000 
+ 768 0073 33        		.byte	51
+ 769 0074 9E        		.byte	-98
+ 770 0075 00        		.zero	1
+ 771 0076 A7        		.byte	-89
+ 772 0077 0000 0000 		.zero	5
+ 772      00
+ 773 007c 36        		.byte	54
+ 774 007d 0000 0000 		.zero	4
+ 775 0081 B3        		.byte	-77
+ 776 0082 0000 0000 		.zero	16
+ 776      0000 0000 
+ 776      0000 0000 
+ 776      0000 0000 
+ 777 0092 A1        		.byte	-95
+ 778 0093 0000 0000 		.zero	118
+ 778      0000 0000 
+ 778      0000 0000 
+ 778      0000 0000 
+ 778      0000 0000 
+ 781               	__c.1914:
+ 782 0109 2D00      		.string	"-"
+ 785               	__c.1910:
+ 786 010b 2E00      		.string	"."
+ 787               		.local	dit_count
+ 788               		.comm	dit_count,2,1
+ 789               		.local	dah_count
+ 790               		.comm	dah_count,2,1
+ 791               	.global	idle_count
+ 792               		.section .bss
+ 795               	idle_count:
+ 796 0000 0000      		.zero	2
+ 797               	.global	number_keys
+ 798               		.data
+ 801               	number_keys:
+ 802 0000 27        		.byte	39
+ 803 0001 1E        		.byte	30
+ 804 0002 1F        		.byte	31
+ 805 0003 20        		.byte	32
+ 806 0004 21        		.byte	33
+ 807 0005 22        		.byte	34
+ 808 0006 23        		.byte	35
+ 809 0007 24        		.byte	36
+ 810 0008 25        		.byte	37
+ 811 0009 26        		.byte	38
+ 812               		.text
+ 813               	.Letext0:
+ 814               		.file 4 "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/stdint.h"
+ 815               		.file 5 "usb_keyboard_debug.h"
+ 816               		.file 6 "print.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 iambic.c
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:12     .text.led_on:0000000000000000 led_on
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:35     .text.led_off:0000000000000000 led_off
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:57     .text.busy_wait:0000000000000000 busy_wait
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:788    .bss:0000000000000004 dah_count
+                             .bss:0000000000000002 dit_count
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:169    .text.bad_input:0000000000000000 bad_input
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:692    .progmem.data:0000000000000000 __c.1886
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:244    .text.startup.main:0000000000000000 main
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:785    .progmem.data:000000000000010b __c.1910
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:781    .progmem.data:0000000000000109 __c.1914
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:700    .progmem.data:0000000000000009 morse.1901
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:696    .progmem.data:0000000000000005 __c.1924
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:795    .bss:0000000000000000 idle_count
+/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cceNY8Vc.s:801    .data:0000000000000000 number_keys
+
+UNDEFINED SYMBOLS
+print_P
+usb_init
+usb_configured
+phex
+usb_debug_putchar
+usb_keyboard_press
+__do_copy_data
+__do_clear_bss
