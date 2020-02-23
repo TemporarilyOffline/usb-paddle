@@ -21,6 +21,14 @@ Edit `iambic.c` to set key speed
 
 After that, plug into your USB port, plug in your Paddle and get to keying!
 
+# Wiring
+
+Paddle gets connected to B4, B5 and GND pins. B4 is dit, B5 is dah - swap if that's your thing.
+
+Speaker gets plugged into VCC and pin OC0A which was labled B7 on the board. It was labeled as OC0A in the Teensy docs.
+
 # The video
 
-Video link here: <insert video link when done>
+Video link here: https://youtu.be/SAqfvn5xvzI
+
+
