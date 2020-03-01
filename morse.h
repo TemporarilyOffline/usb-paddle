@@ -1,4 +1,5 @@
 static const uint8_t morse[256] PROGMEM = {
+	[0x0013] = KEY_SPACE, // ..--
 	[0x0005] = KEY_A, // .-
 	[0x0018] = KEY_B, // -...
 	[0x001a] = KEY_C, // -.-.
@@ -46,7 +47,7 @@ static const uint8_t morse[256] PROGMEM = {
 	[0x0028] = KEY_7 | 0x80, // & .-...
 	[0x0078] = KEY_SEMICOLON | 0x80, // : ---...
 	[0x006a] = KEY_SEMICOLON, // -.-.-.
-	[0x0031] = KEY_EQUAL, // -...-
+	[0x0019] = KEY_EQUAL, // -..-
 	[0x002a] = KEY_EQUAL | 0x80, // + .-.-.
 	[0x0061] = KEY_MINUS, // -....-
 	[0x004d] = KEY_MINUS | 0x80, // _ ..--.-

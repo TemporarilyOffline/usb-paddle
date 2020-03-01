@@ -544,920 +544,937 @@
   21               	.L2:
  525:usb_keyboard_debug.c **** 	while (!(UEINTX & (1<<TXINI))) ;
   22               		.loc 1 525 33 discriminator 1 view .LVU1
-  23               		.loc 1 525 11 is_stmt 0 discriminator 1 view .LVU2
-  24 0000 8091 E800 		lds r24,232
-  25               		.loc 1 525 8 discriminator 1 view .LVU3
-  26 0004 80FF      		sbrs r24,0
-  27 0006 00C0      		rjmp .L2
-  28               	/* epilogue start */
+  23               		.loc 1 525 8 discriminator 1 view .LVU2
+  24               		.loc 1 525 11 is_stmt 0 discriminator 1 view .LVU3
+  25 0000 8091 E800 		lds r24,232
+  26               		.loc 1 525 8 discriminator 1 view .LVU4
+  27 0004 80FF      		sbrs r24,0
+  28 0006 00C0      		rjmp .L2
+  29               	/* epilogue start */
  526:usb_keyboard_debug.c **** }
-  29               		.loc 1 526 1 view .LVU4
-  30 0008 0895      		ret
-  31               		.cfi_endproc
-  32               	.LFE8:
-  34               		.section	.text.usb_init,"ax",@progbits
-  35               	.global	usb_init
-  37               	usb_init:
-  38               	.LFB1:
+  30               		.loc 1 526 1 view .LVU5
+  31 0008 0895      		ret
+  32               		.cfi_endproc
+  33               	.LFE8:
+  35               		.section	.text.usb_init,"ax",@progbits
+  36               	.global	usb_init
+  38               	usb_init:
+  39               	.LFB1:
  322:usb_keyboard_debug.c **** 	HW_CONFIG();
-  39               		.loc 1 322 1 is_stmt 1 view -0
-  40               		.cfi_startproc
-  41               	/* prologue: function */
-  42               	/* frame size = 0 */
-  43               	/* stack size = 0 */
-  44               	.L__stack_usage = 0
+  40               		.loc 1 322 1 is_stmt 1 view -0
+  41               		.cfi_startproc
+  42               	/* prologue: function */
+  43               	/* frame size = 0 */
+  44               	/* stack size = 0 */
+  45               	.L__stack_usage = 0
  323:usb_keyboard_debug.c **** 	USB_FREEZE();				// enable USB
-  45               		.loc 1 323 2 view .LVU6
-  46 0000 81E0      		ldi r24,lo8(1)
-  47 0002 8093 D700 		sts 215,r24
+  46               		.loc 1 323 2 view .LVU7
+  47 0000 81E0      		ldi r24,lo8(1)
+  48 0002 8093 D700 		sts 215,r24
  324:usb_keyboard_debug.c **** 	PLL_CONFIG();				// config PLL
-  48               		.loc 1 324 2 view .LVU7
-  49 0006 80EA      		ldi r24,lo8(-96)
-  50 0008 8093 D800 		sts 216,r24
+  49               		.loc 1 324 2 view .LVU8
+  50 0006 80EA      		ldi r24,lo8(-96)
+  51 0008 8093 D800 		sts 216,r24
  325:usb_keyboard_debug.c ****         while (!(PLLCSR & (1<<PLOCK))) ;	// wait for PLL lock
-  51               		.loc 1 325 2 view .LVU8
-  52 000c 82E1      		ldi r24,lo8(18)
-  53 000e 89BD      		out 0x29,r24
+  52               		.loc 1 325 2 view .LVU9
+  53 000c 82E1      		ldi r24,lo8(18)
+  54 000e 89BD      		out 0x29,r24
  326:usb_keyboard_debug.c ****         USB_CONFIG();				// start USB clock
-  54               		.loc 1 326 9 view .LVU9
-  55               	.L6:
+  55               		.loc 1 326 9 view .LVU10
+  56               	.L6:
  326:usb_keyboard_debug.c ****         USB_CONFIG();				// start USB clock
-  56               		.loc 1 326 40 discriminator 1 view .LVU10
+  57               		.loc 1 326 40 discriminator 1 view .LVU11
  326:usb_keyboard_debug.c ****         USB_CONFIG();				// start USB clock
-  57               		.loc 1 326 15 is_stmt 0 discriminator 1 view .LVU11
-  58 0010 09B4      		in __tmp_reg__,0x29
-  59 0012 00FE      		sbrs __tmp_reg__,0
-  60 0014 00C0      		rjmp .L6
+  58               		.loc 1 326 15 discriminator 1 view .LVU12
+  59 0010 09B4      		in __tmp_reg__,0x29
+  60 0012 00FE      		sbrs __tmp_reg__,0
+  61 0014 00C0      		rjmp .L6
  327:usb_keyboard_debug.c ****         UDCON = 0;				// enable attach resistor
-  61               		.loc 1 327 9 is_stmt 1 view .LVU12
-  62 0016 80E9      		ldi r24,lo8(-112)
-  63 0018 8093 D800 		sts 216,r24
+  62               		.loc 1 327 9 view .LVU13
+  63 0016 80E9      		ldi r24,lo8(-112)
+  64 0018 8093 D800 		sts 216,r24
  328:usb_keyboard_debug.c **** 	usb_configuration = 0;
-  64               		.loc 1 328 9 view .LVU13
+  65               		.loc 1 328 9 view .LVU14
  328:usb_keyboard_debug.c **** 	usb_configuration = 0;
-  65               		.loc 1 328 15 is_stmt 0 view .LVU14
-  66 001c 1092 E000 		sts 224,__zero_reg__
+  66               		.loc 1 328 15 is_stmt 0 view .LVU15
+  67 001c 1092 E000 		sts 224,__zero_reg__
  329:usb_keyboard_debug.c ****         UDIEN = (1<<EORSTE)|(1<<SOFE);
-  67               		.loc 1 329 2 is_stmt 1 view .LVU15
+  68               		.loc 1 329 2 is_stmt 1 view .LVU16
  329:usb_keyboard_debug.c ****         UDIEN = (1<<EORSTE)|(1<<SOFE);
-  68               		.loc 1 329 20 is_stmt 0 view .LVU16
-  69 0020 1092 0000 		sts usb_configuration,__zero_reg__
+  69               		.loc 1 329 20 is_stmt 0 view .LVU17
+  70 0020 1092 0000 		sts usb_configuration,__zero_reg__
  330:usb_keyboard_debug.c **** 	sei();
-  70               		.loc 1 330 9 is_stmt 1 view .LVU17
+  71               		.loc 1 330 9 is_stmt 1 view .LVU18
  330:usb_keyboard_debug.c **** 	sei();
-  71               		.loc 1 330 15 is_stmt 0 view .LVU18
-  72 0024 8CE0      		ldi r24,lo8(12)
-  73 0026 8093 E200 		sts 226,r24
+  72               		.loc 1 330 15 is_stmt 0 view .LVU19
+  73 0024 8CE0      		ldi r24,lo8(12)
+  74 0026 8093 E200 		sts 226,r24
  331:usb_keyboard_debug.c **** }
-  74               		.loc 1 331 2 is_stmt 1 view .LVU19
-  75               	/* #APP */
-  76               	 ;  331 "usb_keyboard_debug.c" 1
-  77 002a 7894      		sei
-  78               	 ;  0 "" 2
-  79               	/* #NOAPP */
-  80               	/* epilogue start */
+  75               		.loc 1 331 2 is_stmt 1 view .LVU20
+  76               	/* #APP */
+  77               	 ;  331 "usb_keyboard_debug.c" 1
+  78 002a 7894      		sei
+  79               	 ;  0 "" 2
+  80               	/* #NOAPP */
+  81               	/* epilogue start */
  332:usb_keyboard_debug.c **** 
-  81               		.loc 1 332 1 is_stmt 0 view .LVU20
-  82 002c 0895      		ret
-  83               		.cfi_endproc
-  84               	.LFE1:
-  86               		.section	.text.usb_configured,"ax",@progbits
-  87               	.global	usb_configured
-  89               	usb_configured:
-  90               	.LFB2:
+  82               		.loc 1 332 1 is_stmt 0 view .LVU21
+  83 002c 0895      		ret
+  84               		.cfi_endproc
+  85               	.LFE1:
+  87               		.section	.text.usb_configured,"ax",@progbits
+  88               	.global	usb_configured
+  90               	usb_configured:
+  91               	.LFB2:
  337:usb_keyboard_debug.c **** 	return usb_configuration;
-  91               		.loc 1 337 1 is_stmt 1 view -0
-  92               		.cfi_startproc
-  93               	/* prologue: function */
-  94               	/* frame size = 0 */
-  95               	/* stack size = 0 */
-  96               	.L__stack_usage = 0
+  92               		.loc 1 337 1 is_stmt 1 view -0
+  93               		.cfi_startproc
+  94               	/* prologue: function */
+  95               	/* frame size = 0 */
+  96               	/* stack size = 0 */
+  97               	.L__stack_usage = 0
  338:usb_keyboard_debug.c **** }
-  97               		.loc 1 338 2 view .LVU22
+  98               		.loc 1 338 2 view .LVU23
  338:usb_keyboard_debug.c **** }
-  98               		.loc 1 338 9 is_stmt 0 view .LVU23
-  99 0000 8091 0000 		lds r24,usb_configuration
- 100               	/* epilogue start */
+  99               		.loc 1 338 9 is_stmt 0 view .LVU24
+ 100 0000 8091 0000 		lds r24,usb_configuration
+ 101               	/* epilogue start */
  339:usb_keyboard_debug.c **** 
- 101               		.loc 1 339 1 view .LVU24
- 102 0004 0895      		ret
- 103               		.cfi_endproc
- 104               	.LFE2:
- 106               		.section	.text.usb_keyboard_send,"ax",@progbits
- 107               	.global	usb_keyboard_send
- 109               	usb_keyboard_send:
- 110               	.LFB4:
+ 102               		.loc 1 339 1 view .LVU25
+ 103 0004 0895      		ret
+ 104               		.cfi_endproc
+ 105               	.LFE2:
+ 107               		.section	.text.usb_keyboard_send,"ax",@progbits
+ 108               	.global	usb_keyboard_send
+ 110               	usb_keyboard_send:
+ 111               	.LFB4:
  358:usb_keyboard_debug.c **** 	uint8_t i, intr_state, timeout;
- 111               		.loc 1 358 1 is_stmt 1 view -0
- 112               		.cfi_startproc
- 113               	/* prologue: function */
- 114               	/* frame size = 0 */
- 115               	/* stack size = 0 */
- 116               	.L__stack_usage = 0
+ 112               		.loc 1 358 1 is_stmt 1 view -0
+ 113               		.cfi_startproc
+ 114               	/* prologue: function */
+ 115               	/* frame size = 0 */
+ 116               	/* stack size = 0 */
+ 117               	.L__stack_usage = 0
  359:usb_keyboard_debug.c **** 
- 117               		.loc 1 359 2 view .LVU26
+ 118               		.loc 1 359 2 view .LVU27
  361:usb_keyboard_debug.c **** 	intr_state = SREG;
- 118               		.loc 1 361 2 view .LVU27
+ 119               		.loc 1 361 2 view .LVU28
  361:usb_keyboard_debug.c **** 	intr_state = SREG;
- 119               		.loc 1 361 6 is_stmt 0 view .LVU28
- 120 0000 8091 0000 		lds r24,usb_configuration
+ 120               		.loc 1 361 6 is_stmt 0 view .LVU29
+ 121 0000 8091 0000 		lds r24,usb_configuration
  361:usb_keyboard_debug.c **** 	intr_state = SREG;
- 121               		.loc 1 361 5 view .LVU29
- 122 0004 8111      		cpse r24,__zero_reg__
- 123 0006 00C0      		rjmp .L11
- 124               	.L14:
+ 122               		.loc 1 361 5 view .LVU30
+ 123 0004 8111      		cpse r24,__zero_reg__
+ 124 0006 00C0      		rjmp .L11
+ 125               	.L14:
  361:usb_keyboard_debug.c **** 	intr_state = SREG;
- 125               		.loc 1 361 33 view .LVU30
- 126 0008 8FEF      		ldi r24,lo8(-1)
- 127 000a 0895      		ret
- 128               	.L11:
+ 126               		.loc 1 361 33 view .LVU31
+ 127 0008 8FEF      		ldi r24,lo8(-1)
+ 128 000a 0895      		ret
+ 129               	.L11:
  362:usb_keyboard_debug.c **** 	cli();
- 129               		.loc 1 362 2 is_stmt 1 view .LVU31
+ 130               		.loc 1 362 2 is_stmt 1 view .LVU32
  362:usb_keyboard_debug.c **** 	cli();
- 130               		.loc 1 362 13 is_stmt 0 view .LVU32
- 131 000c 8FB7      		in r24,__SREG__
- 132               	.LVL0:
+ 131               		.loc 1 362 13 is_stmt 0 view .LVU33
+ 132 000c 8FB7      		in r24,__SREG__
+ 133               	.LVL0:
  363:usb_keyboard_debug.c **** 	UENUM = KEYBOARD_ENDPOINT;
- 133               		.loc 1 363 2 is_stmt 1 view .LVU33
- 134               	/* #APP */
- 135               	 ;  363 "usb_keyboard_debug.c" 1
- 136 000e F894      		cli
- 137               	 ;  0 "" 2
+ 134               		.loc 1 363 2 is_stmt 1 view .LVU34
+ 135               	/* #APP */
+ 136               	 ;  363 "usb_keyboard_debug.c" 1
+ 137 000e F894      		cli
+ 138               	 ;  0 "" 2
  364:usb_keyboard_debug.c **** 	timeout = UDFNUML + 50;
- 138               		.loc 1 364 2 view .LVU34
+ 139               		.loc 1 364 2 view .LVU35
  364:usb_keyboard_debug.c **** 	timeout = UDFNUML + 50;
- 139               		.loc 1 364 8 is_stmt 0 view .LVU35
- 140               	/* #NOAPP */
- 141 0010 93E0      		ldi r25,lo8(3)
- 142 0012 9093 E900 		sts 233,r25
+ 140               		.loc 1 364 8 is_stmt 0 view .LVU36
+ 141               	/* #NOAPP */
+ 142 0010 93E0      		ldi r25,lo8(3)
+ 143 0012 9093 E900 		sts 233,r25
  365:usb_keyboard_debug.c **** 	while (1) {
- 143               		.loc 1 365 2 is_stmt 1 view .LVU36
+ 144               		.loc 1 365 2 is_stmt 1 view .LVU37
  365:usb_keyboard_debug.c **** 	while (1) {
- 144               		.loc 1 365 12 is_stmt 0 view .LVU37
- 145 0016 9091 E400 		lds r25,228
+ 145               		.loc 1 365 12 is_stmt 0 view .LVU38
+ 146 0016 9091 E400 		lds r25,228
  365:usb_keyboard_debug.c **** 	while (1) {
- 146               		.loc 1 365 10 view .LVU38
- 147 001a 9E5C      		subi r25,lo8(-(50))
- 148               	.LVL1:
+ 147               		.loc 1 365 10 view .LVU39
+ 148 001a 9E5C      		subi r25,lo8(-(50))
+ 149               	.LVL1:
  377:usb_keyboard_debug.c **** 	}
- 149               		.loc 1 377 9 view .LVU39
- 150 001c 23E0      		ldi r18,lo8(3)
- 151               	.L15:
+ 150               		.loc 1 377 9 view .LVU40
+ 151 001c 23E0      		ldi r18,lo8(3)
+ 152               	.L15:
  366:usb_keyboard_debug.c **** 		// are we ready to transmit?
- 152               		.loc 1 366 2 is_stmt 1 view .LVU40
+ 153               		.loc 1 366 2 is_stmt 1 view .LVU41
  368:usb_keyboard_debug.c **** 		SREG = intr_state;
- 153               		.loc 1 368 3 view .LVU41
+ 154               		.loc 1 368 3 view .LVU42
  368:usb_keyboard_debug.c **** 		SREG = intr_state;
- 154               		.loc 1 368 7 is_stmt 0 view .LVU42
- 155 001e 3091 E800 		lds r19,232
+ 155               		.loc 1 368 7 is_stmt 0 view .LVU43
+ 156 001e 3091 E800 		lds r19,232
  368:usb_keyboard_debug.c **** 		SREG = intr_state;
- 156               		.loc 1 368 6 view .LVU43
- 157 0022 35FD      		sbrc r19,5
- 158 0024 00C0      		rjmp .L13
+ 157               		.loc 1 368 6 view .LVU44
+ 158 0022 35FD      		sbrc r19,5
+ 159 0024 00C0      		rjmp .L13
  369:usb_keyboard_debug.c **** 		// has the USB gone offline?
- 159               		.loc 1 369 3 is_stmt 1 view .LVU44
+ 160               		.loc 1 369 3 is_stmt 1 view .LVU45
  369:usb_keyboard_debug.c **** 		// has the USB gone offline?
- 160               		.loc 1 369 8 is_stmt 0 view .LVU45
- 161 0026 8FBF      		out __SREG__,r24
+ 161               		.loc 1 369 8 is_stmt 0 view .LVU46
+ 162 0026 8FBF      		out __SREG__,r24
  371:usb_keyboard_debug.c **** 		// have we waited too long?
- 162               		.loc 1 371 3 is_stmt 1 view .LVU46
+ 163               		.loc 1 371 3 is_stmt 1 view .LVU47
  371:usb_keyboard_debug.c **** 		// have we waited too long?
- 163               		.loc 1 371 7 is_stmt 0 view .LVU47
- 164 0028 8091 0000 		lds r24,usb_configuration
- 165               	.LVL2:
+ 164               		.loc 1 371 7 is_stmt 0 view .LVU48
+ 165 0028 8091 0000 		lds r24,usb_configuration
+ 166               	.LVL2:
  371:usb_keyboard_debug.c **** 		// have we waited too long?
- 166               		.loc 1 371 6 view .LVU48
- 167 002c 8823      		tst r24
- 168 002e 01F0      		breq .L14
+ 167               		.loc 1 371 6 view .LVU49
+ 168 002c 8823      		tst r24
+ 169 002e 01F0      		breq .L14
  373:usb_keyboard_debug.c **** 		// get ready to try checking again
- 169               		.loc 1 373 3 is_stmt 1 view .LVU49
+ 170               		.loc 1 373 3 is_stmt 1 view .LVU50
  373:usb_keyboard_debug.c **** 		// get ready to try checking again
- 170               		.loc 1 373 7 is_stmt 0 view .LVU50
- 171 0030 8091 E400 		lds r24,228
+ 171               		.loc 1 373 7 is_stmt 0 view .LVU51
+ 172 0030 8091 E400 		lds r24,228
  373:usb_keyboard_debug.c **** 		// get ready to try checking again
- 172               		.loc 1 373 6 view .LVU51
- 173 0034 8917      		cp r24,r25
- 174 0036 01F0      		breq .L14
+ 173               		.loc 1 373 6 view .LVU52
+ 174 0034 8917      		cp r24,r25
+ 175 0036 01F0      		breq .L14
  375:usb_keyboard_debug.c **** 		cli();
- 175               		.loc 1 375 3 is_stmt 1 view .LVU52
+ 176               		.loc 1 375 3 is_stmt 1 view .LVU53
  375:usb_keyboard_debug.c **** 		cli();
- 176               		.loc 1 375 14 is_stmt 0 view .LVU53
- 177 0038 8FB7      		in r24,__SREG__
- 178               	.LVL3:
+ 177               		.loc 1 375 14 is_stmt 0 view .LVU54
+ 178 0038 8FB7      		in r24,__SREG__
+ 179               	.LVL3:
  376:usb_keyboard_debug.c **** 		UENUM = KEYBOARD_ENDPOINT;
- 179               		.loc 1 376 3 is_stmt 1 view .LVU54
- 180               	/* #APP */
- 181               	 ;  376 "usb_keyboard_debug.c" 1
- 182 003a F894      		cli
- 183               	 ;  0 "" 2
+ 180               		.loc 1 376 3 is_stmt 1 view .LVU55
+ 181               	/* #APP */
+ 182               	 ;  376 "usb_keyboard_debug.c" 1
+ 183 003a F894      		cli
+ 184               	 ;  0 "" 2
  377:usb_keyboard_debug.c **** 	}
- 184               		.loc 1 377 3 view .LVU55
+ 185               		.loc 1 377 3 view .LVU56
  377:usb_keyboard_debug.c **** 	}
- 185               		.loc 1 377 9 is_stmt 0 view .LVU56
- 186               	/* #NOAPP */
- 187 003c 2093 E900 		sts 233,r18
+ 186               		.loc 1 377 9 is_stmt 0 view .LVU57
+ 187               	/* #NOAPP */
+ 188 003c 2093 E900 		sts 233,r18
+ 366:usb_keyboard_debug.c **** 		// are we ready to transmit?
+ 189               		.loc 1 366 8 is_stmt 1 view .LVU58
  368:usb_keyboard_debug.c **** 		SREG = intr_state;
- 188               		.loc 1 368 6 view .LVU57
- 189 0040 00C0      		rjmp .L15
- 190               	.L13:
+ 190               		.loc 1 368 6 is_stmt 0 view .LVU59
+ 191 0040 00C0      		rjmp .L15
+ 192               	.L13:
  379:usb_keyboard_debug.c **** 	UEDATX = 0;
- 191               		.loc 1 379 2 is_stmt 1 view .LVU58
+ 193               		.loc 1 379 2 is_stmt 1 view .LVU60
  379:usb_keyboard_debug.c **** 	UEDATX = 0;
- 192               		.loc 1 379 9 is_stmt 0 view .LVU59
- 193 0042 9091 0000 		lds r25,keyboard_modifier_keys
- 194               	.LVL4:
+ 194               		.loc 1 379 9 is_stmt 0 view .LVU61
+ 195 0042 9091 0000 		lds r25,keyboard_modifier_keys
+ 196               	.LVL4:
  379:usb_keyboard_debug.c **** 	UEDATX = 0;
- 195               		.loc 1 379 9 view .LVU60
- 196 0046 9093 F100 		sts 241,r25
+ 197               		.loc 1 379 9 view .LVU62
+ 198 0046 9093 F100 		sts 241,r25
  380:usb_keyboard_debug.c **** 	for (i=0; i<6; i++) {
- 197               		.loc 1 380 2 is_stmt 1 view .LVU61
+ 199               		.loc 1 380 2 is_stmt 1 view .LVU63
  380:usb_keyboard_debug.c **** 	for (i=0; i<6; i++) {
- 198               		.loc 1 380 9 is_stmt 0 view .LVU62
- 199 004a 1092 F100 		sts 241,__zero_reg__
+ 200               		.loc 1 380 9 is_stmt 0 view .LVU64
+ 201 004a 1092 F100 		sts 241,__zero_reg__
  381:usb_keyboard_debug.c **** 		UEDATX = keyboard_keys[i];
- 200               		.loc 1 381 2 is_stmt 1 view .LVU63
- 201               	.LVL5:
+ 202               		.loc 1 381 2 is_stmt 1 view .LVU65
+ 203               	.LVL5:
  381:usb_keyboard_debug.c **** 		UEDATX = keyboard_keys[i];
- 202               		.loc 1 381 2 is_stmt 0 view .LVU64
- 203 004e E0E0      		ldi r30,lo8(keyboard_keys)
- 204 0050 F0E0      		ldi r31,hi8(keyboard_keys)
- 205               	.LVL6:
- 206               	.L16:
+ 204               		.loc 1 381 12 view .LVU66
+ 205 004e E0E0      		ldi r30,lo8(keyboard_keys)
+ 206 0050 F0E0      		ldi r31,hi8(keyboard_keys)
+ 207               	.LVL6:
+ 208               	.L16:
  382:usb_keyboard_debug.c **** 	}
- 207               		.loc 1 382 3 is_stmt 1 discriminator 3 view .LVU65
+ 209               		.loc 1 382 3 discriminator 3 view .LVU67
  382:usb_keyboard_debug.c **** 	}
- 208               		.loc 1 382 25 is_stmt 0 discriminator 3 view .LVU66
- 209 0052 9191      		ld r25,Z+
- 210               	.LVL7:
+ 210               		.loc 1 382 25 is_stmt 0 discriminator 3 view .LVU68
+ 211 0052 9191      		ld r25,Z+
+ 212               	.LVL7:
  382:usb_keyboard_debug.c **** 	}
- 211               		.loc 1 382 10 discriminator 3 view .LVU67
- 212 0054 9093 F100 		sts 241,r25
- 213               	.LVL8:
+ 213               		.loc 1 382 10 discriminator 3 view .LVU69
+ 214 0054 9093 F100 		sts 241,r25
  381:usb_keyboard_debug.c **** 		UEDATX = keyboard_keys[i];
- 214               		.loc 1 381 2 discriminator 3 view .LVU68
- 215 0058 90E0      		ldi r25,hi8(keyboard_keys+6)
- 216 005a E030      		cpi r30,lo8(keyboard_keys+6)
- 217 005c F907      		cpc r31,r25
- 218 005e 01F4      		brne .L16
+ 215               		.loc 1 381 17 is_stmt 1 discriminator 3 view .LVU70
+ 216               	.LVL8:
+ 381:usb_keyboard_debug.c **** 		UEDATX = keyboard_keys[i];
+ 217               		.loc 1 381 12 discriminator 3 view .LVU71
+ 381:usb_keyboard_debug.c **** 		UEDATX = keyboard_keys[i];
+ 218               		.loc 1 381 2 is_stmt 0 discriminator 3 view .LVU72
+ 219 0058 90E0      		ldi r25,hi8(keyboard_keys+6)
+ 220 005a E030      		cpi r30,lo8(keyboard_keys+6)
+ 221 005c F907      		cpc r31,r25
+ 222 005e 01F4      		brne .L16
  384:usb_keyboard_debug.c **** 	keyboard_idle_count = 0;
- 219               		.loc 1 384 2 is_stmt 1 view .LVU69
+ 223               		.loc 1 384 2 is_stmt 1 view .LVU73
  384:usb_keyboard_debug.c **** 	keyboard_idle_count = 0;
- 220               		.loc 1 384 9 is_stmt 0 view .LVU70
- 221 0060 9AE3      		ldi r25,lo8(58)
- 222 0062 9093 E800 		sts 232,r25
+ 224               		.loc 1 384 9 is_stmt 0 view .LVU74
+ 225 0060 9AE3      		ldi r25,lo8(58)
+ 226 0062 9093 E800 		sts 232,r25
  385:usb_keyboard_debug.c **** 	SREG = intr_state;
- 223               		.loc 1 385 2 is_stmt 1 view .LVU71
+ 227               		.loc 1 385 2 is_stmt 1 view .LVU75
  385:usb_keyboard_debug.c **** 	SREG = intr_state;
- 224               		.loc 1 385 22 is_stmt 0 view .LVU72
- 225 0066 1092 0000 		sts keyboard_idle_count,__zero_reg__
+ 228               		.loc 1 385 22 is_stmt 0 view .LVU76
+ 229 0066 1092 0000 		sts keyboard_idle_count,__zero_reg__
  386:usb_keyboard_debug.c **** 	return 0;
- 226               		.loc 1 386 2 is_stmt 1 view .LVU73
+ 230               		.loc 1 386 2 is_stmt 1 view .LVU77
  386:usb_keyboard_debug.c **** 	return 0;
- 227               		.loc 1 386 7 is_stmt 0 view .LVU74
- 228 006a 8FBF      		out __SREG__,r24
+ 231               		.loc 1 386 7 is_stmt 0 view .LVU78
+ 232 006a 8FBF      		out __SREG__,r24
  387:usb_keyboard_debug.c **** }
- 229               		.loc 1 387 2 is_stmt 1 view .LVU75
+ 233               		.loc 1 387 2 is_stmt 1 view .LVU79
  387:usb_keyboard_debug.c **** }
- 230               		.loc 1 387 9 is_stmt 0 view .LVU76
- 231 006c 80E0      		ldi r24,0
- 232               	.LVL9:
- 233               	/* epilogue start */
+ 234               		.loc 1 387 9 is_stmt 0 view .LVU80
+ 235 006c 80E0      		ldi r24,0
+ 236               	.LVL9:
+ 237               	/* epilogue start */
  388:usb_keyboard_debug.c **** 
- 234               		.loc 1 388 1 view .LVU77
- 235 006e 0895      		ret
- 236               		.cfi_endproc
- 237               	.LFE4:
- 239               		.section	.text.usb_keyboard_press,"ax",@progbits
- 240               	.global	usb_keyboard_press
- 242               	usb_keyboard_press:
- 243               	.LVL10:
- 244               	.LFB3:
+ 238               		.loc 1 388 1 view .LVU81
+ 239 006e 0895      		ret
+ 240               		.cfi_endproc
+ 241               	.LFE4:
+ 243               		.section	.text.usb_keyboard_press,"ax",@progbits
+ 244               	.global	usb_keyboard_press
+ 246               	usb_keyboard_press:
+ 247               	.LVL10:
+ 248               	.LFB3:
  344:usb_keyboard_debug.c **** 	int8_t r;
- 245               		.loc 1 344 1 is_stmt 1 view -0
- 246               		.cfi_startproc
- 247               	/* prologue: function */
- 248               	/* frame size = 0 */
- 249               	/* stack size = 0 */
- 250               	.L__stack_usage = 0
+ 249               		.loc 1 344 1 is_stmt 1 view -0
+ 250               		.cfi_startproc
+ 251               	/* prologue: function */
+ 252               	/* frame size = 0 */
+ 253               	/* stack size = 0 */
+ 254               	.L__stack_usage = 0
  345:usb_keyboard_debug.c **** 
- 251               		.loc 1 345 2 view .LVU79
+ 255               		.loc 1 345 2 view .LVU83
  347:usb_keyboard_debug.c **** 	keyboard_keys[0] = key;
- 252               		.loc 1 347 2 view .LVU80
+ 256               		.loc 1 347 2 view .LVU84
  347:usb_keyboard_debug.c **** 	keyboard_keys[0] = key;
- 253               		.loc 1 347 25 is_stmt 0 view .LVU81
- 254 0000 6093 0000 		sts keyboard_modifier_keys,r22
+ 257               		.loc 1 347 25 is_stmt 0 view .LVU85
+ 258 0000 6093 0000 		sts keyboard_modifier_keys,r22
  348:usb_keyboard_debug.c **** 	r = usb_keyboard_send();
- 255               		.loc 1 348 2 is_stmt 1 view .LVU82
+ 259               		.loc 1 348 2 is_stmt 1 view .LVU86
  348:usb_keyboard_debug.c **** 	r = usb_keyboard_send();
- 256               		.loc 1 348 19 is_stmt 0 view .LVU83
- 257 0004 8093 0000 		sts keyboard_keys,r24
+ 260               		.loc 1 348 19 is_stmt 0 view .LVU87
+ 261 0004 8093 0000 		sts keyboard_keys,r24
  349:usb_keyboard_debug.c **** 	if (r) return r;
- 258               		.loc 1 349 2 is_stmt 1 view .LVU84
+ 262               		.loc 1 349 2 is_stmt 1 view .LVU88
  349:usb_keyboard_debug.c **** 	if (r) return r;
- 259               		.loc 1 349 6 is_stmt 0 view .LVU85
- 260 0008 0E94 0000 		call usb_keyboard_send
- 261               	.LVL11:
+ 263               		.loc 1 349 6 is_stmt 0 view .LVU89
+ 264 0008 0E94 0000 		call usb_keyboard_send
+ 265               	.LVL11:
  350:usb_keyboard_debug.c **** 	keyboard_modifier_keys = 0;
- 262               		.loc 1 350 2 is_stmt 1 view .LVU86
+ 266               		.loc 1 350 2 is_stmt 1 view .LVU90
  350:usb_keyboard_debug.c **** 	keyboard_modifier_keys = 0;
- 263               		.loc 1 350 5 is_stmt 0 view .LVU87
- 264 000c 8111      		cpse r24,__zero_reg__
- 265 000e 00C0      		rjmp .L21
+ 267               		.loc 1 350 5 is_stmt 0 view .LVU91
+ 268 000c 8111      		cpse r24,__zero_reg__
+ 269 000e 00C0      		rjmp .L21
  351:usb_keyboard_debug.c **** 	keyboard_keys[0] = 0;
- 266               		.loc 1 351 2 is_stmt 1 view .LVU88
+ 270               		.loc 1 351 2 is_stmt 1 view .LVU92
  351:usb_keyboard_debug.c **** 	keyboard_keys[0] = 0;
- 267               		.loc 1 351 25 is_stmt 0 view .LVU89
- 268 0010 1092 0000 		sts keyboard_modifier_keys,__zero_reg__
+ 271               		.loc 1 351 25 is_stmt 0 view .LVU93
+ 272 0010 1092 0000 		sts keyboard_modifier_keys,__zero_reg__
  352:usb_keyboard_debug.c **** 	return usb_keyboard_send();
- 269               		.loc 1 352 2 is_stmt 1 view .LVU90
+ 273               		.loc 1 352 2 is_stmt 1 view .LVU94
  352:usb_keyboard_debug.c **** 	return usb_keyboard_send();
- 270               		.loc 1 352 19 is_stmt 0 view .LVU91
- 271 0014 1092 0000 		sts keyboard_keys,__zero_reg__
+ 274               		.loc 1 352 19 is_stmt 0 view .LVU95
+ 275 0014 1092 0000 		sts keyboard_keys,__zero_reg__
  353:usb_keyboard_debug.c **** }
- 272               		.loc 1 353 2 is_stmt 1 view .LVU92
+ 276               		.loc 1 353 2 is_stmt 1 view .LVU96
  353:usb_keyboard_debug.c **** }
- 273               		.loc 1 353 9 is_stmt 0 view .LVU93
- 274 0018 0C94 0000 		jmp usb_keyboard_send
- 275               	.LVL12:
- 276               	.L21:
- 277               	/* epilogue start */
+ 277               		.loc 1 353 9 is_stmt 0 view .LVU97
+ 278 0018 0C94 0000 		jmp usb_keyboard_send
+ 279               	.LVL12:
+ 280               	.L21:
+ 281               	/* epilogue start */
  354:usb_keyboard_debug.c **** 
- 278               		.loc 1 354 1 view .LVU94
- 279 001c 0895      		ret
- 280               		.cfi_endproc
- 281               	.LFE3:
- 283               		.section	.text.usb_debug_putchar,"ax",@progbits
- 284               	.global	usb_debug_putchar
- 286               	usb_debug_putchar:
- 287               	.LVL13:
- 288               	.LFB5:
+ 282               		.loc 1 354 1 view .LVU98
+ 283 001c 0895      		ret
+ 284               		.cfi_endproc
+ 285               	.LFE3:
+ 287               		.section	.text.usb_debug_putchar,"ax",@progbits
+ 288               	.global	usb_debug_putchar
+ 290               	usb_debug_putchar:
+ 291               	.LVL13:
+ 292               	.LFB5:
  392:usb_keyboard_debug.c **** 	static uint8_t previous_timeout=0;
- 289               		.loc 1 392 1 is_stmt 1 view -0
- 290               		.cfi_startproc
- 291               	/* prologue: function */
- 292               	/* frame size = 0 */
- 293               	/* stack size = 0 */
- 294               	.L__stack_usage = 0
+ 293               		.loc 1 392 1 is_stmt 1 view -0
+ 294               		.cfi_startproc
+ 295               	/* prologue: function */
+ 296               	/* frame size = 0 */
+ 297               	/* stack size = 0 */
+ 298               	.L__stack_usage = 0
  393:usb_keyboard_debug.c **** 	uint8_t timeout, intr_state;
- 295               		.loc 1 393 2 view .LVU96
+ 299               		.loc 1 393 2 view .LVU100
  394:usb_keyboard_debug.c **** 
- 296               		.loc 1 394 2 view .LVU97
+ 300               		.loc 1 394 2 view .LVU101
  397:usb_keyboard_debug.c **** 	// interrupts are disabled so these functions can be
- 297               		.loc 1 397 2 view .LVU98
+ 301               		.loc 1 397 2 view .LVU102
  397:usb_keyboard_debug.c **** 	// interrupts are disabled so these functions can be
- 298               		.loc 1 397 6 is_stmt 0 view .LVU99
- 299 0000 9091 0000 		lds r25,usb_configuration
+ 302               		.loc 1 397 6 is_stmt 0 view .LVU103
+ 303 0000 9091 0000 		lds r25,usb_configuration
  397:usb_keyboard_debug.c **** 	// interrupts are disabled so these functions can be
- 300               		.loc 1 397 5 view .LVU100
- 301 0004 9111      		cpse r25,__zero_reg__
- 302 0006 00C0      		rjmp .L24
- 303               	.LVL14:
- 304               	.L40:
+ 304               		.loc 1 397 5 view .LVU104
+ 305 0004 9111      		cpse r25,__zero_reg__
+ 306 0006 00C0      		rjmp .L24
+ 307               	.LVL14:
+ 308               	.L40:
  408:usb_keyboard_debug.c **** 		}
- 305               		.loc 1 408 4 is_stmt 1 view .LVU101
+ 309               		.loc 1 408 4 is_stmt 1 view .LVU105
  408:usb_keyboard_debug.c **** 		}
- 306               		.loc 1 408 11 is_stmt 0 view .LVU102
- 307 0008 8FEF      		ldi r24,lo8(-1)
- 308 000a 0895      		ret
- 309               	.LVL15:
- 310               	.L24:
+ 310               		.loc 1 408 11 is_stmt 0 view .LVU106
+ 311 0008 8FEF      		ldi r24,lo8(-1)
+ 312 000a 0895      		ret
+ 313               	.LVL15:
+ 314               	.L24:
  401:usb_keyboard_debug.c **** 	cli();
- 311               		.loc 1 401 2 is_stmt 1 view .LVU103
+ 315               		.loc 1 401 2 is_stmt 1 view .LVU107
  401:usb_keyboard_debug.c **** 	cli();
- 312               		.loc 1 401 13 is_stmt 0 view .LVU104
- 313 000c 9FB7      		in r25,__SREG__
- 314               	.LVL16:
+ 316               		.loc 1 401 13 is_stmt 0 view .LVU108
+ 317 000c 9FB7      		in r25,__SREG__
+ 318               	.LVL16:
  402:usb_keyboard_debug.c **** 	UENUM = DEBUG_TX_ENDPOINT;
- 315               		.loc 1 402 2 is_stmt 1 view .LVU105
- 316               	/* #APP */
- 317               	 ;  402 "usb_keyboard_debug.c" 1
- 318 000e F894      		cli
- 319               	 ;  0 "" 2
+ 319               		.loc 1 402 2 is_stmt 1 view .LVU109
+ 320               	/* #APP */
+ 321               	 ;  402 "usb_keyboard_debug.c" 1
+ 322 000e F894      		cli
+ 323               	 ;  0 "" 2
  403:usb_keyboard_debug.c **** 	// if we gave up due to timeout before, don't wait again
- 320               		.loc 1 403 2 view .LVU106
+ 324               		.loc 1 403 2 view .LVU110
  403:usb_keyboard_debug.c **** 	// if we gave up due to timeout before, don't wait again
- 321               		.loc 1 403 8 is_stmt 0 view .LVU107
- 322               	/* #NOAPP */
- 323 0010 24E0      		ldi r18,lo8(4)
- 324 0012 2093 E900 		sts 233,r18
+ 325               		.loc 1 403 8 is_stmt 0 view .LVU111
+ 326               	/* #NOAPP */
+ 327 0010 24E0      		ldi r18,lo8(4)
+ 328 0012 2093 E900 		sts 233,r18
  405:usb_keyboard_debug.c **** 		if (!(UEINTX & (1<<RWAL))) {
- 325               		.loc 1 405 2 is_stmt 1 view .LVU108
+ 329               		.loc 1 405 2 is_stmt 1 view .LVU112
  405:usb_keyboard_debug.c **** 		if (!(UEINTX & (1<<RWAL))) {
- 326               		.loc 1 405 5 is_stmt 0 view .LVU109
- 327 0016 2091 0000 		lds r18,previous_timeout.1772
- 328 001a 2223      		tst r18
- 329 001c 01F0      		breq .L26
+ 330               		.loc 1 405 5 is_stmt 0 view .LVU113
+ 331 0016 2091 0000 		lds r18,previous_timeout.1721
+ 332 001a 2223      		tst r18
+ 333 001c 01F0      		breq .L26
  406:usb_keyboard_debug.c **** 			SREG = intr_state;
- 330               		.loc 1 406 3 is_stmt 1 view .LVU110
+ 334               		.loc 1 406 3 is_stmt 1 view .LVU114
  406:usb_keyboard_debug.c **** 			SREG = intr_state;
- 331               		.loc 1 406 9 is_stmt 0 view .LVU111
- 332 001e 2091 E800 		lds r18,232
+ 335               		.loc 1 406 9 is_stmt 0 view .LVU115
+ 336 001e 2091 E800 		lds r18,232
  406:usb_keyboard_debug.c **** 			SREG = intr_state;
- 333               		.loc 1 406 6 view .LVU112
- 334 0022 25FD      		sbrc r18,5
- 335 0024 00C0      		rjmp .L27
+ 337               		.loc 1 406 6 view .LVU116
+ 338 0022 25FD      		sbrc r18,5
+ 339 0024 00C0      		rjmp .L27
  407:usb_keyboard_debug.c **** 			return -1;
- 336               		.loc 1 407 4 is_stmt 1 view .LVU113
+ 340               		.loc 1 407 4 is_stmt 1 view .LVU117
  407:usb_keyboard_debug.c **** 			return -1;
- 337               		.loc 1 407 9 is_stmt 0 view .LVU114
- 338 0026 9FBF      		out __SREG__,r25
- 339 0028 00C0      		rjmp .L40
- 340               	.L27:
+ 341               		.loc 1 407 9 is_stmt 0 view .LVU118
+ 342 0026 9FBF      		out __SREG__,r25
+ 343 0028 00C0      		rjmp .L40
+ 344               	.L27:
  410:usb_keyboard_debug.c **** 	}
- 341               		.loc 1 410 3 is_stmt 1 view .LVU115
+ 345               		.loc 1 410 3 is_stmt 1 view .LVU119
  410:usb_keyboard_debug.c **** 	}
- 342               		.loc 1 410 20 is_stmt 0 view .LVU116
- 343 002a 1092 0000 		sts previous_timeout.1772,__zero_reg__
- 344               	.L26:
+ 346               		.loc 1 410 20 is_stmt 0 view .LVU120
+ 347 002a 1092 0000 		sts previous_timeout.1721,__zero_reg__
+ 348               	.L26:
  413:usb_keyboard_debug.c **** 	while (1) {
- 345               		.loc 1 413 2 is_stmt 1 view .LVU117
+ 349               		.loc 1 413 2 is_stmt 1 view .LVU121
  413:usb_keyboard_debug.c **** 	while (1) {
- 346               		.loc 1 413 12 is_stmt 0 view .LVU118
- 347 002e 2091 E400 		lds r18,228
+ 350               		.loc 1 413 12 is_stmt 0 view .LVU122
+ 351 002e 2091 E400 		lds r18,228
  413:usb_keyboard_debug.c **** 	while (1) {
- 348               		.loc 1 413 10 view .LVU119
- 349 0032 2C5F      		subi r18,lo8(-(4))
- 350               	.LVL17:
+ 352               		.loc 1 413 10 view .LVU123
+ 353 0032 2C5F      		subi r18,lo8(-(4))
+ 354               	.LVL17:
  428:usb_keyboard_debug.c **** 	}
- 351               		.loc 1 428 9 view .LVU120
- 352 0034 34E0      		ldi r19,lo8(4)
- 353               	.L31:
+ 355               		.loc 1 428 9 view .LVU124
+ 356 0034 34E0      		ldi r19,lo8(4)
+ 357               	.L31:
  414:usb_keyboard_debug.c **** 		// are we ready to transmit?
- 354               		.loc 1 414 2 is_stmt 1 view .LVU121
+ 358               		.loc 1 414 2 is_stmt 1 view .LVU125
  416:usb_keyboard_debug.c **** 		SREG = intr_state;
- 355               		.loc 1 416 3 view .LVU122
+ 359               		.loc 1 416 3 view .LVU126
  416:usb_keyboard_debug.c **** 		SREG = intr_state;
- 356               		.loc 1 416 7 is_stmt 0 view .LVU123
- 357 0036 4091 E800 		lds r20,232
+ 360               		.loc 1 416 7 is_stmt 0 view .LVU127
+ 361 0036 4091 E800 		lds r20,232
  416:usb_keyboard_debug.c **** 		SREG = intr_state;
- 358               		.loc 1 416 6 view .LVU124
- 359 003a 45FD      		sbrc r20,5
- 360 003c 00C0      		rjmp .L28
+ 362               		.loc 1 416 6 view .LVU128
+ 363 003a 45FD      		sbrc r20,5
+ 364 003c 00C0      		rjmp .L28
  417:usb_keyboard_debug.c **** 		// have we waited too long?
- 361               		.loc 1 417 3 is_stmt 1 view .LVU125
+ 365               		.loc 1 417 3 is_stmt 1 view .LVU129
  417:usb_keyboard_debug.c **** 		// have we waited too long?
- 362               		.loc 1 417 8 is_stmt 0 view .LVU126
- 363 003e 9FBF      		out __SREG__,r25
+ 366               		.loc 1 417 8 is_stmt 0 view .LVU130
+ 367 003e 9FBF      		out __SREG__,r25
  419:usb_keyboard_debug.c **** 			previous_timeout = 1;
- 364               		.loc 1 419 3 is_stmt 1 view .LVU127
+ 368               		.loc 1 419 3 is_stmt 1 view .LVU131
  419:usb_keyboard_debug.c **** 			previous_timeout = 1;
- 365               		.loc 1 419 7 is_stmt 0 view .LVU128
- 366 0040 9091 E400 		lds r25,228
- 367               	.LVL18:
+ 369               		.loc 1 419 7 is_stmt 0 view .LVU132
+ 370 0040 9091 E400 		lds r25,228
+ 371               	.LVL18:
  419:usb_keyboard_debug.c **** 			previous_timeout = 1;
- 368               		.loc 1 419 6 view .LVU129
- 369 0044 9213      		cpse r25,r18
- 370 0046 00C0      		rjmp .L29
+ 372               		.loc 1 419 6 view .LVU133
+ 373 0044 9213      		cpse r25,r18
+ 374 0046 00C0      		rjmp .L29
  420:usb_keyboard_debug.c **** 			return -1;
- 371               		.loc 1 420 4 is_stmt 1 view .LVU130
+ 375               		.loc 1 420 4 is_stmt 1 view .LVU134
  420:usb_keyboard_debug.c **** 			return -1;
- 372               		.loc 1 420 21 is_stmt 0 view .LVU131
- 373 0048 81E0      		ldi r24,lo8(1)
- 374               	.LVL19:
+ 376               		.loc 1 420 21 is_stmt 0 view .LVU135
+ 377 0048 81E0      		ldi r24,lo8(1)
+ 378               	.LVL19:
  420:usb_keyboard_debug.c **** 			return -1;
- 375               		.loc 1 420 21 view .LVU132
- 376 004a 8093 0000 		sts previous_timeout.1772,r24
- 377               	.LVL20:
+ 379               		.loc 1 420 21 view .LVU136
+ 380 004a 8093 0000 		sts previous_timeout.1721,r24
+ 381               	.LVL20:
  421:usb_keyboard_debug.c **** 		}
- 378               		.loc 1 421 4 is_stmt 1 view .LVU133
- 379 004e 00C0      		rjmp .L40
- 380               	.LVL21:
- 381               	.L29:
+ 382               		.loc 1 421 4 is_stmt 1 view .LVU137
+ 383 004e 00C0      		rjmp .L40
+ 384               	.LVL21:
+ 385               	.L29:
  424:usb_keyboard_debug.c **** 		// get ready to try checking again
- 382               		.loc 1 424 3 view .LVU134
+ 386               		.loc 1 424 3 view .LVU138
  424:usb_keyboard_debug.c **** 		// get ready to try checking again
- 383               		.loc 1 424 7 is_stmt 0 view .LVU135
- 384 0050 9091 0000 		lds r25,usb_configuration
+ 387               		.loc 1 424 7 is_stmt 0 view .LVU139
+ 388 0050 9091 0000 		lds r25,usb_configuration
  424:usb_keyboard_debug.c **** 		// get ready to try checking again
- 385               		.loc 1 424 6 view .LVU136
- 386 0054 9923      		tst r25
- 387 0056 01F0      		breq .L40
+ 389               		.loc 1 424 6 view .LVU140
+ 390 0054 9923      		tst r25
+ 391 0056 01F0      		breq .L40
  426:usb_keyboard_debug.c **** 		cli();
- 388               		.loc 1 426 3 is_stmt 1 view .LVU137
+ 392               		.loc 1 426 3 is_stmt 1 view .LVU141
  426:usb_keyboard_debug.c **** 		cli();
- 389               		.loc 1 426 14 is_stmt 0 view .LVU138
- 390 0058 9FB7      		in r25,__SREG__
- 391               	.LVL22:
+ 393               		.loc 1 426 14 is_stmt 0 view .LVU142
+ 394 0058 9FB7      		in r25,__SREG__
+ 395               	.LVL22:
  427:usb_keyboard_debug.c **** 		UENUM = DEBUG_TX_ENDPOINT;
- 392               		.loc 1 427 3 is_stmt 1 view .LVU139
- 393               	/* #APP */
- 394               	 ;  427 "usb_keyboard_debug.c" 1
- 395 005a F894      		cli
- 396               	 ;  0 "" 2
+ 396               		.loc 1 427 3 is_stmt 1 view .LVU143
+ 397               	/* #APP */
+ 398               	 ;  427 "usb_keyboard_debug.c" 1
+ 399 005a F894      		cli
+ 400               	 ;  0 "" 2
  428:usb_keyboard_debug.c **** 	}
- 397               		.loc 1 428 3 view .LVU140
+ 401               		.loc 1 428 3 view .LVU144
  428:usb_keyboard_debug.c **** 	}
- 398               		.loc 1 428 9 is_stmt 0 view .LVU141
- 399               	/* #NOAPP */
- 400 005c 3093 E900 		sts 233,r19
+ 402               		.loc 1 428 9 is_stmt 0 view .LVU145
+ 403               	/* #NOAPP */
+ 404 005c 3093 E900 		sts 233,r19
+ 414:usb_keyboard_debug.c **** 		// are we ready to transmit?
+ 405               		.loc 1 414 8 is_stmt 1 view .LVU146
  416:usb_keyboard_debug.c **** 		SREG = intr_state;
- 401               		.loc 1 416 6 view .LVU142
- 402 0060 00C0      		rjmp .L31
- 403               	.L28:
+ 406               		.loc 1 416 6 is_stmt 0 view .LVU147
+ 407 0060 00C0      		rjmp .L31
+ 408               	.L28:
  431:usb_keyboard_debug.c **** 	// if this completed a packet, transmit it now!
- 404               		.loc 1 431 2 is_stmt 1 view .LVU143
+ 409               		.loc 1 431 2 is_stmt 1 view .LVU148
  431:usb_keyboard_debug.c **** 	// if this completed a packet, transmit it now!
- 405               		.loc 1 431 9 is_stmt 0 view .LVU144
- 406 0062 8093 F100 		sts 241,r24
+ 410               		.loc 1 431 9 is_stmt 0 view .LVU149
+ 411 0062 8093 F100 		sts 241,r24
  433:usb_keyboard_debug.c **** 		UEINTX = 0x3A;
- 407               		.loc 1 433 2 is_stmt 1 view .LVU145
+ 412               		.loc 1 433 2 is_stmt 1 view .LVU150
  433:usb_keyboard_debug.c **** 		UEINTX = 0x3A;
- 408               		.loc 1 433 8 is_stmt 0 view .LVU146
- 409 0066 8091 E800 		lds r24,232
- 410               	.LVL23:
+ 413               		.loc 1 433 8 is_stmt 0 view .LVU151
+ 414 0066 8091 E800 		lds r24,232
+ 415               	.LVL23:
  433:usb_keyboard_debug.c **** 		UEINTX = 0x3A;
- 411               		.loc 1 433 5 view .LVU147
- 412 006a 85FD      		sbrc r24,5
- 413 006c 00C0      		rjmp .L32
+ 416               		.loc 1 433 5 view .LVU152
+ 417 006a 85FD      		sbrc r24,5
+ 418 006c 00C0      		rjmp .L32
  434:usb_keyboard_debug.c **** 		debug_flush_timer = 0;
- 414               		.loc 1 434 3 is_stmt 1 view .LVU148
+ 419               		.loc 1 434 3 is_stmt 1 view .LVU153
  434:usb_keyboard_debug.c **** 		debug_flush_timer = 0;
- 415               		.loc 1 434 10 is_stmt 0 view .LVU149
- 416 006e 8AE3      		ldi r24,lo8(58)
- 417 0070 8093 E800 		sts 232,r24
- 418               	.LVL24:
+ 420               		.loc 1 434 10 is_stmt 0 view .LVU154
+ 421 006e 8AE3      		ldi r24,lo8(58)
+ 422 0070 8093 E800 		sts 232,r24
+ 423               	.LVL24:
  435:usb_keyboard_debug.c **** 	} else {
- 419               		.loc 1 435 3 is_stmt 1 view .LVU150
+ 424               		.loc 1 435 3 is_stmt 1 view .LVU155
  435:usb_keyboard_debug.c **** 	} else {
- 420               		.loc 1 435 21 is_stmt 0 view .LVU151
- 421 0074 1092 0000 		sts debug_flush_timer,__zero_reg__
- 422               	.L33:
+ 425               		.loc 1 435 21 is_stmt 0 view .LVU156
+ 426 0074 1092 0000 		sts debug_flush_timer,__zero_reg__
+ 427               	.L33:
  439:usb_keyboard_debug.c **** 	return 0;
- 423               		.loc 1 439 2 is_stmt 1 view .LVU152
+ 428               		.loc 1 439 2 is_stmt 1 view .LVU157
  439:usb_keyboard_debug.c **** 	return 0;
- 424               		.loc 1 439 7 is_stmt 0 view .LVU153
- 425 0078 9FBF      		out __SREG__,r25
+ 429               		.loc 1 439 7 is_stmt 0 view .LVU158
+ 430 0078 9FBF      		out __SREG__,r25
  440:usb_keyboard_debug.c **** }
- 426               		.loc 1 440 2 is_stmt 1 view .LVU154
+ 431               		.loc 1 440 2 is_stmt 1 view .LVU159
  440:usb_keyboard_debug.c **** }
- 427               		.loc 1 440 9 is_stmt 0 view .LVU155
- 428 007a 80E0      		ldi r24,0
- 429               	/* epilogue start */
+ 432               		.loc 1 440 9 is_stmt 0 view .LVU160
+ 433 007a 80E0      		ldi r24,0
+ 434               	/* epilogue start */
  441:usb_keyboard_debug.c **** 
- 430               		.loc 1 441 1 view .LVU156
- 431 007c 0895      		ret
- 432               	.LVL25:
- 433               	.L32:
+ 435               		.loc 1 441 1 view .LVU161
+ 436 007c 0895      		ret
+ 437               	.LVL25:
+ 438               	.L32:
  437:usb_keyboard_debug.c **** 	}
- 434               		.loc 1 437 3 is_stmt 1 view .LVU157
+ 439               		.loc 1 437 3 is_stmt 1 view .LVU162
  437:usb_keyboard_debug.c **** 	}
- 435               		.loc 1 437 21 is_stmt 0 view .LVU158
- 436 007e 82E0      		ldi r24,lo8(2)
- 437 0080 8093 0000 		sts debug_flush_timer,r24
- 438               	.LVL26:
+ 440               		.loc 1 437 21 is_stmt 0 view .LVU163
+ 441 007e 82E0      		ldi r24,lo8(2)
+ 442 0080 8093 0000 		sts debug_flush_timer,r24
+ 443               	.LVL26:
  437:usb_keyboard_debug.c **** 	}
- 439               		.loc 1 437 21 view .LVU159
- 440 0084 00C0      		rjmp .L33
- 441               		.cfi_endproc
- 442               	.LFE5:
- 444               		.section	.text.usb_debug_flush_output,"ax",@progbits
- 445               	.global	usb_debug_flush_output
- 447               	usb_debug_flush_output:
- 448               	.LFB6:
+ 444               		.loc 1 437 21 view .LVU164
+ 445 0084 00C0      		rjmp .L33
+ 446               		.cfi_endproc
+ 447               	.LFE5:
+ 449               		.section	.text.usb_debug_flush_output,"ax",@progbits
+ 450               	.global	usb_debug_flush_output
+ 452               	usb_debug_flush_output:
+ 453               	.LFB6:
  446:usb_keyboard_debug.c **** 	uint8_t intr_state;
- 449               		.loc 1 446 1 is_stmt 1 view -0
- 450               		.cfi_startproc
- 451               	/* prologue: function */
- 452               	/* frame size = 0 */
- 453               	/* stack size = 0 */
- 454               	.L__stack_usage = 0
+ 454               		.loc 1 446 1 is_stmt 1 view -0
+ 455               		.cfi_startproc
+ 456               	/* prologue: function */
+ 457               	/* frame size = 0 */
+ 458               	/* stack size = 0 */
+ 459               	.L__stack_usage = 0
  447:usb_keyboard_debug.c **** 
- 455               		.loc 1 447 2 view .LVU161
+ 460               		.loc 1 447 2 view .LVU166
  449:usb_keyboard_debug.c **** 	cli();
- 456               		.loc 1 449 2 view .LVU162
+ 461               		.loc 1 449 2 view .LVU167
  449:usb_keyboard_debug.c **** 	cli();
- 457               		.loc 1 449 13 is_stmt 0 view .LVU163
- 458 0000 8FB7      		in r24,__SREG__
- 459               	.LVL27:
+ 462               		.loc 1 449 13 is_stmt 0 view .LVU168
+ 463 0000 8FB7      		in r24,__SREG__
+ 464               	.LVL27:
  450:usb_keyboard_debug.c **** 	if (debug_flush_timer) {
- 460               		.loc 1 450 2 is_stmt 1 view .LVU164
- 461               	/* #APP */
- 462               	 ;  450 "usb_keyboard_debug.c" 1
- 463 0002 F894      		cli
- 464               	 ;  0 "" 2
+ 465               		.loc 1 450 2 is_stmt 1 view .LVU169
+ 466               	/* #APP */
+ 467               	 ;  450 "usb_keyboard_debug.c" 1
+ 468 0002 F894      		cli
+ 469               	 ;  0 "" 2
  451:usb_keyboard_debug.c **** 		UENUM = DEBUG_TX_ENDPOINT;
- 465               		.loc 1 451 2 view .LVU165
+ 470               		.loc 1 451 2 view .LVU170
  451:usb_keyboard_debug.c **** 		UENUM = DEBUG_TX_ENDPOINT;
- 466               		.loc 1 451 6 is_stmt 0 view .LVU166
- 467               	/* #NOAPP */
- 468 0004 9091 0000 		lds r25,debug_flush_timer
+ 471               		.loc 1 451 6 is_stmt 0 view .LVU171
+ 472               	/* #NOAPP */
+ 473 0004 9091 0000 		lds r25,debug_flush_timer
  451:usb_keyboard_debug.c **** 		UENUM = DEBUG_TX_ENDPOINT;
- 469               		.loc 1 451 5 view .LVU167
- 470 0008 9923      		tst r25
- 471 000a 01F0      		breq .L42
+ 474               		.loc 1 451 5 view .LVU172
+ 475 0008 9923      		tst r25
+ 476 000a 01F0      		breq .L42
  452:usb_keyboard_debug.c **** 		while ((UEINTX & (1<<RWAL))) {
- 472               		.loc 1 452 3 is_stmt 1 view .LVU168
+ 477               		.loc 1 452 3 is_stmt 1 view .LVU173
  452:usb_keyboard_debug.c **** 		while ((UEINTX & (1<<RWAL))) {
- 473               		.loc 1 452 9 is_stmt 0 view .LVU169
- 474 000c 94E0      		ldi r25,lo8(4)
- 475 000e 9093 E900 		sts 233,r25
+ 478               		.loc 1 452 9 is_stmt 0 view .LVU174
+ 479 000c 94E0      		ldi r25,lo8(4)
+ 480 000e 9093 E900 		sts 233,r25
  453:usb_keyboard_debug.c **** 			UEDATX = 0;
- 476               		.loc 1 453 3 is_stmt 1 view .LVU170
- 477               	.L43:
+ 481               		.loc 1 453 3 is_stmt 1 view .LVU175
+ 482               	.L43:
  453:usb_keyboard_debug.c **** 			UEDATX = 0;
- 478               		.loc 1 453 11 is_stmt 0 view .LVU171
- 479 0012 9091 E800 		lds r25,232
+ 483               		.loc 1 453 9 view .LVU176
  453:usb_keyboard_debug.c **** 			UEDATX = 0;
- 480               		.loc 1 453 9 view .LVU172
- 481 0016 95FD      		sbrc r25,5
- 482 0018 00C0      		rjmp .L44
+ 484               		.loc 1 453 11 is_stmt 0 view .LVU177
+ 485 0012 9091 E800 		lds r25,232
+ 453:usb_keyboard_debug.c **** 			UEDATX = 0;
+ 486               		.loc 1 453 9 view .LVU178
+ 487 0016 95FD      		sbrc r25,5
+ 488 0018 00C0      		rjmp .L44
  456:usb_keyboard_debug.c **** 		debug_flush_timer = 0;
- 483               		.loc 1 456 3 is_stmt 1 view .LVU173
+ 489               		.loc 1 456 3 is_stmt 1 view .LVU179
  456:usb_keyboard_debug.c **** 		debug_flush_timer = 0;
- 484               		.loc 1 456 10 is_stmt 0 view .LVU174
- 485 001a 9AE3      		ldi r25,lo8(58)
- 486 001c 9093 E800 		sts 232,r25
+ 490               		.loc 1 456 10 is_stmt 0 view .LVU180
+ 491 001a 9AE3      		ldi r25,lo8(58)
+ 492 001c 9093 E800 		sts 232,r25
  457:usb_keyboard_debug.c **** 	}
- 487               		.loc 1 457 3 is_stmt 1 view .LVU175
+ 493               		.loc 1 457 3 is_stmt 1 view .LVU181
  457:usb_keyboard_debug.c **** 	}
- 488               		.loc 1 457 21 is_stmt 0 view .LVU176
- 489 0020 1092 0000 		sts debug_flush_timer,__zero_reg__
- 490               	.L42:
+ 494               		.loc 1 457 21 is_stmt 0 view .LVU182
+ 495 0020 1092 0000 		sts debug_flush_timer,__zero_reg__
+ 496               	.L42:
  459:usb_keyboard_debug.c **** }
- 491               		.loc 1 459 2 is_stmt 1 view .LVU177
+ 497               		.loc 1 459 2 is_stmt 1 view .LVU183
  459:usb_keyboard_debug.c **** }
- 492               		.loc 1 459 7 is_stmt 0 view .LVU178
- 493 0024 8FBF      		out __SREG__,r24
- 494               	/* epilogue start */
+ 498               		.loc 1 459 7 is_stmt 0 view .LVU184
+ 499 0024 8FBF      		out __SREG__,r24
+ 500               	/* epilogue start */
  460:usb_keyboard_debug.c **** 
- 495               		.loc 1 460 1 view .LVU179
- 496 0026 0895      		ret
- 497               	.L44:
+ 501               		.loc 1 460 1 view .LVU185
+ 502 0026 0895      		ret
+ 503               	.L44:
  454:usb_keyboard_debug.c **** 		}
- 498               		.loc 1 454 4 is_stmt 1 view .LVU180
+ 504               		.loc 1 454 4 is_stmt 1 view .LVU186
  454:usb_keyboard_debug.c **** 		}
- 499               		.loc 1 454 11 is_stmt 0 view .LVU181
- 500 0028 1092 F100 		sts 241,__zero_reg__
- 501 002c 00C0      		rjmp .L43
- 502               		.cfi_endproc
- 503               	.LFE6:
- 505               		.section	.text.__vector_10,"ax",@progbits
- 506               	.global	__vector_10
- 508               	__vector_10:
- 509               	.LFB7:
+ 505               		.loc 1 454 11 is_stmt 0 view .LVU187
+ 506 0028 1092 F100 		sts 241,__zero_reg__
+ 507 002c 00C0      		rjmp .L43
+ 508               		.cfi_endproc
+ 509               	.LFE6:
+ 511               		.section	.text.__vector_10,"ax",@progbits
+ 512               	.global	__vector_10
+ 514               	__vector_10:
+ 515               	.LFB7:
  476:usb_keyboard_debug.c **** 	uint8_t intbits, t, i;
- 510               		.loc 1 476 1 is_stmt 1 view -0
- 511               		.cfi_startproc
- 512 0000 1F92 1FB6 		__gcc_isr 1
- 512      1F92 1124 
- 512      8F93 
- 513 000a 9F93      		push r25
- 514               	.LCFI0:
- 515               		.cfi_def_cfa_offset 3
- 516               		.cfi_offset 25, -2
- 517 000c EF93      		push r30
- 518               	.LCFI1:
- 519               		.cfi_def_cfa_offset 4
- 520               		.cfi_offset 30, -3
- 521 000e FF93      		push r31
- 522               	.LCFI2:
- 523               		.cfi_def_cfa_offset 5
- 524               		.cfi_offset 31, -4
- 525               	/* prologue: Signal */
- 526               	/* frame size = 0 */
- 527               	/* stack size = 3...7 */
- 528               	.L__stack_usage = 3 + __gcc_isr.n_pushed
+ 516               		.loc 1 476 1 is_stmt 1 view -0
+ 517               		.cfi_startproc
+ 518 0000 1F92 1FB6 		__gcc_isr 1
+ 518      1F92 1124 
+ 518      8F93 
+ 519 000a 9F93      		push r25
+ 520               	.LCFI0:
+ 521               		.cfi_def_cfa_offset 3
+ 522               		.cfi_offset 25, -2
+ 523 000c EF93      		push r30
+ 524               	.LCFI1:
+ 525               		.cfi_def_cfa_offset 4
+ 526               		.cfi_offset 30, -3
+ 527 000e FF93      		push r31
+ 528               	.LCFI2:
+ 529               		.cfi_def_cfa_offset 5
+ 530               		.cfi_offset 31, -4
+ 531               	/* prologue: Signal */
+ 532               	/* frame size = 0 */
+ 533               	/* stack size = 3...7 */
+ 534               	.L__stack_usage = 3 + __gcc_isr.n_pushed
  477:usb_keyboard_debug.c **** 	static uint8_t div4=0;
- 529               		.loc 1 477 2 view .LVU183
+ 535               		.loc 1 477 2 view .LVU189
  478:usb_keyboard_debug.c **** 
- 530               		.loc 1 478 2 view .LVU184
+ 536               		.loc 1 478 2 view .LVU190
  480:usb_keyboard_debug.c ****         UDINT = 0;
- 531               		.loc 1 480 9 view .LVU185
+ 537               		.loc 1 480 9 view .LVU191
  480:usb_keyboard_debug.c ****         UDINT = 0;
- 532               		.loc 1 480 17 is_stmt 0 view .LVU186
- 533 0010 8091 E100 		lds r24,225
- 534               	.LVL28:
+ 538               		.loc 1 480 17 is_stmt 0 view .LVU192
+ 539 0010 8091 E100 		lds r24,225
+ 540               	.LVL28:
  481:usb_keyboard_debug.c ****         if (intbits & (1<<EORSTI)) {
- 535               		.loc 1 481 9 is_stmt 1 view .LVU187
+ 541               		.loc 1 481 9 is_stmt 1 view .LVU193
  481:usb_keyboard_debug.c ****         if (intbits & (1<<EORSTI)) {
- 536               		.loc 1 481 15 is_stmt 0 view .LVU188
- 537 0014 1092 E100 		sts 225,__zero_reg__
+ 542               		.loc 1 481 15 is_stmt 0 view .LVU194
+ 543 0014 1092 E100 		sts 225,__zero_reg__
  482:usb_keyboard_debug.c **** 		UENUM = 0;
- 538               		.loc 1 482 9 is_stmt 1 view .LVU189
+ 544               		.loc 1 482 9 is_stmt 1 view .LVU195
  482:usb_keyboard_debug.c **** 		UENUM = 0;
- 539               		.loc 1 482 12 is_stmt 0 view .LVU190
- 540 0018 83FF      		sbrs r24,3
- 541 001a 00C0      		rjmp .L49
+ 545               		.loc 1 482 12 is_stmt 0 view .LVU196
+ 546 0018 83FF      		sbrs r24,3
+ 547 001a 00C0      		rjmp .L49
  483:usb_keyboard_debug.c **** 		UECONX = 1;
- 542               		.loc 1 483 3 is_stmt 1 view .LVU191
+ 548               		.loc 1 483 3 is_stmt 1 view .LVU197
  483:usb_keyboard_debug.c **** 		UECONX = 1;
- 543               		.loc 1 483 9 is_stmt 0 view .LVU192
- 544 001c 1092 E900 		sts 233,__zero_reg__
+ 549               		.loc 1 483 9 is_stmt 0 view .LVU198
+ 550 001c 1092 E900 		sts 233,__zero_reg__
  484:usb_keyboard_debug.c **** 		UECFG0X = EP_TYPE_CONTROL;
- 545               		.loc 1 484 3 is_stmt 1 view .LVU193
+ 551               		.loc 1 484 3 is_stmt 1 view .LVU199
  484:usb_keyboard_debug.c **** 		UECFG0X = EP_TYPE_CONTROL;
- 546               		.loc 1 484 10 is_stmt 0 view .LVU194
- 547 0020 91E0      		ldi r25,lo8(1)
- 548 0022 9093 EB00 		sts 235,r25
+ 552               		.loc 1 484 10 is_stmt 0 view .LVU200
+ 553 0020 91E0      		ldi r25,lo8(1)
+ 554 0022 9093 EB00 		sts 235,r25
  485:usb_keyboard_debug.c **** 		UECFG1X = EP_SIZE(ENDPOINT0_SIZE) | EP_SINGLE_BUFFER;
- 549               		.loc 1 485 3 is_stmt 1 view .LVU195
+ 555               		.loc 1 485 3 is_stmt 1 view .LVU201
  485:usb_keyboard_debug.c **** 		UECFG1X = EP_SIZE(ENDPOINT0_SIZE) | EP_SINGLE_BUFFER;
- 550               		.loc 1 485 11 is_stmt 0 view .LVU196
- 551 0026 1092 EC00 		sts 236,__zero_reg__
+ 556               		.loc 1 485 11 is_stmt 0 view .LVU202
+ 557 0026 1092 EC00 		sts 236,__zero_reg__
  486:usb_keyboard_debug.c **** 		UEIENX = (1<<RXSTPE);
- 552               		.loc 1 486 3 is_stmt 1 view .LVU197
+ 558               		.loc 1 486 3 is_stmt 1 view .LVU203
  486:usb_keyboard_debug.c **** 		UEIENX = (1<<RXSTPE);
- 553               		.loc 1 486 11 is_stmt 0 view .LVU198
- 554 002a 92E2      		ldi r25,lo8(34)
- 555 002c 9093 ED00 		sts 237,r25
+ 559               		.loc 1 486 11 is_stmt 0 view .LVU204
+ 560 002a 92E2      		ldi r25,lo8(34)
+ 561 002c 9093 ED00 		sts 237,r25
  487:usb_keyboard_debug.c **** 		usb_configuration = 0;
- 556               		.loc 1 487 3 is_stmt 1 view .LVU199
+ 562               		.loc 1 487 3 is_stmt 1 view .LVU205
  487:usb_keyboard_debug.c **** 		usb_configuration = 0;
- 557               		.loc 1 487 10 is_stmt 0 view .LVU200
- 558 0030 98E0      		ldi r25,lo8(8)
- 559 0032 9093 F000 		sts 240,r25
+ 563               		.loc 1 487 10 is_stmt 0 view .LVU206
+ 564 0030 98E0      		ldi r25,lo8(8)
+ 565 0032 9093 F000 		sts 240,r25
  488:usb_keyboard_debug.c ****         }
- 560               		.loc 1 488 3 is_stmt 1 view .LVU201
+ 566               		.loc 1 488 3 is_stmt 1 view .LVU207
  488:usb_keyboard_debug.c ****         }
- 561               		.loc 1 488 21 is_stmt 0 view .LVU202
- 562 0036 1092 0000 		sts usb_configuration,__zero_reg__
- 563               	.L49:
+ 567               		.loc 1 488 21 is_stmt 0 view .LVU208
+ 568 0036 1092 0000 		sts usb_configuration,__zero_reg__
+ 569               	.L49:
  490:usb_keyboard_debug.c **** 		t = debug_flush_timer;
- 564               		.loc 1 490 2 is_stmt 1 view .LVU203
+ 570               		.loc 1 490 2 is_stmt 1 view .LVU209
  490:usb_keyboard_debug.c **** 		t = debug_flush_timer;
- 565               		.loc 1 490 5 is_stmt 0 view .LVU204
- 566 003a 82FF      		sbrs r24,2
- 567 003c 00C0      		rjmp .L48
+ 571               		.loc 1 490 5 is_stmt 0 view .LVU210
+ 572 003a 82FF      		sbrs r24,2
+ 573 003c 00C0      		rjmp .L48
  490:usb_keyboard_debug.c **** 		t = debug_flush_timer;
- 568               		.loc 1 490 28 discriminator 1 view .LVU205
- 569 003e 8091 0000 		lds r24,usb_configuration
- 570               	.LVL29:
+ 574               		.loc 1 490 28 discriminator 1 view .LVU211
+ 575 003e 8091 0000 		lds r24,usb_configuration
+ 576               	.LVL29:
  490:usb_keyboard_debug.c **** 		t = debug_flush_timer;
- 571               		.loc 1 490 28 discriminator 1 view .LVU206
- 572 0042 8823      		tst r24
- 573 0044 01F4      		brne .+2
- 574 0046 00C0      		rjmp .L48
+ 577               		.loc 1 490 28 discriminator 1 view .LVU212
+ 578 0042 8823      		tst r24
+ 579 0044 01F4      		brne .+2
+ 580 0046 00C0      		rjmp .L48
  491:usb_keyboard_debug.c **** 		if (t) {
- 575               		.loc 1 491 3 is_stmt 1 view .LVU207
+ 581               		.loc 1 491 3 is_stmt 1 view .LVU213
  491:usb_keyboard_debug.c **** 		if (t) {
- 576               		.loc 1 491 5 is_stmt 0 view .LVU208
- 577 0048 8091 0000 		lds r24,debug_flush_timer
- 578               	.LVL30:
+ 582               		.loc 1 491 5 is_stmt 0 view .LVU214
+ 583 0048 8091 0000 		lds r24,debug_flush_timer
+ 584               	.LVL30:
  492:usb_keyboard_debug.c **** 			debug_flush_timer = -- t;
- 579               		.loc 1 492 3 is_stmt 1 view .LVU209
+ 585               		.loc 1 492 3 is_stmt 1 view .LVU215
  492:usb_keyboard_debug.c **** 			debug_flush_timer = -- t;
- 580               		.loc 1 492 6 is_stmt 0 view .LVU210
- 581 004c 8823      		tst r24
- 582 004e 01F0      		breq .L54
+ 586               		.loc 1 492 6 is_stmt 0 view .LVU216
+ 587 004c 8823      		tst r24
+ 588 004e 01F0      		breq .L54
  493:usb_keyboard_debug.c **** 			if (!t) {
- 583               		.loc 1 493 4 is_stmt 1 view .LVU211
+ 589               		.loc 1 493 4 is_stmt 1 view .LVU217
  493:usb_keyboard_debug.c **** 			if (!t) {
- 584               		.loc 1 493 22 is_stmt 0 view .LVU212
- 585 0050 8150      		subi r24,lo8(-(-1))
- 586               	.LVL31:
+ 590               		.loc 1 493 22 is_stmt 0 view .LVU218
+ 591 0050 8150      		subi r24,lo8(-(-1))
+ 592               	.LVL31:
  493:usb_keyboard_debug.c **** 			if (!t) {
- 587               		.loc 1 493 22 view .LVU213
- 588 0052 8093 0000 		sts debug_flush_timer,r24
+ 593               		.loc 1 493 22 view .LVU219
+ 594 0052 8093 0000 		sts debug_flush_timer,r24
  494:usb_keyboard_debug.c **** 				UENUM = DEBUG_TX_ENDPOINT;
- 589               		.loc 1 494 4 is_stmt 1 view .LVU214
+ 595               		.loc 1 494 4 is_stmt 1 view .LVU220
  494:usb_keyboard_debug.c **** 				UENUM = DEBUG_TX_ENDPOINT;
- 590               		.loc 1 494 7 is_stmt 0 view .LVU215
- 591 0056 8111      		cpse r24,__zero_reg__
- 592 0058 00C0      		rjmp .L54
+ 596               		.loc 1 494 7 is_stmt 0 view .LVU221
+ 597 0056 8111      		cpse r24,__zero_reg__
+ 598 0058 00C0      		rjmp .L54
  495:usb_keyboard_debug.c **** 				while ((UEINTX & (1<<RWAL))) {
- 593               		.loc 1 495 5 is_stmt 1 view .LVU216
+ 599               		.loc 1 495 5 is_stmt 1 view .LVU222
  495:usb_keyboard_debug.c **** 				while ((UEINTX & (1<<RWAL))) {
- 594               		.loc 1 495 11 is_stmt 0 view .LVU217
- 595 005a 84E0      		ldi r24,lo8(4)
- 596               	.LVL32:
+ 600               		.loc 1 495 11 is_stmt 0 view .LVU223
+ 601 005a 84E0      		ldi r24,lo8(4)
+ 602               	.LVL32:
  495:usb_keyboard_debug.c **** 				while ((UEINTX & (1<<RWAL))) {
- 597               		.loc 1 495 11 view .LVU218
- 598 005c 8093 E900 		sts 233,r24
- 599               	.LVL33:
+ 603               		.loc 1 495 11 view .LVU224
+ 604 005c 8093 E900 		sts 233,r24
+ 605               	.LVL33:
  496:usb_keyboard_debug.c **** 					UEDATX = 0;
- 600               		.loc 1 496 5 is_stmt 1 view .LVU219
- 601               	.L56:
+ 606               		.loc 1 496 5 is_stmt 1 view .LVU225
+ 607               	.L56:
  496:usb_keyboard_debug.c **** 					UEDATX = 0;
- 602               		.loc 1 496 13 is_stmt 0 view .LVU220
- 603 0060 8091 E800 		lds r24,232
+ 608               		.loc 1 496 11 view .LVU226
  496:usb_keyboard_debug.c **** 					UEDATX = 0;
- 604               		.loc 1 496 11 view .LVU221
- 605 0064 85FD      		sbrc r24,5
- 606 0066 00C0      		rjmp .L57
+ 609               		.loc 1 496 13 is_stmt 0 view .LVU227
+ 610 0060 8091 E800 		lds r24,232
+ 496:usb_keyboard_debug.c **** 					UEDATX = 0;
+ 611               		.loc 1 496 11 view .LVU228
+ 612 0064 85FD      		sbrc r24,5
+ 613 0066 00C0      		rjmp .L57
  499:usb_keyboard_debug.c **** 			}
- 607               		.loc 1 499 5 is_stmt 1 view .LVU222
+ 614               		.loc 1 499 5 is_stmt 1 view .LVU229
  499:usb_keyboard_debug.c **** 			}
- 608               		.loc 1 499 12 is_stmt 0 view .LVU223
- 609 0068 8AE3      		ldi r24,lo8(58)
- 610 006a 8093 E800 		sts 232,r24
- 611               	.L54:
+ 615               		.loc 1 499 12 is_stmt 0 view .LVU230
+ 616 0068 8AE3      		ldi r24,lo8(58)
+ 617 006a 8093 E800 		sts 232,r24
+ 618               	.L54:
  502:usb_keyboard_debug.c **** 			UENUM = KEYBOARD_ENDPOINT;
- 612               		.loc 1 502 3 is_stmt 1 view .LVU224
+ 619               		.loc 1 502 3 is_stmt 1 view .LVU231
  502:usb_keyboard_debug.c **** 			UENUM = KEYBOARD_ENDPOINT;
- 613               		.loc 1 502 6 is_stmt 0 view .LVU225
- 614 006e 8091 0000 		lds r24,keyboard_idle_config
- 615 0072 8823      		tst r24
- 616 0074 01F0      		breq .L48
+ 620               		.loc 1 502 6 is_stmt 0 view .LVU232
+ 621 006e 8091 0000 		lds r24,keyboard_idle_config
+ 622 0072 8823      		tst r24
+ 623 0074 01F0      		breq .L48
  502:usb_keyboard_debug.c **** 			UENUM = KEYBOARD_ENDPOINT;
- 617               		.loc 1 502 32 discriminator 1 view .LVU226
- 618 0076 8091 0000 		lds r24,div4.1792
- 619 007a 8F5F      		subi r24,lo8(-(1))
+ 624               		.loc 1 502 32 discriminator 1 view .LVU233
+ 625 0076 8091 0000 		lds r24,div4.1741
+ 626 007a 8F5F      		subi r24,lo8(-(1))
  502:usb_keyboard_debug.c **** 			UENUM = KEYBOARD_ENDPOINT;
- 620               		.loc 1 502 28 discriminator 1 view .LVU227
- 621 007c 8093 0000 		sts div4.1792,r24
- 622 0080 8370      		andi r24,lo8(3)
- 623 0082 01F4      		brne .L48
+ 627               		.loc 1 502 28 discriminator 1 view .LVU234
+ 628 007c 8093 0000 		sts div4.1741,r24
+ 629 0080 8370      		andi r24,lo8(3)
+ 630 0082 01F4      		brne .L48
  503:usb_keyboard_debug.c **** 			if (UEINTX & (1<<RWAL)) {
- 624               		.loc 1 503 4 is_stmt 1 view .LVU228
+ 631               		.loc 1 503 4 is_stmt 1 view .LVU235
  503:usb_keyboard_debug.c **** 			if (UEINTX & (1<<RWAL)) {
- 625               		.loc 1 503 10 is_stmt 0 view .LVU229
- 626 0084 83E0      		ldi r24,lo8(3)
- 627 0086 8093 E900 		sts 233,r24
+ 632               		.loc 1 503 10 is_stmt 0 view .LVU236
+ 633 0084 83E0      		ldi r24,lo8(3)
+ 634 0086 8093 E900 		sts 233,r24
  504:usb_keyboard_debug.c **** 				keyboard_idle_count++;
- 628               		.loc 1 504 4 is_stmt 1 view .LVU230
+ 635               		.loc 1 504 4 is_stmt 1 view .LVU237
  504:usb_keyboard_debug.c **** 				keyboard_idle_count++;
- 629               		.loc 1 504 8 is_stmt 0 view .LVU231
- 630 008a 8091 E800 		lds r24,232
+ 636               		.loc 1 504 8 is_stmt 0 view .LVU238
+ 637 008a 8091 E800 		lds r24,232
  504:usb_keyboard_debug.c **** 				keyboard_idle_count++;
- 631               		.loc 1 504 7 view .LVU232
- 632 008e 85FF      		sbrs r24,5
- 633 0090 00C0      		rjmp .L48
+ 638               		.loc 1 504 7 view .LVU239
+ 639 008e 85FF      		sbrs r24,5
+ 640 0090 00C0      		rjmp .L48
  505:usb_keyboard_debug.c **** 				if (keyboard_idle_count == keyboard_idle_config) {
- 634               		.loc 1 505 5 is_stmt 1 view .LVU233
+ 641               		.loc 1 505 5 is_stmt 1 view .LVU240
  505:usb_keyboard_debug.c **** 				if (keyboard_idle_count == keyboard_idle_config) {
- 635               		.loc 1 505 24 is_stmt 0 view .LVU234
- 636 0092 8091 0000 		lds r24,keyboard_idle_count
- 637 0096 8F5F      		subi r24,lo8(-(1))
- 638 0098 8093 0000 		sts keyboard_idle_count,r24
+ 642               		.loc 1 505 24 is_stmt 0 view .LVU241
+ 643 0092 8091 0000 		lds r24,keyboard_idle_count
+ 644 0096 8F5F      		subi r24,lo8(-(1))
+ 645 0098 8093 0000 		sts keyboard_idle_count,r24
  506:usb_keyboard_debug.c **** 					keyboard_idle_count = 0;
- 639               		.loc 1 506 5 is_stmt 1 view .LVU235
+ 646               		.loc 1 506 5 is_stmt 1 view .LVU242
  506:usb_keyboard_debug.c **** 					keyboard_idle_count = 0;
- 640               		.loc 1 506 8 is_stmt 0 view .LVU236
- 641 009c 9091 0000 		lds r25,keyboard_idle_config
- 642 00a0 8913      		cpse r24,r25
- 643 00a2 00C0      		rjmp .L48
+ 647               		.loc 1 506 8 is_stmt 0 view .LVU243
+ 648 009c 9091 0000 		lds r25,keyboard_idle_config
+ 649 00a0 8913      		cpse r24,r25
+ 650 00a2 00C0      		rjmp .L48
  507:usb_keyboard_debug.c **** 					UEDATX = keyboard_modifier_keys;
- 644               		.loc 1 507 6 is_stmt 1 view .LVU237
+ 651               		.loc 1 507 6 is_stmt 1 view .LVU244
  507:usb_keyboard_debug.c **** 					UEDATX = keyboard_modifier_keys;
- 645               		.loc 1 507 26 is_stmt 0 view .LVU238
- 646 00a4 1092 0000 		sts keyboard_idle_count,__zero_reg__
+ 652               		.loc 1 507 26 is_stmt 0 view .LVU245
+ 653 00a4 1092 0000 		sts keyboard_idle_count,__zero_reg__
  508:usb_keyboard_debug.c **** 					UEDATX = 0;
- 647               		.loc 1 508 6 is_stmt 1 view .LVU239
+ 654               		.loc 1 508 6 is_stmt 1 view .LVU246
  508:usb_keyboard_debug.c **** 					UEDATX = 0;
- 648               		.loc 1 508 13 is_stmt 0 view .LVU240
- 649 00a8 8091 0000 		lds r24,keyboard_modifier_keys
- 650 00ac 8093 F100 		sts 241,r24
+ 655               		.loc 1 508 13 is_stmt 0 view .LVU247
+ 656 00a8 8091 0000 		lds r24,keyboard_modifier_keys
+ 657 00ac 8093 F100 		sts 241,r24
  509:usb_keyboard_debug.c **** 					for (i=0; i<6; i++) {
- 651               		.loc 1 509 6 is_stmt 1 view .LVU241
+ 658               		.loc 1 509 6 is_stmt 1 view .LVU248
  509:usb_keyboard_debug.c **** 					for (i=0; i<6; i++) {
- 652               		.loc 1 509 13 is_stmt 0 view .LVU242
- 653 00b0 1092 F100 		sts 241,__zero_reg__
+ 659               		.loc 1 509 13 is_stmt 0 view .LVU249
+ 660 00b0 1092 F100 		sts 241,__zero_reg__
  510:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 654               		.loc 1 510 6 is_stmt 1 view .LVU243
- 655               	.LVL34:
+ 661               		.loc 1 510 6 is_stmt 1 view .LVU250
+ 662               	.LVL34:
  510:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 656               		.loc 1 510 6 is_stmt 0 view .LVU244
- 657 00b4 E0E0      		ldi r30,lo8(keyboard_keys)
- 658 00b6 F0E0      		ldi r31,hi8(keyboard_keys)
- 659               	.LVL35:
- 660               	.L58:
+ 663               		.loc 1 510 16 view .LVU251
+ 664 00b4 E0E0      		ldi r30,lo8(keyboard_keys)
+ 665 00b6 F0E0      		ldi r31,hi8(keyboard_keys)
+ 666               	.LVL35:
+ 667               	.L58:
  511:usb_keyboard_debug.c **** 					}
- 661               		.loc 1 511 7 is_stmt 1 discriminator 3 view .LVU245
+ 668               		.loc 1 511 7 discriminator 3 view .LVU252
  511:usb_keyboard_debug.c **** 					}
- 662               		.loc 1 511 29 is_stmt 0 discriminator 3 view .LVU246
- 663 00b8 8191      		ld r24,Z+
- 664               	.LVL36:
+ 669               		.loc 1 511 29 is_stmt 0 discriminator 3 view .LVU253
+ 670 00b8 8191      		ld r24,Z+
+ 671               	.LVL36:
  511:usb_keyboard_debug.c **** 					}
- 665               		.loc 1 511 14 discriminator 3 view .LVU247
- 666 00ba 8093 F100 		sts 241,r24
- 667               	.LVL37:
+ 672               		.loc 1 511 14 discriminator 3 view .LVU254
+ 673 00ba 8093 F100 		sts 241,r24
  510:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 668               		.loc 1 510 6 discriminator 3 view .LVU248
- 669 00be 80E0      		ldi r24,hi8(keyboard_keys+6)
- 670 00c0 E030      		cpi r30,lo8(keyboard_keys+6)
- 671 00c2 F807      		cpc r31,r24
- 672 00c4 01F4      		brne .L58
+ 674               		.loc 1 510 21 is_stmt 1 discriminator 3 view .LVU255
+ 675               	.LVL37:
+ 510:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
+ 676               		.loc 1 510 16 discriminator 3 view .LVU256
+ 510:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
+ 677               		.loc 1 510 6 is_stmt 0 discriminator 3 view .LVU257
+ 678 00be 80E0      		ldi r24,hi8(keyboard_keys+6)
+ 679 00c0 E030      		cpi r30,lo8(keyboard_keys+6)
+ 680 00c2 F807      		cpc r31,r24
+ 681 00c4 01F4      		brne .L58
  513:usb_keyboard_debug.c **** 				}
- 673               		.loc 1 513 6 is_stmt 1 view .LVU249
+ 682               		.loc 1 513 6 is_stmt 1 view .LVU258
  513:usb_keyboard_debug.c **** 				}
- 674               		.loc 1 513 13 is_stmt 0 view .LVU250
- 675 00c6 8AE3      		ldi r24,lo8(58)
- 676 00c8 8093 E800 		sts 232,r24
- 677               	.LVL38:
- 678               	.L48:
- 679               	/* epilogue start */
+ 683               		.loc 1 513 13 is_stmt 0 view .LVU259
+ 684 00c6 8AE3      		ldi r24,lo8(58)
+ 685 00c8 8093 E800 		sts 232,r24
+ 686               	.LVL38:
+ 687               	.L48:
+ 688               	/* epilogue start */
  518:usb_keyboard_debug.c **** 
- 680               		.loc 1 518 1 view .LVU251
- 681 00cc FF91      		pop r31
- 682 00ce EF91      		pop r30
- 683 00d0 9F91      		pop r25
- 684 00d2 8F91 1F90 		__gcc_isr 2
- 684      1FBE 1F90 
- 685 00da 1895      		reti
- 686               	.L57:
+ 689               		.loc 1 518 1 view .LVU260
+ 690 00cc FF91      		pop r31
+ 691 00ce EF91      		pop r30
+ 692 00d0 9F91      		pop r25
+ 693 00d2 8F91 1F90 		__gcc_isr 2
+ 693      1FBE 1F90 
+ 694 00da 1895      		reti
+ 695               	.L57:
  497:usb_keyboard_debug.c **** 				}
- 687               		.loc 1 497 6 is_stmt 1 view .LVU252
+ 696               		.loc 1 497 6 is_stmt 1 view .LVU261
  497:usb_keyboard_debug.c **** 				}
- 688               		.loc 1 497 13 is_stmt 0 view .LVU253
- 689 00dc 1092 F100 		sts 241,__zero_reg__
- 690 00e0 00C0      		rjmp .L56
- 691               		__gcc_isr 0,r24
- 692               		.cfi_endproc
- 693               	.LFE7:
- 695               		.section	.text.__vector_11,"ax",@progbits
- 696               	.global	__vector_11
- 698               	__vector_11:
- 699               	.LFB12:
+ 697               		.loc 1 497 13 is_stmt 0 view .LVU262
+ 698 00dc 1092 F100 		sts 241,__zero_reg__
+ 699 00e0 00C0      		rjmp .L56
+ 700               		__gcc_isr 0,r24
+ 701               		.cfi_endproc
+ 702               	.LFE7:
+ 704               		.section	.text.__vector_11,"ax",@progbits
+ 705               	.global	__vector_11
+ 707               	__vector_11:
+ 708               	.LFB12:
  527:usb_keyboard_debug.c **** static inline void usb_send_in(void)
  528:usb_keyboard_debug.c **** {
  529:usb_keyboard_debug.c **** 	UEINTX = ~(1<<TXINI);
@@ -1479,196 +1496,196 @@
  545:usb_keyboard_debug.c **** //
  546:usb_keyboard_debug.c **** ISR(USB_COM_vect)
  547:usb_keyboard_debug.c **** {
- 700               		.loc 1 547 1 is_stmt 1 view -0
- 701               		.cfi_startproc
- 702 0000 1F92      		push r1
- 703               	.LCFI3:
- 704               		.cfi_def_cfa_offset 3
- 705               		.cfi_offset 1, -2
- 706 0002 0F92      		push r0
- 707               	.LCFI4:
- 708               		.cfi_def_cfa_offset 4
- 709               		.cfi_offset 0, -3
- 710 0004 0FB6      		in r0,__SREG__
- 711 0006 0F92      		push r0
- 712 0008 1124      		clr __zero_reg__
- 713 000a EF92      		push r14
- 714               	.LCFI5:
- 715               		.cfi_def_cfa_offset 5
- 716               		.cfi_offset 14, -4
- 717 000c FF92      		push r15
- 718               	.LCFI6:
- 719               		.cfi_def_cfa_offset 6
- 720               		.cfi_offset 15, -5
- 721 000e 0F93      		push r16
- 722               	.LCFI7:
- 723               		.cfi_def_cfa_offset 7
- 724               		.cfi_offset 16, -6
- 725 0010 1F93      		push r17
- 726               	.LCFI8:
- 727               		.cfi_def_cfa_offset 8
- 728               		.cfi_offset 17, -7
- 729 0012 2F93      		push r18
- 730               	.LCFI9:
- 731               		.cfi_def_cfa_offset 9
- 732               		.cfi_offset 18, -8
- 733 0014 3F93      		push r19
- 734               	.LCFI10:
- 735               		.cfi_def_cfa_offset 10
- 736               		.cfi_offset 19, -9
- 737 0016 4F93      		push r20
- 738               	.LCFI11:
- 739               		.cfi_def_cfa_offset 11
- 740               		.cfi_offset 20, -10
- 741 0018 5F93      		push r21
- 742               	.LCFI12:
- 743               		.cfi_def_cfa_offset 12
- 744               		.cfi_offset 21, -11
- 745 001a 6F93      		push r22
- 746               	.LCFI13:
- 747               		.cfi_def_cfa_offset 13
- 748               		.cfi_offset 22, -12
- 749 001c 7F93      		push r23
- 750               	.LCFI14:
- 751               		.cfi_def_cfa_offset 14
- 752               		.cfi_offset 23, -13
- 753 001e 8F93      		push r24
- 754               	.LCFI15:
- 755               		.cfi_def_cfa_offset 15
- 756               		.cfi_offset 24, -14
- 757 0020 9F93      		push r25
- 758               	.LCFI16:
- 759               		.cfi_def_cfa_offset 16
- 760               		.cfi_offset 25, -15
- 761 0022 AF93      		push r26
- 762               	.LCFI17:
- 763               		.cfi_def_cfa_offset 17
- 764               		.cfi_offset 26, -16
- 765 0024 BF93      		push r27
- 766               	.LCFI18:
- 767               		.cfi_def_cfa_offset 18
- 768               		.cfi_offset 27, -17
- 769 0026 CF93      		push r28
- 770               	.LCFI19:
- 771               		.cfi_def_cfa_offset 19
- 772               		.cfi_offset 28, -18
- 773 0028 DF93      		push r29
- 774               	.LCFI20:
- 775               		.cfi_def_cfa_offset 20
- 776               		.cfi_offset 29, -19
- 777 002a EF93      		push r30
- 778               	.LCFI21:
- 779               		.cfi_def_cfa_offset 21
- 780               		.cfi_offset 30, -20
- 781 002c FF93      		push r31
- 782               	.LCFI22:
- 783               		.cfi_def_cfa_offset 22
- 784               		.cfi_offset 31, -21
- 785               	/* prologue: Signal */
- 786               	/* frame size = 0 */
- 787               	/* stack size = 21 */
- 788               	.L__stack_usage = 21
+ 709               		.loc 1 547 1 is_stmt 1 view -0
+ 710               		.cfi_startproc
+ 711 0000 1F92      		push r1
+ 712               	.LCFI3:
+ 713               		.cfi_def_cfa_offset 3
+ 714               		.cfi_offset 1, -2
+ 715 0002 0F92      		push r0
+ 716               	.LCFI4:
+ 717               		.cfi_def_cfa_offset 4
+ 718               		.cfi_offset 0, -3
+ 719 0004 0FB6      		in r0,__SREG__
+ 720 0006 0F92      		push r0
+ 721 0008 1124      		clr __zero_reg__
+ 722 000a EF92      		push r14
+ 723               	.LCFI5:
+ 724               		.cfi_def_cfa_offset 5
+ 725               		.cfi_offset 14, -4
+ 726 000c FF92      		push r15
+ 727               	.LCFI6:
+ 728               		.cfi_def_cfa_offset 6
+ 729               		.cfi_offset 15, -5
+ 730 000e 0F93      		push r16
+ 731               	.LCFI7:
+ 732               		.cfi_def_cfa_offset 7
+ 733               		.cfi_offset 16, -6
+ 734 0010 1F93      		push r17
+ 735               	.LCFI8:
+ 736               		.cfi_def_cfa_offset 8
+ 737               		.cfi_offset 17, -7
+ 738 0012 2F93      		push r18
+ 739               	.LCFI9:
+ 740               		.cfi_def_cfa_offset 9
+ 741               		.cfi_offset 18, -8
+ 742 0014 3F93      		push r19
+ 743               	.LCFI10:
+ 744               		.cfi_def_cfa_offset 10
+ 745               		.cfi_offset 19, -9
+ 746 0016 4F93      		push r20
+ 747               	.LCFI11:
+ 748               		.cfi_def_cfa_offset 11
+ 749               		.cfi_offset 20, -10
+ 750 0018 5F93      		push r21
+ 751               	.LCFI12:
+ 752               		.cfi_def_cfa_offset 12
+ 753               		.cfi_offset 21, -11
+ 754 001a 6F93      		push r22
+ 755               	.LCFI13:
+ 756               		.cfi_def_cfa_offset 13
+ 757               		.cfi_offset 22, -12
+ 758 001c 7F93      		push r23
+ 759               	.LCFI14:
+ 760               		.cfi_def_cfa_offset 14
+ 761               		.cfi_offset 23, -13
+ 762 001e 8F93      		push r24
+ 763               	.LCFI15:
+ 764               		.cfi_def_cfa_offset 15
+ 765               		.cfi_offset 24, -14
+ 766 0020 9F93      		push r25
+ 767               	.LCFI16:
+ 768               		.cfi_def_cfa_offset 16
+ 769               		.cfi_offset 25, -15
+ 770 0022 AF93      		push r26
+ 771               	.LCFI17:
+ 772               		.cfi_def_cfa_offset 17
+ 773               		.cfi_offset 26, -16
+ 774 0024 BF93      		push r27
+ 775               	.LCFI18:
+ 776               		.cfi_def_cfa_offset 18
+ 777               		.cfi_offset 27, -17
+ 778 0026 CF93      		push r28
+ 779               	.LCFI19:
+ 780               		.cfi_def_cfa_offset 19
+ 781               		.cfi_offset 28, -18
+ 782 0028 DF93      		push r29
+ 783               	.LCFI20:
+ 784               		.cfi_def_cfa_offset 20
+ 785               		.cfi_offset 29, -19
+ 786 002a EF93      		push r30
+ 787               	.LCFI21:
+ 788               		.cfi_def_cfa_offset 21
+ 789               		.cfi_offset 30, -20
+ 790 002c FF93      		push r31
+ 791               	.LCFI22:
+ 792               		.cfi_def_cfa_offset 22
+ 793               		.cfi_offset 31, -21
+ 794               	/* prologue: Signal */
+ 795               	/* frame size = 0 */
+ 796               	/* stack size = 21 */
+ 797               	.L__stack_usage = 21
  548:usb_keyboard_debug.c ****         uint8_t intbits;
- 789               		.loc 1 548 9 view .LVU255
+ 798               		.loc 1 548 9 view .LVU264
  549:usb_keyboard_debug.c **** 	const uint8_t *list;
- 790               		.loc 1 549 2 view .LVU256
+ 799               		.loc 1 549 2 view .LVU265
  550:usb_keyboard_debug.c ****         const uint8_t *cfg;
- 791               		.loc 1 550 9 view .LVU257
+ 800               		.loc 1 550 9 view .LVU266
  551:usb_keyboard_debug.c **** 	uint8_t i, n, len, en;
- 792               		.loc 1 551 2 view .LVU258
+ 801               		.loc 1 551 2 view .LVU267
  552:usb_keyboard_debug.c **** 	uint8_t bmRequestType;
- 793               		.loc 1 552 2 view .LVU259
+ 802               		.loc 1 552 2 view .LVU268
  553:usb_keyboard_debug.c **** 	uint8_t bRequest;
- 794               		.loc 1 553 2 view .LVU260
+ 803               		.loc 1 553 2 view .LVU269
  554:usb_keyboard_debug.c **** 	uint16_t wValue;
- 795               		.loc 1 554 2 view .LVU261
+ 804               		.loc 1 554 2 view .LVU270
  555:usb_keyboard_debug.c **** 	uint16_t wIndex;
- 796               		.loc 1 555 2 view .LVU262
+ 805               		.loc 1 555 2 view .LVU271
  556:usb_keyboard_debug.c **** 	uint16_t wLength;
- 797               		.loc 1 556 2 view .LVU263
+ 806               		.loc 1 556 2 view .LVU272
  557:usb_keyboard_debug.c **** 	uint16_t desc_val;
- 798               		.loc 1 557 2 view .LVU264
+ 807               		.loc 1 557 2 view .LVU273
  558:usb_keyboard_debug.c **** 	const uint8_t *desc_addr;
- 799               		.loc 1 558 2 view .LVU265
+ 808               		.loc 1 558 2 view .LVU274
  559:usb_keyboard_debug.c **** 	uint8_t	desc_length;
- 800               		.loc 1 559 2 view .LVU266
+ 809               		.loc 1 559 2 view .LVU275
  560:usb_keyboard_debug.c **** 
  561:usb_keyboard_debug.c ****         UENUM = 0;
- 801               		.loc 1 561 9 view .LVU267
- 802               		.loc 1 561 15 is_stmt 0 view .LVU268
- 803 002e 1092 E900 		sts 233,__zero_reg__
+ 810               		.loc 1 561 9 view .LVU276
+ 811               		.loc 1 561 15 is_stmt 0 view .LVU277
+ 812 002e 1092 E900 		sts 233,__zero_reg__
  562:usb_keyboard_debug.c **** 	intbits = UEINTX;
- 804               		.loc 1 562 2 is_stmt 1 view .LVU269
- 805               		.loc 1 562 10 is_stmt 0 view .LVU270
- 806 0032 8091 E800 		lds r24,232
- 807               	.LVL39:
+ 813               		.loc 1 562 2 is_stmt 1 view .LVU278
+ 814               		.loc 1 562 10 is_stmt 0 view .LVU279
+ 815 0032 8091 E800 		lds r24,232
+ 816               	.LVL39:
  563:usb_keyboard_debug.c ****         if (intbits & (1<<RXSTPI)) {
- 808               		.loc 1 563 9 is_stmt 1 view .LVU271
- 809               		.loc 1 563 12 is_stmt 0 view .LVU272
- 810 0036 83FF      		sbrs r24,3
- 811 0038 00C0      		rjmp .L73
+ 817               		.loc 1 563 9 is_stmt 1 view .LVU280
+ 818               		.loc 1 563 12 is_stmt 0 view .LVU281
+ 819 0036 83FF      		sbrs r24,3
+ 820 0038 00C0      		rjmp .L73
  564:usb_keyboard_debug.c ****                 bmRequestType = UEDATX;
- 812               		.loc 1 564 17 is_stmt 1 view .LVU273
- 813               		.loc 1 564 31 is_stmt 0 view .LVU274
- 814 003a D091 F100 		lds r29,241
- 815               	.LVL40:
+ 821               		.loc 1 564 17 is_stmt 1 view .LVU282
+ 822               		.loc 1 564 31 is_stmt 0 view .LVU283
+ 823 003a D091 F100 		lds r29,241
+ 824               	.LVL40:
  565:usb_keyboard_debug.c ****                 bRequest = UEDATX;
- 816               		.loc 1 565 17 is_stmt 1 view .LVU275
- 817               		.loc 1 565 26 is_stmt 0 view .LVU276
- 818 003e C091 F100 		lds r28,241
- 819               	.LVL41:
+ 825               		.loc 1 565 17 is_stmt 1 view .LVU284
+ 826               		.loc 1 565 26 is_stmt 0 view .LVU285
+ 827 003e C091 F100 		lds r28,241
+ 828               	.LVL41:
  566:usb_keyboard_debug.c ****                 wValue = UEDATX;
- 820               		.loc 1 566 17 is_stmt 1 view .LVU277
- 821               		.loc 1 566 26 is_stmt 0 view .LVU278
- 822 0042 0091 F100 		lds r16,241
- 823               	.LVL42:
+ 829               		.loc 1 566 17 is_stmt 1 view .LVU286
+ 830               		.loc 1 566 26 is_stmt 0 view .LVU287
+ 831 0042 0091 F100 		lds r16,241
+ 832               	.LVL42:
  567:usb_keyboard_debug.c ****                 wValue |= (UEDATX << 8);
- 824               		.loc 1 567 17 is_stmt 1 view .LVU279
- 825               		.loc 1 567 28 is_stmt 0 view .LVU280
- 826 0046 8091 F100 		lds r24,241
- 827               	.LVL43:
- 828               		.loc 1 567 24 view .LVU281
- 829 004a 182F      		mov r17,r24
- 830               	.LVL44:
+ 833               		.loc 1 567 17 is_stmt 1 view .LVU288
+ 834               		.loc 1 567 28 is_stmt 0 view .LVU289
+ 835 0046 8091 F100 		lds r24,241
+ 836               	.LVL43:
+ 837               		.loc 1 567 24 view .LVU290
+ 838 004a 182F      		mov r17,r24
+ 839               	.LVL44:
  568:usb_keyboard_debug.c ****                 wIndex = UEDATX;
- 831               		.loc 1 568 17 is_stmt 1 view .LVU282
- 832               		.loc 1 568 26 is_stmt 0 view .LVU283
- 833 004c E090 F100 		lds r14,241
- 834               	.LVL45:
+ 840               		.loc 1 568 17 is_stmt 1 view .LVU291
+ 841               		.loc 1 568 26 is_stmt 0 view .LVU292
+ 842 004c E090 F100 		lds r14,241
+ 843               	.LVL45:
  569:usb_keyboard_debug.c ****                 wIndex |= (UEDATX << 8);
- 835               		.loc 1 569 17 is_stmt 1 view .LVU284
- 836               		.loc 1 569 28 is_stmt 0 view .LVU285
- 837 0050 8091 F100 		lds r24,241
- 838               		.loc 1 569 24 view .LVU286
- 839 0054 F82E      		mov r15,r24
- 840               	.LVL46:
+ 844               		.loc 1 569 17 is_stmt 1 view .LVU293
+ 845               		.loc 1 569 28 is_stmt 0 view .LVU294
+ 846 0050 8091 F100 		lds r24,241
+ 847               		.loc 1 569 24 view .LVU295
+ 848 0054 F82E      		mov r15,r24
+ 849               	.LVL46:
  570:usb_keyboard_debug.c ****                 wLength = UEDATX;
- 841               		.loc 1 570 17 is_stmt 1 view .LVU287
- 842               		.loc 1 570 27 is_stmt 0 view .LVU288
- 843 0056 2091 F100 		lds r18,241
- 844               	.LVL47:
+ 850               		.loc 1 570 17 is_stmt 1 view .LVU296
+ 851               		.loc 1 570 27 is_stmt 0 view .LVU297
+ 852 0056 2091 F100 		lds r18,241
+ 853               	.LVL47:
  571:usb_keyboard_debug.c ****                 wLength |= (UEDATX << 8);
- 845               		.loc 1 571 17 is_stmt 1 view .LVU289
- 846               		.loc 1 571 29 is_stmt 0 view .LVU290
- 847 005a 8091 F100 		lds r24,241
- 848               		.loc 1 571 25 view .LVU291
- 849 005e 382F      		mov r19,r24
- 850               	.LVL48:
+ 854               		.loc 1 571 17 is_stmt 1 view .LVU298
+ 855               		.loc 1 571 29 is_stmt 0 view .LVU299
+ 856 005a 8091 F100 		lds r24,241
+ 857               		.loc 1 571 25 view .LVU300
+ 858 005e 382F      		mov r19,r24
+ 859               	.LVL48:
  572:usb_keyboard_debug.c ****                 UEINTX = ~((1<<RXSTPI) | (1<<RXOUTI) | (1<<TXINI));
- 851               		.loc 1 572 17 is_stmt 1 view .LVU292
- 852               		.loc 1 572 24 is_stmt 0 view .LVU293
- 853 0060 82EF      		ldi r24,lo8(-14)
- 854 0062 8093 E800 		sts 232,r24
+ 860               		.loc 1 572 17 is_stmt 1 view .LVU301
+ 861               		.loc 1 572 24 is_stmt 0 view .LVU302
+ 862 0060 82EF      		ldi r24,lo8(-14)
+ 863 0062 8093 E800 		sts 232,r24
  573:usb_keyboard_debug.c ****                 if (bRequest == GET_DESCRIPTOR) {
- 855               		.loc 1 573 17 is_stmt 1 view .LVU294
- 856               		.loc 1 573 20 is_stmt 0 view .LVU295
- 857 0066 C630      		cpi r28,lo8(6)
- 858 0068 01F0      		breq .+2
- 859 006a 00C0      		rjmp .L129
- 860 006c 80E0      		ldi r24,lo8(descriptor_list)
- 861 006e 90E0      		ldi r25,hi8(descriptor_list)
- 862               	.L82:
- 863               	.LVL49:
+ 864               		.loc 1 573 17 is_stmt 1 view .LVU303
+ 865               		.loc 1 573 20 is_stmt 0 view .LVU304
+ 866 0066 C630      		cpi r28,lo8(6)
+ 867 0068 01F0      		breq .+2
+ 868 006a 00C0      		rjmp .L129
+ 869 006c 80E0      		ldi r24,lo8(descriptor_list)
+ 870 006e 90E0      		ldi r25,hi8(descriptor_list)
+ 871               	.L82:
+ 872               	.LVL49:
  574:usb_keyboard_debug.c **** 			list = (const uint8_t *)descriptor_list;
  575:usb_keyboard_debug.c **** 			for (i=0; ; i++) {
  576:usb_keyboard_debug.c **** 				if (i >= NUM_DESC_LIST) {
@@ -1676,235 +1693,235 @@
  578:usb_keyboard_debug.c **** 					return;
  579:usb_keyboard_debug.c **** 				}
  580:usb_keyboard_debug.c **** 				desc_val = pgm_read_word(list);
- 864               		.loc 1 580 5 is_stmt 1 view .LVU296
- 865               	.LBB76:
- 866               		.loc 1 580 16 view .LVU297
- 867               		.loc 1 580 16 view .LVU298
- 868               		.loc 1 580 16 view .LVU299
- 869 0070 FC01      		movw r30,r24
- 870               	/* #APP */
- 871               	 ;  580 "usb_keyboard_debug.c" 1
- 872 0072 4591      		lpm r20, Z+
- 873 0074 5491      		lpm r21, Z
- 874               		
- 875               	 ;  0 "" 2
- 876               	.LVL50:
- 877               		.loc 1 580 16 view .LVU300
- 878               		.loc 1 580 16 is_stmt 0 view .LVU301
- 879               	/* #NOAPP */
- 880               	.LBE76:
+ 873               		.loc 1 580 5 is_stmt 1 view .LVU305
+ 874               	.LBB76:
+ 875               		.loc 1 580 16 view .LVU306
+ 876               		.loc 1 580 16 view .LVU307
+ 877               		.loc 1 580 16 view .LVU308
+ 878 0070 FC01      		movw r30,r24
+ 879               	/* #APP */
+ 880               	 ;  580 "usb_keyboard_debug.c" 1
+ 881 0072 4591      		lpm r20, Z+
+ 882 0074 5491      		lpm r21, Z
+ 883               		
+ 884               	 ;  0 "" 2
+ 885               	.LVL50:
+ 886               		.loc 1 580 16 view .LVU309
+ 887               		.loc 1 580 16 is_stmt 0 view .LVU310
+ 888               	/* #NOAPP */
+ 889               	.LBE76:
  581:usb_keyboard_debug.c **** 				if (desc_val != wValue) {
- 881               		.loc 1 581 5 is_stmt 1 view .LVU302
- 882               		.loc 1 581 8 is_stmt 0 view .LVU303
- 883 0076 0417      		cp r16,r20
- 884 0078 1507      		cpc r17,r21
- 885 007a 01F0      		breq .+2
- 886 007c 00C0      		rjmp .L77
+ 890               		.loc 1 581 5 is_stmt 1 view .LVU311
+ 891               		.loc 1 581 8 is_stmt 0 view .LVU312
+ 892 0076 0417      		cp r16,r20
+ 893 0078 1507      		cpc r17,r21
+ 894 007a 01F0      		breq .+2
+ 895 007c 00C0      		rjmp .L77
  582:usb_keyboard_debug.c **** 					list += sizeof(struct descriptor_list_struct);
  583:usb_keyboard_debug.c **** 					continue;
  584:usb_keyboard_debug.c **** 				}
  585:usb_keyboard_debug.c **** 				list += 2;
- 887               		.loc 1 585 5 is_stmt 1 view .LVU304
- 888               	.LVL51:
+ 896               		.loc 1 585 5 is_stmt 1 view .LVU313
+ 897               	.LVL51:
  586:usb_keyboard_debug.c **** 				desc_val = pgm_read_word(list);
- 889               		.loc 1 586 5 view .LVU305
- 890               	.LBB77:
- 891               		.loc 1 586 16 view .LVU306
- 892               		.loc 1 586 16 view .LVU307
- 893               		.loc 1 586 16 view .LVU308
- 894 007e FC01      		movw r30,r24
- 895 0080 3296      		adiw r30,2
- 896               	.LVL52:
- 897               		.loc 1 586 16 is_stmt 0 view .LVU309
- 898               	/* #APP */
- 899               	 ;  586 "usb_keyboard_debug.c" 1
- 900 0082 4591      		lpm r20, Z+
- 901 0084 5491      		lpm r21, Z
- 902               		
- 903               	 ;  0 "" 2
- 904               	.LVL53:
- 905               		.loc 1 586 16 is_stmt 1 view .LVU310
- 906               		.loc 1 586 16 is_stmt 0 view .LVU311
- 907               	/* #NOAPP */
- 908               	.LBE77:
+ 898               		.loc 1 586 5 view .LVU314
+ 899               	.LBB77:
+ 900               		.loc 1 586 16 view .LVU315
+ 901               		.loc 1 586 16 view .LVU316
+ 902               		.loc 1 586 16 view .LVU317
+ 903 007e FC01      		movw r30,r24
+ 904 0080 3296      		adiw r30,2
+ 905               	.LVL52:
+ 906               		.loc 1 586 16 is_stmt 0 view .LVU318
+ 907               	/* #APP */
+ 908               	 ;  586 "usb_keyboard_debug.c" 1
+ 909 0082 4591      		lpm r20, Z+
+ 910 0084 5491      		lpm r21, Z
+ 911               		
+ 912               	 ;  0 "" 2
+ 913               	.LVL53:
+ 914               		.loc 1 586 16 is_stmt 1 view .LVU319
+ 915               		.loc 1 586 16 is_stmt 0 view .LVU320
+ 916               	/* #NOAPP */
+ 917               	.LBE77:
  587:usb_keyboard_debug.c **** 				if (desc_val != wIndex) {
- 909               		.loc 1 587 5 is_stmt 1 view .LVU312
- 910               		.loc 1 587 8 is_stmt 0 view .LVU313
- 911 0086 E416      		cp r14,r20
- 912 0088 F506      		cpc r15,r21
- 913 008a 01F0      		breq .+2
- 914 008c 00C0      		rjmp .L77
+ 918               		.loc 1 587 5 is_stmt 1 view .LVU321
+ 919               		.loc 1 587 8 is_stmt 0 view .LVU322
+ 920 0086 E416      		cp r14,r20
+ 921 0088 F506      		cpc r15,r21
+ 922 008a 01F0      		breq .+2
+ 923 008c 00C0      		rjmp .L77
  588:usb_keyboard_debug.c **** 					list += sizeof(struct descriptor_list_struct)-2;
  589:usb_keyboard_debug.c **** 					continue;
  590:usb_keyboard_debug.c **** 				}
  591:usb_keyboard_debug.c **** 				list += 2;
- 915               		.loc 1 591 5 is_stmt 1 view .LVU314
- 916               	.LVL54:
+ 924               		.loc 1 591 5 is_stmt 1 view .LVU323
+ 925               	.LVL54:
  592:usb_keyboard_debug.c **** 				desc_addr = (const uint8_t *)pgm_read_word(list);
- 917               		.loc 1 592 5 view .LVU315
- 918               	.LBB78:
- 919               		.loc 1 592 34 view .LVU316
- 920               	.LBE78:
+ 926               		.loc 1 592 5 view .LVU324
+ 927               	.LBB78:
+ 928               		.loc 1 592 34 view .LVU325
+ 929               	.LBE78:
  591:usb_keyboard_debug.c **** 				desc_addr = (const uint8_t *)pgm_read_word(list);
- 921               		.loc 1 591 10 is_stmt 0 view .LVU317
- 922 008e FC01      		movw r30,r24
- 923 0090 3496      		adiw r30,4
- 924               	.LVL55:
- 925               	.LBB79:
- 926               		.loc 1 592 34 is_stmt 1 view .LVU318
- 927               		.loc 1 592 34 view .LVU319
- 928               	/* #APP */
- 929               	 ;  592 "usb_keyboard_debug.c" 1
- 930 0092 4591      		lpm r20, Z+
- 931 0094 5491      		lpm r21, Z
- 932               		
- 933               	 ;  0 "" 2
- 934               	.LVL56:
- 935               		.loc 1 592 34 view .LVU320
- 936               		.loc 1 592 34 is_stmt 0 view .LVU321
- 937               	/* #NOAPP */
- 938               	.LBE79:
+ 930               		.loc 1 591 10 is_stmt 0 view .LVU326
+ 931 008e FC01      		movw r30,r24
+ 932 0090 3496      		adiw r30,4
+ 933               	.LVL55:
+ 934               	.LBB79:
+ 935               		.loc 1 592 34 is_stmt 1 view .LVU327
+ 936               		.loc 1 592 34 view .LVU328
+ 937               	/* #APP */
+ 938               	 ;  592 "usb_keyboard_debug.c" 1
+ 939 0092 4591      		lpm r20, Z+
+ 940 0094 5491      		lpm r21, Z
+ 941               		
+ 942               	 ;  0 "" 2
+ 943               	.LVL56:
+ 944               		.loc 1 592 34 view .LVU329
+ 945               		.loc 1 592 34 is_stmt 0 view .LVU330
+ 946               	/* #NOAPP */
+ 947               	.LBE79:
  593:usb_keyboard_debug.c **** 				list += 2;
- 939               		.loc 1 593 5 is_stmt 1 view .LVU322
+ 948               		.loc 1 593 5 is_stmt 1 view .LVU331
  594:usb_keyboard_debug.c **** 				desc_length = pgm_read_byte(list);
- 940               		.loc 1 594 5 view .LVU323
- 941               	.LBB80:
- 942               		.loc 1 594 19 view .LVU324
- 943               		.loc 1 594 19 view .LVU325
- 944               		.loc 1 594 19 view .LVU326
- 945               	.LBE80:
+ 949               		.loc 1 594 5 view .LVU332
+ 950               	.LBB80:
+ 951               		.loc 1 594 19 view .LVU333
+ 952               		.loc 1 594 19 view .LVU334
+ 953               		.loc 1 594 19 view .LVU335
+ 954               	.LBE80:
  593:usb_keyboard_debug.c **** 				list += 2;
- 946               		.loc 1 593 10 is_stmt 0 view .LVU327
- 947 0096 FC01      		movw r30,r24
- 948 0098 3696      		adiw r30,6
- 949               	.LVL57:
- 950               	.LBB81:
- 951               		.loc 1 594 19 view .LVU328
- 952               	/* #APP */
- 953               	 ;  594 "usb_keyboard_debug.c" 1
- 954 009a E491      		lpm r30, Z
- 955               		
- 956               	 ;  0 "" 2
- 957               	.LVL58:
- 958               		.loc 1 594 19 is_stmt 1 view .LVU329
- 959               		.loc 1 594 19 is_stmt 0 view .LVU330
- 960               	/* #NOAPP */
- 961               	.LBE81:
+ 955               		.loc 1 593 10 is_stmt 0 view .LVU336
+ 956 0096 0696      		adiw r24,6
+ 957               	.LVL57:
+ 958               	.LBB81:
+ 959               		.loc 1 594 19 view .LVU337
+ 960 0098 FC01      		movw r30,r24
+ 961               	/* #APP */
+ 962               	 ;  594 "usb_keyboard_debug.c" 1
+ 963 009a 8491      		lpm r24, Z
+ 964               		
+ 965               	 ;  0 "" 2
+ 966               	.LVL58:
+ 967               		.loc 1 594 19 is_stmt 1 view .LVU338
+ 968               		.loc 1 594 19 is_stmt 0 view .LVU339
+ 969               	/* #NOAPP */
+ 970               	.LBE81:
  595:usb_keyboard_debug.c **** 				break;
- 962               		.loc 1 595 5 is_stmt 1 view .LVU331
+ 971               		.loc 1 595 5 is_stmt 1 view .LVU340
  596:usb_keyboard_debug.c **** 			}
  597:usb_keyboard_debug.c **** 			len = (wLength < 256) ? wLength : 255;
- 963               		.loc 1 597 4 view .LVU332
+ 972               		.loc 1 597 4 view .LVU341
+ 973               		.loc 1 597 36 is_stmt 0 view .LVU342
+ 974 009c 2F3F      		cpi r18,-1
+ 975 009e 3105      		cpc r19,__zero_reg__
+ 976 00a0 01F0      		breq .L78
+ 977 00a2 00F0      		brlo .L78
+ 978 00a4 2FEF      		ldi r18,lo8(-1)
+ 979 00a6 30E0      		ldi r19,0
+ 980               	.LVL59:
+ 981               	.L78:
  598:usb_keyboard_debug.c **** 			if (len > desc_length) len = desc_length;
- 964               		.loc 1 598 4 view .LVU333
- 597:usb_keyboard_debug.c **** 			if (len > desc_length) len = desc_length;
- 965               		.loc 1 597 36 is_stmt 0 view .LVU334
- 966 009c 2F3F      		cpi r18,-1
- 967 009e 3105      		cpc r19,__zero_reg__
- 968 00a0 01F0      		breq .L78
- 969 00a2 00F0      		brlo .L78
- 970 00a4 2FEF      		ldi r18,lo8(-1)
- 971 00a6 30E0      		ldi r19,0
- 972               	.LVL59:
- 973               	.L78:
- 597:usb_keyboard_debug.c **** 			if (len > desc_length) len = desc_length;
- 974               		.loc 1 597 36 view .LVU335
- 975 00a8 E217      		cp r30,r18
- 976 00aa 00F4      		brsh .L79
- 977 00ac 2E2F      		mov r18,r30
- 978               	.L79:
- 979               	.LBB82:
- 980               	.LBB83:
+ 982               		.loc 1 598 4 is_stmt 1 view .LVU343
+ 983 00a8 2817      		cp r18,r24
+ 984 00aa 00F4      		brsh .L79
+ 985 00ac 822F      		mov r24,r18
+ 986               	.LVL60:
+ 987               	.L79:
+ 988               	.LBB82:
+ 989               	.LBB83:
  529:usb_keyboard_debug.c **** }
- 981               		.loc 1 529 9 view .LVU336
- 982 00ae 3EEF      		ldi r19,lo8(-2)
- 983               	.LVL60:
- 984               	.L83:
+ 990               		.loc 1 529 9 is_stmt 0 view .LVU344
+ 991 00ae 3EEF      		ldi r19,lo8(-2)
+ 992               	.LVL61:
+ 993               	.L83:
  529:usb_keyboard_debug.c **** }
- 985               		.loc 1 529 9 view .LVU337
- 986               	.LBE83:
- 987               	.LBE82:
+ 994               		.loc 1 529 9 view .LVU345
+ 995               	.LBE83:
+ 996               	.LBE82:
  599:usb_keyboard_debug.c **** 			do {
- 988               		.loc 1 599 4 is_stmt 1 discriminator 1 view .LVU338
+ 997               		.loc 1 599 4 is_stmt 1 discriminator 1 view .LVU346
  600:usb_keyboard_debug.c **** 				// wait for host ready for IN packet
  601:usb_keyboard_debug.c **** 				do {
- 989               		.loc 1 601 5 discriminator 1 view .LVU339
+ 998               		.loc 1 601 5 discriminator 1 view .LVU347
  602:usb_keyboard_debug.c **** 					i = UEINTX;
- 990               		.loc 1 602 6 discriminator 1 view .LVU340
- 991               		.loc 1 602 8 is_stmt 0 discriminator 1 view .LVU341
- 992 00b0 8091 E800 		lds r24,232
- 993               	.LVL61:
+ 999               		.loc 1 602 6 discriminator 1 view .LVU348
+ 1000               		.loc 1 602 8 is_stmt 0 discriminator 1 view .LVU349
+ 1001 00b0 9091 E800 		lds r25,232
+ 1002               	.LVL62:
  603:usb_keyboard_debug.c **** 				} while (!(i & ((1<<TXINI)|(1<<RXOUTI))));
- 994               		.loc 1 603 5 discriminator 1 view .LVU342
- 995 00b4 982F      		mov r25,r24
- 996 00b6 9570      		andi r25,lo8(5)
- 997 00b8 01F0      		breq .L83
+ 1003               		.loc 1 603 13 is_stmt 1 discriminator 1 view .LVU350
+ 1004               		.loc 1 603 5 is_stmt 0 discriminator 1 view .LVU351
+ 1005 00b4 292F      		mov r18,r25
+ 1006 00b6 2570      		andi r18,lo8(5)
+ 1007 00b8 01F0      		breq .L83
  604:usb_keyboard_debug.c **** 				if (i & (1<<RXOUTI)) return;	// abort
- 998               		.loc 1 604 5 is_stmt 1 view .LVU343
- 999               		.loc 1 604 8 is_stmt 0 view .LVU344
- 1000 00ba 82FD      		sbrc r24,2
- 1001 00bc 00C0      		rjmp .L72
+ 1008               		.loc 1 604 5 is_stmt 1 view .LVU352
+ 1009               		.loc 1 604 8 is_stmt 0 view .LVU353
+ 1010 00ba 92FD      		sbrc r25,2
+ 1011 00bc 00C0      		rjmp .L72
  605:usb_keyboard_debug.c **** 				// send IN packet
  606:usb_keyboard_debug.c **** 				n = len < ENDPOINT0_SIZE ? len : ENDPOINT0_SIZE;
- 1002               		.loc 1 606 5 is_stmt 1 view .LVU345
- 1003               		.loc 1 606 7 is_stmt 0 view .LVU346
- 1004 00be 822F      		mov r24,r18
- 1005               	.LVL62:
- 1006               		.loc 1 606 7 view .LVU347
- 1007 00c0 2132      		cpi r18,lo8(33)
- 1008 00c2 00F0      		brlo .L85
- 1009 00c4 80E2      		ldi r24,lo8(32)
- 1010               	.L85:
- 1011               	.LVL63:
+ 1012               		.loc 1 606 5 is_stmt 1 view .LVU354
+ 1013               		.loc 1 606 7 is_stmt 0 view .LVU355
+ 1014 00be 982F      		mov r25,r24
+ 1015               	.LVL63:
+ 1016               		.loc 1 606 7 view .LVU356
+ 1017 00c0 8132      		cpi r24,lo8(33)
+ 1018 00c2 00F0      		brlo .L85
+ 1019 00c4 90E2      		ldi r25,lo8(32)
+ 1020               	.L85:
+ 1021               	.LVL64:
  607:usb_keyboard_debug.c **** 				for (i = n; i; i--) {
- 1012               		.loc 1 607 5 is_stmt 1 view .LVU348
- 1013               		.loc 1 607 5 is_stmt 0 view .LVU349
- 1014 00c6 FA01      		movw r30,r20
- 1015               		.loc 1 607 12 view .LVU350
- 1016 00c8 982F      		mov r25,r24
- 1017               	.LVL64:
- 1018               	.L86:
- 1019               		.loc 1 607 5 discriminator 1 view .LVU351
- 1020 00ca 9111      		cpse r25,__zero_reg__
- 1021 00cc 00C0      		rjmp .L87
- 1022               		.loc 1 607 5 discriminator 1 view .LVU352
- 1023 00ce 480F      		add r20,r24
- 1024 00d0 511D      		adc r21,__zero_reg__
+ 1022               		.loc 1 607 5 is_stmt 1 view .LVU357
+ 1023               		.loc 1 607 5 is_stmt 0 view .LVU358
+ 1024 00c6 FA01      		movw r30,r20
+ 1025               		.loc 1 607 12 view .LVU359
+ 1026 00c8 292F      		mov r18,r25
+ 1027               	.LVL65:
+ 1028               	.L86:
+ 1029               		.loc 1 607 17 is_stmt 1 discriminator 1 view .LVU360
+ 1030               		.loc 1 607 5 is_stmt 0 discriminator 1 view .LVU361
+ 1031 00ca 2111      		cpse r18,__zero_reg__
+ 1032 00cc 00C0      		rjmp .L87
+ 1033               		.loc 1 607 5 discriminator 1 view .LVU362
+ 1034 00ce 490F      		add r20,r25
+ 1035 00d0 511D      		adc r21,__zero_reg__
  608:usb_keyboard_debug.c **** 					UEDATX = pgm_read_byte(desc_addr++);
  609:usb_keyboard_debug.c **** 				}
  610:usb_keyboard_debug.c **** 				len -= n;
- 1025               		.loc 1 610 5 is_stmt 1 view .LVU353
- 1026               		.loc 1 610 9 is_stmt 0 view .LVU354
- 1027 00d2 922F      		mov r25,r18
- 1028               	.LVL65:
- 1029               		.loc 1 610 9 view .LVU355
- 1030 00d4 981B      		sub r25,r24
- 1031 00d6 892F      		mov r24,r25
- 1032               	.LVL66:
+ 1036               		.loc 1 610 5 is_stmt 1 view .LVU363
+ 1037               		.loc 1 610 9 is_stmt 0 view .LVU364
+ 1038 00d2 282F      		mov r18,r24
+ 1039               	.LVL66:
+ 1040               		.loc 1 610 9 view .LVU365
+ 1041 00d4 291B      		sub r18,r25
+ 1042               	.LVL67:
  611:usb_keyboard_debug.c **** 				usb_send_in();
- 1033               		.loc 1 611 5 is_stmt 1 view .LVU356
- 1034               	.LBB85:
- 1035               	.LBI82:
+ 1043               		.loc 1 611 5 is_stmt 1 view .LVU366
+ 1044               	.LBB85:
+ 1045               	.LBI82:
  527:usb_keyboard_debug.c **** {
- 1036               		.loc 1 527 20 view .LVU357
- 1037               	.LBB84:
+ 1046               		.loc 1 527 20 view .LVU367
+ 1047               	.LBB84:
  529:usb_keyboard_debug.c **** }
- 1038               		.loc 1 529 2 view .LVU358
+ 1048               		.loc 1 529 2 view .LVU368
  529:usb_keyboard_debug.c **** }
- 1039               		.loc 1 529 9 is_stmt 0 view .LVU359
- 1040 00d8 3093 E800 		sts 232,r19
- 1041               	.LBE84:
- 1042               	.LBE85:
+ 1049               		.loc 1 529 9 is_stmt 0 view .LVU369
+ 1050 00d6 3093 E800 		sts 232,r19
+ 1051               	.LBE84:
+ 1052               	.LBE85:
  612:usb_keyboard_debug.c **** 			} while (len || n == ENDPOINT0_SIZE);
- 1043               		.loc 1 612 4 view .LVU360
- 1044 00dc 9111      		cpse r25,__zero_reg__
- 1045 00de 00C0      		rjmp .L88
- 1046               		.loc 1 612 17 discriminator 1 view .LVU361
- 1047 00e0 2032      		cpi r18,lo8(32)
- 1048 00e2 00F4      		brsh .L88
- 1049               	.LVL67:
- 1050               	.L72:
- 1051               	/* epilogue start */
+ 1053               		.loc 1 612 12 is_stmt 1 view .LVU370
+ 1054               		.loc 1 612 4 is_stmt 0 view .LVU371
+ 1055 00da 8913      		cpse r24,r25
+ 1056 00dc 00C0      		rjmp .L88
+ 1057               		.loc 1 612 17 discriminator 1 view .LVU372
+ 1058 00de 8032      		cpi r24,lo8(32)
+ 1059 00e0 00F4      		brsh .L88
+ 1060               	.LVL68:
+ 1061               	.L72:
+ 1062               	/* epilogue start */
  613:usb_keyboard_debug.c **** 			return;
  614:usb_keyboard_debug.c ****                 }
  615:usb_keyboard_debug.c **** 		if (bRequest == SET_ADDRESS) {
@@ -2041,1187 +2058,1095 @@
  746:usb_keyboard_debug.c **** 	}
  747:usb_keyboard_debug.c **** 	UECONX = (1<<STALLRQ) | (1<<EPEN);	// stall
  748:usb_keyboard_debug.c **** }
- 1052               		.loc 1 748 1 view .LVU362
- 1053 00e4 FF91      		pop r31
- 1054 00e6 EF91      		pop r30
- 1055 00e8 DF91      		pop r29
- 1056 00ea CF91      		pop r28
- 1057 00ec BF91      		pop r27
- 1058 00ee AF91      		pop r26
- 1059 00f0 9F91      		pop r25
- 1060 00f2 8F91      		pop r24
- 1061 00f4 7F91      		pop r23
- 1062 00f6 6F91      		pop r22
- 1063 00f8 5F91      		pop r21
- 1064 00fa 4F91      		pop r20
- 1065 00fc 3F91      		pop r19
- 1066 00fe 2F91      		pop r18
- 1067 0100 1F91      		pop r17
- 1068 0102 0F91      		pop r16
- 1069 0104 FF90      		pop r15
- 1070 0106 EF90      		pop r14
- 1071 0108 0F90      		pop r0
- 1072 010a 0FBE      		out __SREG__,r0
- 1073 010c 0F90      		pop r0
- 1074 010e 1F90      		pop r1
- 1075 0110 1895      		reti
- 1076               	.LVL68:
- 1077               	.L77:
+ 1063               		.loc 1 748 1 view .LVU373
+ 1064 00e2 FF91      		pop r31
+ 1065 00e4 EF91      		pop r30
+ 1066 00e6 DF91      		pop r29
+ 1067 00e8 CF91      		pop r28
+ 1068 00ea BF91      		pop r27
+ 1069 00ec AF91      		pop r26
+ 1070 00ee 9F91      		pop r25
+ 1071 00f0 8F91      		pop r24
+ 1072 00f2 7F91      		pop r23
+ 1073 00f4 6F91      		pop r22
+ 1074 00f6 5F91      		pop r21
+ 1075 00f8 4F91      		pop r20
+ 1076 00fa 3F91      		pop r19
+ 1077 00fc 2F91      		pop r18
+ 1078 00fe 1F91      		pop r17
+ 1079 0100 0F91      		pop r16
+ 1080 0102 FF90      		pop r15
+ 1081 0104 EF90      		pop r14
+ 1082 0106 0F90      		pop r0
+ 1083 0108 0FBE      		out __SREG__,r0
+ 1084 010a 0F90      		pop r0
+ 1085 010c 1F90      		pop r1
+ 1086 010e 1895      		reti
+ 1087               	.LVL69:
+ 1088               	.L77:
+ 575:usb_keyboard_debug.c **** 				if (i >= NUM_DESC_LIST) {
+ 1089               		.loc 1 575 16 is_stmt 1 view .LVU374
+ 575:usb_keyboard_debug.c **** 				if (i >= NUM_DESC_LIST) {
+ 1090               		.loc 1 575 14 view .LVU375
  576:usb_keyboard_debug.c **** 					UECONX = (1<<STALLRQ)|(1<<EPEN);  //stall
- 1078               		.loc 1 576 5 is_stmt 1 view .LVU363
- 1079 0112 0796      		adiw r24,7
+ 1091               		.loc 1 576 5 view .LVU376
+ 1092 0110 0796      		adiw r24,7
  576:usb_keyboard_debug.c **** 					UECONX = (1<<STALLRQ)|(1<<EPEN);  //stall
- 1080               		.loc 1 576 8 is_stmt 0 view .LVU364
- 1081 0114 40E0      		ldi r20,hi8(descriptor_list+63)
- 1082 0116 8030      		cpi r24,lo8(descriptor_list+63)
- 1083 0118 9407      		cpc r25,r20
- 1084               	.LVL69:
- 576:usb_keyboard_debug.c **** 					UECONX = (1<<STALLRQ)|(1<<EPEN);  //stall
- 1085               		.loc 1 576 8 view .LVU365
- 1086 011a 01F0      		breq .+2
- 1087 011c 00C0      		rjmp .L82
- 1088               	.LVL70:
- 1089               	.L73:
+ 1093               		.loc 1 576 8 is_stmt 0 view .LVU377
+ 1094 0112 F0E0      		ldi r31,hi8(descriptor_list+63)
+ 1095 0114 8030      		cpi r24,lo8(descriptor_list+63)
+ 1096 0116 9F07      		cpc r25,r31
+ 1097 0118 01F0      		breq .+2
+ 1098 011a 00C0      		rjmp .L82
+ 1099               	.LVL70:
+ 1100               	.L73:
  747:usb_keyboard_debug.c **** }
- 1090               		.loc 1 747 2 is_stmt 1 view .LVU366
+ 1101               		.loc 1 747 2 is_stmt 1 view .LVU378
  747:usb_keyboard_debug.c **** }
- 1091               		.loc 1 747 9 is_stmt 0 view .LVU367
- 1092 011e 81E2      		ldi r24,lo8(33)
- 1093 0120 8093 EB00 		sts 235,r24
- 1094 0124 00C0      		rjmp .L72
- 1095               	.LVL71:
- 1096               	.L88:
+ 1102               		.loc 1 747 9 is_stmt 0 view .LVU379
+ 1103 011c 81E2      		ldi r24,lo8(33)
+ 1104 011e 8093 EB00 		sts 235,r24
+ 1105 0122 00C0      		rjmp .L72
+ 1106               	.LVL71:
+ 1107               	.L88:
  547:usb_keyboard_debug.c ****         uint8_t intbits;
- 1097               		.loc 1 547 1 discriminator 1 view .LVU368
- 1098 0126 282F      		mov r18,r24
- 1099 0128 00C0      		rjmp .L83
- 1100               	.LVL72:
- 1101               	.L87:
+ 1108               		.loc 1 547 1 discriminator 1 view .LVU380
+ 1109 0124 822F      		mov r24,r18
+ 1110 0126 00C0      		rjmp .L83
+ 1111               	.LVL72:
+ 1112               	.L87:
  608:usb_keyboard_debug.c **** 				}
- 1102               		.loc 1 608 6 is_stmt 1 discriminator 3 view .LVU369
- 1103               	.LBB86:
+ 1113               		.loc 1 608 6 is_stmt 1 discriminator 3 view .LVU381
+ 1114               	.LBB86:
  608:usb_keyboard_debug.c **** 				}
- 1104               		.loc 1 608 15 discriminator 3 view .LVU370
+ 1115               		.loc 1 608 15 discriminator 3 view .LVU382
  608:usb_keyboard_debug.c **** 				}
- 1105               		.loc 1 608 15 discriminator 3 view .LVU371
+ 1116               		.loc 1 608 15 discriminator 3 view .LVU383
  608:usb_keyboard_debug.c **** 				}
- 1106               		.loc 1 608 15 discriminator 3 view .LVU372
- 1107               	/* #APP */
- 1108               	 ;  608 "usb_keyboard_debug.c" 1
- 1109 012a 6491      		lpm r22, Z
- 1110               		
- 1111               	 ;  0 "" 2
- 1112               	.LVL73:
+ 1117               		.loc 1 608 15 discriminator 3 view .LVU384
+ 1118               	/* #APP */
+ 1119               	 ;  608 "usb_keyboard_debug.c" 1
+ 1120 0128 6491      		lpm r22, Z
+ 1121               		
+ 1122               	 ;  0 "" 2
+ 1123               	.LVL73:
  608:usb_keyboard_debug.c **** 				}
- 1113               		.loc 1 608 15 discriminator 3 view .LVU373
- 1114               	/* #NOAPP */
- 1115               	.LBE86:
+ 1124               		.loc 1 608 15 discriminator 3 view .LVU385
+ 1125               	/* #NOAPP */
+ 1126               	.LBE86:
  608:usb_keyboard_debug.c **** 				}
- 1116               		.loc 1 608 13 is_stmt 0 discriminator 3 view .LVU374
- 1117 012c 6093 F100 		sts 241,r22
+ 1127               		.loc 1 608 13 is_stmt 0 discriminator 3 view .LVU386
+ 1128 012a 6093 F100 		sts 241,r22
  607:usb_keyboard_debug.c **** 					UEDATX = pgm_read_byte(desc_addr++);
- 1118               		.loc 1 607 21 discriminator 3 view .LVU375
- 1119 0130 9150      		subi r25,lo8(-(-1))
- 1120               	.LVL74:
+ 1129               		.loc 1 607 20 is_stmt 1 discriminator 3 view .LVU387
  607:usb_keyboard_debug.c **** 					UEDATX = pgm_read_byte(desc_addr++);
- 1121               		.loc 1 607 21 discriminator 3 view .LVU376
- 1122 0132 3196      		adiw r30,1
- 1123               	.LVL75:
+ 1130               		.loc 1 607 21 is_stmt 0 discriminator 3 view .LVU388
+ 1131 012e 2150      		subi r18,lo8(-(-1))
+ 1132               	.LVL74:
  607:usb_keyboard_debug.c **** 					UEDATX = pgm_read_byte(desc_addr++);
- 1124               		.loc 1 607 21 discriminator 3 view .LVU377
- 1125 0134 00C0      		rjmp .L86
- 1126               	.LVL76:
- 1127               	.L129:
+ 1133               		.loc 1 607 21 discriminator 3 view .LVU389
+ 1134 0130 3196      		adiw r30,1
+ 1135               	.LVL75:
+ 607:usb_keyboard_debug.c **** 					UEDATX = pgm_read_byte(desc_addr++);
+ 1136               		.loc 1 607 21 discriminator 3 view .LVU390
+ 1137 0132 00C0      		rjmp .L86
+ 1138               	.LVL76:
+ 1139               	.L129:
  615:usb_keyboard_debug.c **** 			usb_send_in();
- 1128               		.loc 1 615 3 is_stmt 1 view .LVU378
+ 1140               		.loc 1 615 3 is_stmt 1 view .LVU391
  615:usb_keyboard_debug.c **** 			usb_send_in();
- 1129               		.loc 1 615 6 is_stmt 0 view .LVU379
- 1130 0136 C530      		cpi r28,lo8(5)
- 1131 0138 01F4      		brne .L90
+ 1141               		.loc 1 615 6 is_stmt 0 view .LVU392
+ 1142 0134 C530      		cpi r28,lo8(5)
+ 1143 0136 01F4      		brne .L90
  616:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1132               		.loc 1 616 4 is_stmt 1 view .LVU380
- 1133               	.LBB87:
- 1134               	.LBI87:
+ 1144               		.loc 1 616 4 is_stmt 1 view .LVU393
+ 1145               	.LBB87:
+ 1146               	.LBI87:
  527:usb_keyboard_debug.c **** {
- 1135               		.loc 1 527 20 view .LVU381
- 1136               	.LBB88:
+ 1147               		.loc 1 527 20 view .LVU394
+ 1148               	.LBB88:
  529:usb_keyboard_debug.c **** }
- 1137               		.loc 1 529 2 view .LVU382
+ 1149               		.loc 1 529 2 view .LVU395
  529:usb_keyboard_debug.c **** }
- 1138               		.loc 1 529 9 is_stmt 0 view .LVU383
- 1139 013a 8EEF      		ldi r24,lo8(-2)
- 1140 013c 8093 E800 		sts 232,r24
- 1141               	.LBE88:
- 1142               	.LBE87:
+ 1150               		.loc 1 529 9 is_stmt 0 view .LVU396
+ 1151 0138 8EEF      		ldi r24,lo8(-2)
+ 1152 013a 8093 E800 		sts 232,r24
+ 1153               	.LBE88:
+ 1154               	.LBE87:
  617:usb_keyboard_debug.c **** 			UDADDR = wValue | (1<<ADDEN);
- 1143               		.loc 1 617 4 is_stmt 1 view .LVU384
- 1144 0140 0E94 0000 		call usb_wait_in_ready
- 1145               	.LVL77:
+ 1155               		.loc 1 617 4 is_stmt 1 view .LVU397
+ 1156 013e 0E94 0000 		call usb_wait_in_ready
+ 1157               	.LVL77:
  618:usb_keyboard_debug.c **** 			return;
- 1146               		.loc 1 618 4 view .LVU385
+ 1158               		.loc 1 618 4 view .LVU398
  618:usb_keyboard_debug.c **** 			return;
- 1147               		.loc 1 618 20 is_stmt 0 view .LVU386
- 1148 0144 0068      		ori r16,lo8(-128)
- 1149               	.LVL78:
+ 1159               		.loc 1 618 20 is_stmt 0 view .LVU399
+ 1160 0142 0068      		ori r16,lo8(-128)
+ 1161               	.LVL78:
  618:usb_keyboard_debug.c **** 			return;
- 1150               		.loc 1 618 11 view .LVU387
- 1151 0146 0093 E300 		sts 227,r16
+ 1162               		.loc 1 618 11 view .LVU400
+ 1163 0144 0093 E300 		sts 227,r16
  619:usb_keyboard_debug.c **** 		}
- 1152               		.loc 1 619 4 is_stmt 1 view .LVU388
- 1153 014a 00C0      		rjmp .L72
- 1154               	.LVL79:
- 1155               	.L90:
+ 1164               		.loc 1 619 4 is_stmt 1 view .LVU401
+ 1165 0148 00C0      		rjmp .L72
+ 1166               	.LVL79:
+ 1167               	.L90:
  621:usb_keyboard_debug.c **** 			usb_configuration = wValue;
- 1156               		.loc 1 621 3 view .LVU389
+ 1168               		.loc 1 621 3 view .LVU402
  621:usb_keyboard_debug.c **** 			usb_configuration = wValue;
- 1157               		.loc 1 621 6 is_stmt 0 view .LVU390
- 1158 014c C930      		cpi r28,lo8(9)
- 1159 014e 01F4      		brne .L91
+ 1169               		.loc 1 621 6 is_stmt 0 view .LVU403
+ 1170 014a C930      		cpi r28,lo8(9)
+ 1171 014c 01F4      		brne .L91
  621:usb_keyboard_debug.c **** 			usb_configuration = wValue;
- 1160               		.loc 1 621 37 discriminator 1 view .LVU391
- 1161 0150 D111      		cpse r29,__zero_reg__
- 1162 0152 00C0      		rjmp .L92
+ 1172               		.loc 1 621 37 discriminator 1 view .LVU404
+ 1173 014e D111      		cpse r29,__zero_reg__
+ 1174 0150 00C0      		rjmp .L92
  622:usb_keyboard_debug.c **** 			usb_send_in();
- 1163               		.loc 1 622 4 is_stmt 1 view .LVU392
+ 1175               		.loc 1 622 4 is_stmt 1 view .LVU405
  622:usb_keyboard_debug.c **** 			usb_send_in();
- 1164               		.loc 1 622 22 is_stmt 0 view .LVU393
- 1165 0154 0093 0000 		sts usb_configuration,r16
+ 1176               		.loc 1 622 22 is_stmt 0 view .LVU406
+ 1177 0152 0093 0000 		sts usb_configuration,r16
  623:usb_keyboard_debug.c **** 			cfg = endpoint_config_table;
- 1166               		.loc 1 623 4 is_stmt 1 view .LVU394
- 1167               	.LBB89:
- 1168               	.LBI89:
+ 1178               		.loc 1 623 4 is_stmt 1 view .LVU407
+ 1179               	.LBB89:
+ 1180               	.LBI89:
  527:usb_keyboard_debug.c **** {
- 1169               		.loc 1 527 20 view .LVU395
- 1170               	.LBB90:
+ 1181               		.loc 1 527 20 view .LVU408
+ 1182               	.LBB90:
  529:usb_keyboard_debug.c **** }
- 1171               		.loc 1 529 2 view .LVU396
+ 1183               		.loc 1 529 2 view .LVU409
  529:usb_keyboard_debug.c **** }
- 1172               		.loc 1 529 9 is_stmt 0 view .LVU397
- 1173 0158 8EEF      		ldi r24,lo8(-2)
- 1174 015a 8093 E800 		sts 232,r24
- 1175               	.LBE90:
- 1176               	.LBE89:
+ 1184               		.loc 1 529 9 is_stmt 0 view .LVU410
+ 1185 0156 8EEF      		ldi r24,lo8(-2)
+ 1186 0158 8093 E800 		sts 232,r24
+ 1187               	.LBE90:
+ 1188               	.LBE89:
  624:usb_keyboard_debug.c **** 			for (i=1; i<5; i++) {
- 1177               		.loc 1 624 4 is_stmt 1 view .LVU398
- 1178               	.LVL80:
+ 1189               		.loc 1 624 4 is_stmt 1 view .LVU411
  625:usb_keyboard_debug.c **** 				UENUM = i;
- 1179               		.loc 1 625 4 view .LVU399
+ 1190               		.loc 1 625 4 view .LVU412
+ 1191               	.LVL80:
  625:usb_keyboard_debug.c **** 				UENUM = i;
- 1180               		.loc 1 625 10 is_stmt 0 view .LVU400
- 1181 015e 21E0      		ldi r18,lo8(1)
- 1182               	.LVL81:
+ 1192               		.loc 1 625 14 view .LVU413
+ 625:usb_keyboard_debug.c **** 				UENUM = i;
+ 1193               		.loc 1 625 10 is_stmt 0 view .LVU414
+ 1194 015c 21E0      		ldi r18,lo8(1)
+ 1195               	.LVL81:
  624:usb_keyboard_debug.c **** 			for (i=1; i<5; i++) {
- 1183               		.loc 1 624 8 view .LVU401
- 1184 0160 80E0      		ldi r24,lo8(endpoint_config_table)
- 1185 0162 90E0      		ldi r25,hi8(endpoint_config_table)
- 1186               	.LVL82:
- 1187               	.L94:
+ 1196               		.loc 1 624 8 view .LVU415
+ 1197 015e 80E0      		ldi r24,lo8(endpoint_config_table)
+ 1198 0160 90E0      		ldi r25,hi8(endpoint_config_table)
+ 1199               	.LVL82:
+ 1200               	.L94:
  626:usb_keyboard_debug.c **** 				en = pgm_read_byte(cfg++);
- 1188               		.loc 1 626 5 is_stmt 1 view .LVU402
+ 1201               		.loc 1 626 5 is_stmt 1 view .LVU416
  626:usb_keyboard_debug.c **** 				en = pgm_read_byte(cfg++);
- 1189               		.loc 1 626 11 is_stmt 0 view .LVU403
- 1190 0164 2093 E900 		sts 233,r18
+ 1202               		.loc 1 626 11 is_stmt 0 view .LVU417
+ 1203 0162 2093 E900 		sts 233,r18
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1191               		.loc 1 627 5 is_stmt 1 view .LVU404
- 1192               	.LBB91:
+ 1204               		.loc 1 627 5 is_stmt 1 view .LVU418
+ 1205               	.LBB91:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1193               		.loc 1 627 10 view .LVU405
- 1194 0168 AC01      		movw r20,r24
- 1195 016a 4F5F      		subi r20,-1
- 1196 016c 5F4F      		sbci r21,-1
- 1197               	.LVL83:
+ 1206               		.loc 1 627 10 view .LVU419
+ 1207 0166 AC01      		movw r20,r24
+ 1208 0168 4F5F      		subi r20,-1
+ 1209 016a 5F4F      		sbci r21,-1
+ 1210               	.LVL83:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1198               		.loc 1 627 10 view .LVU406
+ 1211               		.loc 1 627 10 view .LVU420
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1199               		.loc 1 627 10 view .LVU407
- 1200 016e FC01      		movw r30,r24
- 1201               	/* #APP */
- 1202               	 ;  627 "usb_keyboard_debug.c" 1
- 1203 0170 3491      		lpm r19, Z
- 1204               		
- 1205               	 ;  0 "" 2
- 1206               	.LVL84:
+ 1212               		.loc 1 627 10 view .LVU421
+ 1213 016c FC01      		movw r30,r24
+ 1214               	/* #APP */
+ 1215               	 ;  627 "usb_keyboard_debug.c" 1
+ 1216 016e 3491      		lpm r19, Z
+ 1217               		
+ 1218               	 ;  0 "" 2
+ 1219               	.LVL84:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1207               		.loc 1 627 10 view .LVU408
+ 1220               		.loc 1 627 10 view .LVU422
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1208               		.loc 1 627 10 is_stmt 0 view .LVU409
- 1209               	/* #NOAPP */
- 1210               	.LBE91:
+ 1221               		.loc 1 627 10 is_stmt 0 view .LVU423
+ 1222               	/* #NOAPP */
+ 1223               	.LBE91:
  628:usb_keyboard_debug.c **** 				if (en) {
- 1211               		.loc 1 628 5 is_stmt 1 view .LVU410
+ 1224               		.loc 1 628 5 is_stmt 1 view .LVU424
  628:usb_keyboard_debug.c **** 				if (en) {
- 1212               		.loc 1 628 12 is_stmt 0 view .LVU411
- 1213 0172 3093 EB00 		sts 235,r19
+ 1225               		.loc 1 628 12 is_stmt 0 view .LVU425
+ 1226 0170 3093 EB00 		sts 235,r19
  629:usb_keyboard_debug.c **** 					UECFG0X = pgm_read_byte(cfg++);
- 1214               		.loc 1 629 5 is_stmt 1 view .LVU412
+ 1227               		.loc 1 629 5 is_stmt 1 view .LVU426
  629:usb_keyboard_debug.c **** 					UECFG0X = pgm_read_byte(cfg++);
- 1215               		.loc 1 629 8 is_stmt 0 view .LVU413
- 1216 0176 3323      		tst r19
- 1217 0178 01F0      		breq .L114
+ 1228               		.loc 1 629 8 is_stmt 0 view .LVU427
+ 1229 0174 3323      		tst r19
+ 1230 0176 01F0      		breq .L114
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1218               		.loc 1 630 6 is_stmt 1 view .LVU414
- 1219               	.LBB92:
+ 1231               		.loc 1 630 6 is_stmt 1 view .LVU428
+ 1232               	.LBB92:
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1220               		.loc 1 630 16 view .LVU415
- 1221               	.LVL85:
+ 1233               		.loc 1 630 16 view .LVU429
+ 1234               	.LVL85:
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1222               		.loc 1 630 16 view .LVU416
+ 1235               		.loc 1 630 16 view .LVU430
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1223               		.loc 1 630 16 view .LVU417
- 1224 017a FA01      		movw r30,r20
- 1225               	/* #APP */
- 1226               	 ;  630 "usb_keyboard_debug.c" 1
- 1227 017c 4491      		lpm r20, Z
- 1228               		
- 1229               	 ;  0 "" 2
- 1230               	.LVL86:
+ 1236               		.loc 1 630 16 view .LVU431
+ 1237 0178 FA01      		movw r30,r20
+ 1238               	/* #APP */
+ 1239               	 ;  630 "usb_keyboard_debug.c" 1
+ 1240 017a 4491      		lpm r20, Z
+ 1241               		
+ 1242               	 ;  0 "" 2
+ 1243               	.LVL86:
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1231               		.loc 1 630 16 view .LVU418
- 1232               	/* #NOAPP */
- 1233               	.LBE92:
+ 1244               		.loc 1 630 16 view .LVU432
+ 1245               	/* #NOAPP */
+ 1246               	.LBE92:
  630:usb_keyboard_debug.c **** 					UECFG1X = pgm_read_byte(cfg++);
- 1234               		.loc 1 630 14 is_stmt 0 view .LVU419
- 1235 017e 4093 EC00 		sts 236,r20
+ 1247               		.loc 1 630 14 is_stmt 0 view .LVU433
+ 1248 017c 4093 EC00 		sts 236,r20
  631:usb_keyboard_debug.c **** 				}
- 1236               		.loc 1 631 6 is_stmt 1 view .LVU420
- 1237               	.LBB93:
+ 1249               		.loc 1 631 6 is_stmt 1 view .LVU434
+ 1250               	.LBB93:
  631:usb_keyboard_debug.c **** 				}
- 1238               		.loc 1 631 16 view .LVU421
- 1239               	.LVL87:
+ 1251               		.loc 1 631 16 view .LVU435
+ 1252               	.LVL87:
  631:usb_keyboard_debug.c **** 				}
- 1240               		.loc 1 631 16 view .LVU422
+ 1253               		.loc 1 631 16 view .LVU436
  631:usb_keyboard_debug.c **** 				}
- 1241               		.loc 1 631 16 view .LVU423
- 1242 0182 3196      		adiw r30,1
- 1243               	.LVL88:
+ 1254               		.loc 1 631 16 view .LVU437
+ 1255 0180 3196      		adiw r30,1
+ 1256               	.LVL88:
  631:usb_keyboard_debug.c **** 				}
- 1244               		.loc 1 631 16 is_stmt 0 view .LVU424
- 1245               	/* #APP */
- 1246               	 ;  631 "usb_keyboard_debug.c" 1
- 1247 0184 E491      		lpm r30, Z
- 1248               		
- 1249               	 ;  0 "" 2
- 1250               	.LVL89:
+ 1257               		.loc 1 631 16 is_stmt 0 view .LVU438
+ 1258               	/* #APP */
+ 1259               	 ;  631 "usb_keyboard_debug.c" 1
+ 1260 0182 E491      		lpm r30, Z
+ 1261               		
+ 1262               	 ;  0 "" 2
+ 1263               	.LVL89:
  631:usb_keyboard_debug.c **** 				}
- 1251               		.loc 1 631 16 view .LVU425
- 1252               	/* #NOAPP */
- 1253 0186 0396      		adiw r24,3
- 1254               	.LVL90:
+ 1264               		.loc 1 631 16 view .LVU439
+ 1265               	/* #NOAPP */
+ 1266 0184 0396      		adiw r24,3
+ 1267               	.LVL90:
  631:usb_keyboard_debug.c **** 				}
- 1255               		.loc 1 631 16 is_stmt 1 view .LVU426
- 1256               	.LBE93:
+ 1268               		.loc 1 631 16 is_stmt 1 view .LVU440
+ 1269               	.LBE93:
  631:usb_keyboard_debug.c **** 				}
- 1257               		.loc 1 631 14 is_stmt 0 view .LVU427
- 1258 0188 E093 ED00 		sts 237,r30
- 1259               	.LVL91:
- 1260               	.L93:
+ 1270               		.loc 1 631 14 is_stmt 0 view .LVU441
+ 1271 0186 E093 ED00 		sts 237,r30
+ 1272               	.LVL91:
+ 1273               	.L93:
  625:usb_keyboard_debug.c **** 				UENUM = i;
- 1261               		.loc 1 625 20 discriminator 2 view .LVU428
- 1262 018c 2F5F      		subi r18,lo8(-(1))
- 1263               	.LVL92:
+ 1274               		.loc 1 625 19 is_stmt 1 discriminator 2 view .LVU442
  625:usb_keyboard_debug.c **** 				UENUM = i;
- 1264               		.loc 1 625 4 discriminator 2 view .LVU429
- 1265 018e 2530      		cpi r18,lo8(5)
- 1266 0190 01F4      		brne .L94
+ 1275               		.loc 1 625 20 is_stmt 0 discriminator 2 view .LVU443
+ 1276 018a 2F5F      		subi r18,lo8(-(1))
+ 1277               	.LVL92:
+ 625:usb_keyboard_debug.c **** 				UENUM = i;
+ 1278               		.loc 1 625 14 is_stmt 1 discriminator 2 view .LVU444
+ 625:usb_keyboard_debug.c **** 				UENUM = i;
+ 1279               		.loc 1 625 4 is_stmt 0 discriminator 2 view .LVU445
+ 1280 018c 2530      		cpi r18,lo8(5)
+ 1281 018e 01F4      		brne .L94
  634:usb_keyboard_debug.c ****         		UERST = 0;
- 1267               		.loc 1 634 11 is_stmt 1 view .LVU430
+ 1282               		.loc 1 634 11 is_stmt 1 view .LVU446
  634:usb_keyboard_debug.c ****         		UERST = 0;
- 1268               		.loc 1 634 17 is_stmt 0 view .LVU431
- 1269 0192 8EE1      		ldi r24,lo8(30)
- 1270               	.LVL93:
- 1271               	.L131:
+ 1283               		.loc 1 634 17 is_stmt 0 view .LVU447
+ 1284 0190 8EE1      		ldi r24,lo8(30)
+ 1285               	.LVL93:
+ 1286               	.L131:
  671:usb_keyboard_debug.c **** 					UERST = 0;
- 1272               		.loc 1 671 12 view .LVU432
- 1273 0194 8093 EA00 		sts 234,r24
+ 1287               		.loc 1 671 12 view .LVU448
+ 1288 0192 8093 EA00 		sts 234,r24
  672:usb_keyboard_debug.c **** 				}
- 1274               		.loc 1 672 6 is_stmt 1 view .LVU433
+ 1289               		.loc 1 672 6 is_stmt 1 view .LVU449
  672:usb_keyboard_debug.c **** 				}
- 1275               		.loc 1 672 12 is_stmt 0 view .LVU434
- 1276 0198 1092 EA00 		sts 234,__zero_reg__
- 1277 019c 00C0      		rjmp .L72
- 1278               	.LVL94:
- 1279               	.L114:
- 1280               	.LBB94:
+ 1290               		.loc 1 672 12 is_stmt 0 view .LVU450
+ 1291 0196 1092 EA00 		sts 234,__zero_reg__
+ 1292 019a 00C0      		rjmp .L72
+ 1293               	.LVL94:
+ 1294               	.L114:
+ 1295               	.LBB94:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1281               		.loc 1 627 10 view .LVU435
- 1282 019e CA01      		movw r24,r20
- 1283               	.LVL95:
+ 1296               		.loc 1 627 10 view .LVU451
+ 1297 019c CA01      		movw r24,r20
+ 1298               	.LVL95:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1284               		.loc 1 627 10 view .LVU436
- 1285 01a0 00C0      		rjmp .L93
- 1286               	.LVL96:
- 1287               	.L91:
+ 1299               		.loc 1 627 10 view .LVU452
+ 1300 019e 00C0      		rjmp .L93
+ 1301               	.LVL96:
+ 1302               	.L91:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1288               		.loc 1 627 10 view .LVU437
- 1289               	.LBE94:
+ 1303               		.loc 1 627 10 view .LVU453
+ 1304               	.LBE94:
  638:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1290               		.loc 1 638 3 is_stmt 1 view .LVU438
+ 1305               		.loc 1 638 3 is_stmt 1 view .LVU454
  638:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1291               		.loc 1 638 6 is_stmt 0 view .LVU439
- 1292 01a2 C830      		cpi r28,lo8(8)
- 1293 01a4 01F4      		brne .L95
+ 1306               		.loc 1 638 6 is_stmt 0 view .LVU455
+ 1307 01a0 C830      		cpi r28,lo8(8)
+ 1308 01a2 01F4      		brne .L95
  638:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1294               		.loc 1 638 37 discriminator 1 view .LVU440
- 1295 01a6 D038      		cpi r29,lo8(-128)
- 1296 01a8 01F0      		breq .+2
- 1297 01aa 00C0      		rjmp .L92
+ 1309               		.loc 1 638 37 discriminator 1 view .LVU456
+ 1310 01a4 D038      		cpi r29,lo8(-128)
+ 1311 01a6 01F0      		breq .+2
+ 1312 01a8 00C0      		rjmp .L92
  639:usb_keyboard_debug.c **** 			UEDATX = usb_configuration;
- 1298               		.loc 1 639 4 is_stmt 1 view .LVU441
- 1299 01ac 0E94 0000 		call usb_wait_in_ready
- 1300               	.LVL97:
+ 1313               		.loc 1 639 4 is_stmt 1 view .LVU457
+ 1314 01aa 0E94 0000 		call usb_wait_in_ready
+ 1315               	.LVL97:
  640:usb_keyboard_debug.c **** 			usb_send_in();
- 1301               		.loc 1 640 4 view .LVU442
+ 1316               		.loc 1 640 4 view .LVU458
  640:usb_keyboard_debug.c **** 			usb_send_in();
- 1302               		.loc 1 640 11 is_stmt 0 view .LVU443
- 1303 01b0 8091 0000 		lds r24,usb_configuration
- 1304               	.L133:
+ 1317               		.loc 1 640 11 is_stmt 0 view .LVU459
+ 1318 01ae 8091 0000 		lds r24,usb_configuration
+ 1319               	.L133:
  698:usb_keyboard_debug.c **** 					usb_send_in();
- 1305               		.loc 1 698 13 view .LVU444
- 1306 01b4 8093 F100 		sts 241,r24
+ 1320               		.loc 1 698 13 view .LVU460
+ 1321 01b2 8093 F100 		sts 241,r24
  699:usb_keyboard_debug.c **** 					return;
- 1307               		.loc 1 699 6 is_stmt 1 view .LVU445
- 1308               	.LBB95:
- 1309               	.LBI95:
+ 1322               		.loc 1 699 6 is_stmt 1 view .LVU461
+ 1323               	.LBB95:
+ 1324               	.LBI95:
  527:usb_keyboard_debug.c **** {
- 1310               		.loc 1 527 20 view .LVU446
- 1311               	.LBB96:
+ 1325               		.loc 1 527 20 view .LVU462
+ 1326               	.LBB96:
  529:usb_keyboard_debug.c **** }
- 1312               		.loc 1 529 2 view .LVU447
- 1313 01b8 00C0      		rjmp .L132
- 1314               	.LVL98:
- 1315               	.L95:
+ 1327               		.loc 1 529 2 view .LVU463
+ 1328 01b6 00C0      		rjmp .L132
+ 1329               	.LVL98:
+ 1330               	.L95:
  529:usb_keyboard_debug.c **** }
- 1316               		.loc 1 529 2 is_stmt 0 view .LVU448
- 1317               	.LBE96:
- 1318               	.LBE95:
+ 1331               		.loc 1 529 2 is_stmt 0 view .LVU464
+ 1332               	.LBE96:
+ 1333               	.LBE95:
  645:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1319               		.loc 1 645 3 is_stmt 1 view .LVU449
+ 1334               		.loc 1 645 3 is_stmt 1 view .LVU465
  645:usb_keyboard_debug.c **** 			usb_wait_in_ready();
- 1320               		.loc 1 645 6 is_stmt 0 view .LVU450
- 1321 01ba C111      		cpse r28,__zero_reg__
- 1322 01bc 00C0      		rjmp .L96
+ 1335               		.loc 1 645 6 is_stmt 0 view .LVU466
+ 1336 01b8 C111      		cpse r28,__zero_reg__
+ 1337 01ba 00C0      		rjmp .L96
  646:usb_keyboard_debug.c **** 			i = 0;
- 1323               		.loc 1 646 4 is_stmt 1 view .LVU451
- 1324 01be 0E94 0000 		call usb_wait_in_ready
- 1325               	.LVL99:
+ 1338               		.loc 1 646 4 is_stmt 1 view .LVU467
+ 1339 01bc 0E94 0000 		call usb_wait_in_ready
+ 1340               	.LVL99:
  647:usb_keyboard_debug.c **** 			#ifdef SUPPORT_ENDPOINT_HALT
- 1326               		.loc 1 647 4 view .LVU452
+ 1341               		.loc 1 647 4 view .LVU468
  649:usb_keyboard_debug.c **** 				UENUM = wIndex;
- 1327               		.loc 1 649 4 view .LVU453
+ 1342               		.loc 1 649 4 view .LVU469
  649:usb_keyboard_debug.c **** 				UENUM = wIndex;
- 1328               		.loc 1 649 7 is_stmt 0 view .LVU454
- 1329 01c2 D238      		cpi r29,lo8(-126)
- 1330 01c4 01F4      		brne .L97
+ 1343               		.loc 1 649 7 is_stmt 0 view .LVU470
+ 1344 01c0 D238      		cpi r29,lo8(-126)
+ 1345 01c2 01F4      		brne .L97
  650:usb_keyboard_debug.c **** 				if (UECONX & (1<<STALLRQ)) i = 1;
- 1331               		.loc 1 650 5 is_stmt 1 view .LVU455
+ 1346               		.loc 1 650 5 is_stmt 1 view .LVU471
  650:usb_keyboard_debug.c **** 				if (UECONX & (1<<STALLRQ)) i = 1;
- 1332               		.loc 1 650 11 is_stmt 0 view .LVU456
- 1333 01c6 E092 E900 		sts 233,r14
+ 1347               		.loc 1 650 11 is_stmt 0 view .LVU472
+ 1348 01c4 E092 E900 		sts 233,r14
  651:usb_keyboard_debug.c **** 				UENUM = 0;
- 1334               		.loc 1 651 5 is_stmt 1 view .LVU457
+ 1349               		.loc 1 651 5 is_stmt 1 view .LVU473
  651:usb_keyboard_debug.c **** 				UENUM = 0;
- 1335               		.loc 1 651 9 is_stmt 0 view .LVU458
- 1336 01ca C091 EB00 		lds r28,235
- 1337               	.LVL100:
+ 1350               		.loc 1 651 9 is_stmt 0 view .LVU474
+ 1351 01c8 C091 EB00 		lds r28,235
+ 1352               	.LVL100:
  651:usb_keyboard_debug.c **** 				UENUM = 0;
- 1338               		.loc 1 651 8 view .LVU459
- 1339 01ce C5FB      		bst r28,5
- 1340 01d0 CC27      		clr r28
- 1341 01d2 C0F9      		bld r28,0
- 1342               	.LVL101:
+ 1353               		.loc 1 651 8 view .LVU475
+ 1354 01cc C5FB      		bst r28,5
+ 1355 01ce CC27      		clr r28
+ 1356 01d0 C0F9      		bld r28,0
+ 1357               	.LVL101:
  652:usb_keyboard_debug.c **** 			}
- 1343               		.loc 1 652 5 is_stmt 1 view .LVU460
+ 1358               		.loc 1 652 5 is_stmt 1 view .LVU476
  652:usb_keyboard_debug.c **** 			}
- 1344               		.loc 1 652 11 is_stmt 0 view .LVU461
- 1345 01d4 1092 E900 		sts 233,__zero_reg__
- 1346               	.LVL102:
- 1347               	.L97:
+ 1359               		.loc 1 652 11 is_stmt 0 view .LVU477
+ 1360 01d2 1092 E900 		sts 233,__zero_reg__
+ 1361               	.LVL102:
+ 1362               	.L97:
  655:usb_keyboard_debug.c **** 			UEDATX = 0;
- 1348               		.loc 1 655 4 is_stmt 1 view .LVU462
+ 1363               		.loc 1 655 4 is_stmt 1 view .LVU478
  655:usb_keyboard_debug.c **** 			UEDATX = 0;
- 1349               		.loc 1 655 11 is_stmt 0 view .LVU463
- 1350 01d8 C093 F100 		sts 241,r28
+ 1364               		.loc 1 655 11 is_stmt 0 view .LVU479
+ 1365 01d6 C093 F100 		sts 241,r28
  656:usb_keyboard_debug.c **** 			usb_send_in();
- 1351               		.loc 1 656 4 is_stmt 1 view .LVU464
+ 1366               		.loc 1 656 4 is_stmt 1 view .LVU480
  656:usb_keyboard_debug.c **** 			usb_send_in();
- 1352               		.loc 1 656 11 is_stmt 0 view .LVU465
- 1353 01dc 1092 F100 		sts 241,__zero_reg__
+ 1367               		.loc 1 656 11 is_stmt 0 view .LVU481
+ 1368 01da 1092 F100 		sts 241,__zero_reg__
  657:usb_keyboard_debug.c **** 			return;
- 1354               		.loc 1 657 4 is_stmt 1 view .LVU466
- 1355               	.LBB97:
- 1356               	.LBI97:
+ 1369               		.loc 1 657 4 is_stmt 1 view .LVU482
+ 1370               	.LBB97:
+ 1371               	.LBI97:
  527:usb_keyboard_debug.c **** {
- 1357               		.loc 1 527 20 view .LVU467
- 1358               	.LBB98:
+ 1372               		.loc 1 527 20 view .LVU483
+ 1373               	.LBB98:
  529:usb_keyboard_debug.c **** }
- 1359               		.loc 1 529 2 view .LVU468
- 1360               	.LVL103:
- 1361               	.L132:
+ 1374               		.loc 1 529 2 view .LVU484
+ 1375               	.LVL103:
+ 1376               	.L132:
  529:usb_keyboard_debug.c **** }
- 1362               		.loc 1 529 2 is_stmt 0 view .LVU469
- 1363               	.LBE98:
- 1364               	.LBE97:
+ 1377               		.loc 1 529 2 is_stmt 0 view .LVU485
+ 1378               	.LBE98:
+ 1379               	.LBE97:
  721:usb_keyboard_debug.c **** 					return;
- 1365               		.loc 1 721 6 is_stmt 1 view .LVU470
- 1366               	.LBB99:
- 1367               	.LBI99:
+ 1380               		.loc 1 721 6 is_stmt 1 view .LVU486
+ 1381               	.LBB99:
+ 1382               	.LBI99:
  527:usb_keyboard_debug.c **** {
- 1368               		.loc 1 527 20 view .LVU471
- 1369               	.LBB100:
+ 1383               		.loc 1 527 20 view .LVU487
+ 1384               	.LBB100:
  529:usb_keyboard_debug.c **** }
- 1370               		.loc 1 529 2 view .LVU472
+ 1385               		.loc 1 529 2 view .LVU488
  529:usb_keyboard_debug.c **** }
- 1371               		.loc 1 529 9 is_stmt 0 view .LVU473
- 1372 01e0 8EEF      		ldi r24,lo8(-2)
- 1373 01e2 8093 E800 		sts 232,r24
- 1374               	.LBE100:
- 1375               	.LBE99:
+ 1386               		.loc 1 529 9 is_stmt 0 view .LVU489
+ 1387 01de 8EEF      		ldi r24,lo8(-2)
+ 1388 01e0 8093 E800 		sts 232,r24
+ 1389               	.LBE100:
+ 1390               	.LBE99:
  722:usb_keyboard_debug.c **** 				}
- 1376               		.loc 1 722 6 is_stmt 1 view .LVU474
- 1377 01e6 00C0      		rjmp .L72
- 1378               	.LVL104:
- 1379               	.L96:
+ 1391               		.loc 1 722 6 is_stmt 1 view .LVU490
+ 1392 01e4 00C0      		rjmp .L72
+ 1393               	.LVL104:
+ 1394               	.L96:
  661:usb_keyboard_debug.c **** 		  && bmRequestType == 0x02 && wValue == 0) {
- 1380               		.loc 1 661 3 view .LVU475
+ 1395               		.loc 1 661 3 view .LVU491
  661:usb_keyboard_debug.c **** 		  && bmRequestType == 0x02 && wValue == 0) {
- 1381               		.loc 1 661 6 is_stmt 0 view .LVU476
- 1382 01e8 8C2F      		mov r24,r28
- 1383 01ea 8D7F      		andi r24,lo8(-3)
- 1384 01ec 8130      		cpi r24,lo8(1)
- 1385 01ee 01F4      		brne .L92
+ 1396               		.loc 1 661 6 is_stmt 0 view .LVU492
+ 1397 01e6 8C2F      		mov r24,r28
+ 1398 01e8 8D7F      		andi r24,lo8(-3)
+ 1399 01ea 8130      		cpi r24,lo8(1)
+ 1400 01ec 01F4      		brne .L92
  662:usb_keyboard_debug.c **** 			i = wIndex & 0x7F;
- 1386               		.loc 1 662 5 view .LVU477
- 1387 01f0 D230      		cpi r29,lo8(2)
- 1388 01f2 01F4      		brne .L92
+ 1401               		.loc 1 662 5 view .LVU493
+ 1402 01ee D230      		cpi r29,lo8(2)
+ 1403 01f0 01F4      		brne .L92
  662:usb_keyboard_debug.c **** 			i = wIndex & 0x7F;
- 1389               		.loc 1 662 30 discriminator 1 view .LVU478
- 1390 01f4 012B      		or r16,r17
- 1391 01f6 01F0      		breq .+2
- 1392 01f8 00C0      		rjmp .L98
+ 1404               		.loc 1 662 30 discriminator 1 view .LVU494
+ 1405 01f2 012B      		or r16,r17
+ 1406 01f4 01F0      		breq .+2
+ 1407 01f6 00C0      		rjmp .L98
  663:usb_keyboard_debug.c **** 			if (i >= 1 && i <= MAX_ENDPOINT) {
- 1393               		.loc 1 663 4 is_stmt 1 view .LVU479
+ 1408               		.loc 1 663 4 is_stmt 1 view .LVU495
  663:usb_keyboard_debug.c **** 			if (i >= 1 && i <= MAX_ENDPOINT) {
- 1394               		.loc 1 663 6 is_stmt 0 view .LVU480
- 1395 01fa 4E2D      		mov r20,r14
- 1396 01fc 4F77      		andi r20,lo8(127)
- 1397               	.LVL105:
+ 1409               		.loc 1 663 6 is_stmt 0 view .LVU496
+ 1410 01f8 4E2D      		mov r20,r14
+ 1411 01fa 4F77      		andi r20,lo8(127)
+ 1412               	.LVL105:
  664:usb_keyboard_debug.c **** 				usb_send_in();
- 1398               		.loc 1 664 4 is_stmt 1 view .LVU481
+ 1413               		.loc 1 664 4 is_stmt 1 view .LVU497
  664:usb_keyboard_debug.c **** 				usb_send_in();
- 1399               		.loc 1 664 15 is_stmt 0 view .LVU482
- 1400 01fe 8FEF      		ldi r24,lo8(-1)
- 1401 0200 840F      		add r24,r20
+ 1414               		.loc 1 664 15 is_stmt 0 view .LVU498
+ 1415 01fc 8FEF      		ldi r24,lo8(-1)
+ 1416 01fe 840F      		add r24,r20
  664:usb_keyboard_debug.c **** 				usb_send_in();
- 1402               		.loc 1 664 7 view .LVU483
- 1403 0202 8430      		cpi r24,lo8(4)
- 1404 0204 00F0      		brlo .+2
- 1405 0206 00C0      		rjmp .L98
+ 1417               		.loc 1 664 7 view .LVU499
+ 1418 0200 8430      		cpi r24,lo8(4)
+ 1419 0202 00F0      		brlo .+2
+ 1420 0204 00C0      		rjmp .L98
  665:usb_keyboard_debug.c **** 				UENUM = i;
- 1406               		.loc 1 665 5 is_stmt 1 view .LVU484
- 1407               	.LBB101:
- 1408               	.LBI101:
+ 1421               		.loc 1 665 5 is_stmt 1 view .LVU500
+ 1422               	.LBB101:
+ 1423               	.LBI101:
  527:usb_keyboard_debug.c **** {
- 1409               		.loc 1 527 20 view .LVU485
- 1410               	.LBB102:
+ 1424               		.loc 1 527 20 view .LVU501
+ 1425               	.LBB102:
  529:usb_keyboard_debug.c **** }
- 1411               		.loc 1 529 2 view .LVU486
+ 1426               		.loc 1 529 2 view .LVU502
  529:usb_keyboard_debug.c **** }
- 1412               		.loc 1 529 9 is_stmt 0 view .LVU487
- 1413 0208 8EEF      		ldi r24,lo8(-2)
- 1414 020a 8093 E800 		sts 232,r24
- 1415               	.LBE102:
- 1416               	.LBE101:
+ 1427               		.loc 1 529 9 is_stmt 0 view .LVU503
+ 1428 0206 8EEF      		ldi r24,lo8(-2)
+ 1429 0208 8093 E800 		sts 232,r24
+ 1430               	.LBE102:
+ 1431               	.LBE101:
  666:usb_keyboard_debug.c **** 				if (bRequest == SET_FEATURE) {
- 1417               		.loc 1 666 5 is_stmt 1 view .LVU488
+ 1432               		.loc 1 666 5 is_stmt 1 view .LVU504
  666:usb_keyboard_debug.c **** 				if (bRequest == SET_FEATURE) {
- 1418               		.loc 1 666 11 is_stmt 0 view .LVU489
- 1419 020e 4093 E900 		sts 233,r20
+ 1433               		.loc 1 666 11 is_stmt 0 view .LVU505
+ 1434 020c 4093 E900 		sts 233,r20
  667:usb_keyboard_debug.c **** 					UECONX = (1<<STALLRQ)|(1<<EPEN);
- 1420               		.loc 1 667 5 is_stmt 1 view .LVU490
+ 1435               		.loc 1 667 5 is_stmt 1 view .LVU506
  667:usb_keyboard_debug.c **** 					UECONX = (1<<STALLRQ)|(1<<EPEN);
- 1421               		.loc 1 667 8 is_stmt 0 view .LVU491
- 1422 0212 C330      		cpi r28,lo8(3)
- 1423 0214 01F4      		brne .+2
- 1424 0216 00C0      		rjmp .L73
+ 1436               		.loc 1 667 8 is_stmt 0 view .LVU507
+ 1437 0210 C330      		cpi r28,lo8(3)
+ 1438 0212 01F4      		brne .+2
+ 1439 0214 00C0      		rjmp .L73
  670:usb_keyboard_debug.c **** 					UERST = (1 << i);
- 1425               		.loc 1 670 6 is_stmt 1 view .LVU492
+ 1440               		.loc 1 670 6 is_stmt 1 view .LVU508
  670:usb_keyboard_debug.c **** 					UERST = (1 << i);
- 1426               		.loc 1 670 13 is_stmt 0 view .LVU493
- 1427 0218 89E1      		ldi r24,lo8(25)
- 1428 021a 8093 EB00 		sts 235,r24
+ 1441               		.loc 1 670 13 is_stmt 0 view .LVU509
+ 1442 0216 89E1      		ldi r24,lo8(25)
+ 1443 0218 8093 EB00 		sts 235,r24
  671:usb_keyboard_debug.c **** 					UERST = 0;
- 1429               		.loc 1 671 6 is_stmt 1 view .LVU494
+ 1444               		.loc 1 671 6 is_stmt 1 view .LVU510
  671:usb_keyboard_debug.c **** 					UERST = 0;
- 1430               		.loc 1 671 17 is_stmt 0 view .LVU495
- 1431 021e 81E0      		ldi r24,lo8(1)
- 1432 0220 90E0      		ldi r25,0
- 1433 0222 00C0      		rjmp 2f
- 1434               		1:
- 1435 0224 880F      		lsl r24
- 1436               		2:
- 1437 0226 4A95      		dec r20
- 1438 0228 02F4      		brpl 1b
- 1439 022a 00C0      		rjmp .L131
- 1440               	.LVL106:
- 1441               	.L92:
+ 1445               		.loc 1 671 17 is_stmt 0 view .LVU511
+ 1446 021c 81E0      		ldi r24,lo8(1)
+ 1447 021e 90E0      		ldi r25,0
+ 1448 0220 00C0      		rjmp 2f
+ 1449               		1:
+ 1450 0222 880F      		lsl r24
+ 1451               		2:
+ 1452 0224 4A95      		dec r20
+ 1453 0226 02F4      		brpl 1b
+ 1454 0228 00C0      		rjmp .L131
+ 1455               	.LVL106:
+ 1456               	.L92:
  678:usb_keyboard_debug.c **** 			if (bmRequestType == 0xA1) {
- 1442               		.loc 1 678 3 is_stmt 1 view .LVU496
+ 1457               		.loc 1 678 3 is_stmt 1 view .LVU512
  678:usb_keyboard_debug.c **** 			if (bmRequestType == 0xA1) {
- 1443               		.loc 1 678 6 is_stmt 0 view .LVU497
- 1444 022c E114      		cp r14,__zero_reg__
- 1445 022e F104      		cpc r15,__zero_reg__
- 1446 0230 01F0      		breq .+2
- 1447 0232 00C0      		rjmp .L100
+ 1458               		.loc 1 678 6 is_stmt 0 view .LVU513
+ 1459 022a E114      		cp r14,__zero_reg__
+ 1460 022c F104      		cpc r15,__zero_reg__
+ 1461 022e 01F0      		breq .+2
+ 1462 0230 00C0      		rjmp .L100
  679:usb_keyboard_debug.c **** 				if (bRequest == HID_GET_REPORT) {
- 1448               		.loc 1 679 4 is_stmt 1 view .LVU498
+ 1463               		.loc 1 679 4 is_stmt 1 view .LVU514
  679:usb_keyboard_debug.c **** 				if (bRequest == HID_GET_REPORT) {
- 1449               		.loc 1 679 7 is_stmt 0 view .LVU499
- 1450 0234 D13A      		cpi r29,lo8(-95)
- 1451 0236 01F4      		brne .L101
+ 1464               		.loc 1 679 7 is_stmt 0 view .LVU515
+ 1465 0232 D13A      		cpi r29,lo8(-95)
+ 1466 0234 01F4      		brne .L101
  680:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1452               		.loc 1 680 5 is_stmt 1 view .LVU500
+ 1467               		.loc 1 680 5 is_stmt 1 view .LVU516
  680:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1453               		.loc 1 680 8 is_stmt 0 view .LVU501
- 1454 0238 C130      		cpi r28,lo8(1)
- 1455 023a 01F4      		brne .L102
+ 1468               		.loc 1 680 8 is_stmt 0 view .LVU517
+ 1469 0236 C130      		cpi r28,lo8(1)
+ 1470 0238 01F4      		brne .L102
  681:usb_keyboard_debug.c **** 					UEDATX = keyboard_modifier_keys;
- 1456               		.loc 1 681 6 is_stmt 1 view .LVU502
- 1457 023c 0E94 0000 		call usb_wait_in_ready
- 1458               	.LVL107:
+ 1471               		.loc 1 681 6 is_stmt 1 view .LVU518
+ 1472 023a 0E94 0000 		call usb_wait_in_ready
+ 1473               	.LVL107:
  682:usb_keyboard_debug.c **** 					UEDATX = 0;
- 1459               		.loc 1 682 6 view .LVU503
+ 1474               		.loc 1 682 6 view .LVU519
  682:usb_keyboard_debug.c **** 					UEDATX = 0;
- 1460               		.loc 1 682 13 is_stmt 0 view .LVU504
- 1461 0240 8091 0000 		lds r24,keyboard_modifier_keys
- 1462 0244 8093 F100 		sts 241,r24
+ 1475               		.loc 1 682 13 is_stmt 0 view .LVU520
+ 1476 023e 8091 0000 		lds r24,keyboard_modifier_keys
+ 1477 0242 8093 F100 		sts 241,r24
  683:usb_keyboard_debug.c **** 					for (i=0; i<6; i++) {
- 1463               		.loc 1 683 6 is_stmt 1 view .LVU505
+ 1478               		.loc 1 683 6 is_stmt 1 view .LVU521
  683:usb_keyboard_debug.c **** 					for (i=0; i<6; i++) {
- 1464               		.loc 1 683 13 is_stmt 0 view .LVU506
- 1465 0248 1092 F100 		sts 241,__zero_reg__
+ 1479               		.loc 1 683 13 is_stmt 0 view .LVU522
+ 1480 0246 1092 F100 		sts 241,__zero_reg__
  684:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 1466               		.loc 1 684 6 is_stmt 1 view .LVU507
- 1467               	.LVL108:
+ 1481               		.loc 1 684 6 is_stmt 1 view .LVU523
+ 1482               	.LVL108:
  684:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 1468               		.loc 1 684 6 is_stmt 0 view .LVU508
- 1469 024c E0E0      		ldi r30,lo8(keyboard_keys)
- 1470 024e F0E0      		ldi r31,hi8(keyboard_keys)
- 1471               	.LVL109:
- 1472               	.L103:
+ 1483               		.loc 1 684 16 view .LVU524
+ 1484 024a E0E0      		ldi r30,lo8(keyboard_keys)
+ 1485 024c F0E0      		ldi r31,hi8(keyboard_keys)
+ 1486               	.LVL109:
+ 1487               	.L103:
  685:usb_keyboard_debug.c **** 					}
- 1473               		.loc 1 685 7 is_stmt 1 discriminator 3 view .LVU509
+ 1488               		.loc 1 685 7 discriminator 3 view .LVU525
  685:usb_keyboard_debug.c **** 					}
- 1474               		.loc 1 685 29 is_stmt 0 discriminator 3 view .LVU510
- 1475 0250 8191      		ld r24,Z+
- 1476               	.LVL110:
+ 1489               		.loc 1 685 29 is_stmt 0 discriminator 3 view .LVU526
+ 1490 024e 8191      		ld r24,Z+
+ 1491               	.LVL110:
  685:usb_keyboard_debug.c **** 					}
- 1477               		.loc 1 685 14 discriminator 3 view .LVU511
- 1478 0252 8093 F100 		sts 241,r24
- 1479               	.LVL111:
+ 1492               		.loc 1 685 14 discriminator 3 view .LVU527
+ 1493 0250 8093 F100 		sts 241,r24
  684:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
- 1480               		.loc 1 684 6 discriminator 3 view .LVU512
- 1481 0256 40E0      		ldi r20,hi8(keyboard_keys+6)
- 1482 0258 E030      		cpi r30,lo8(keyboard_keys+6)
- 1483 025a F407      		cpc r31,r20
- 1484 025c 01F4      		brne .L103
- 1485 025e 00C0      		rjmp .L132
- 1486               	.LVL112:
- 1487               	.L102:
+ 1494               		.loc 1 684 21 is_stmt 1 discriminator 3 view .LVU528
+ 1495               	.LVL111:
+ 684:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
+ 1496               		.loc 1 684 16 discriminator 3 view .LVU529
+ 684:usb_keyboard_debug.c **** 						UEDATX = keyboard_keys[i];
+ 1497               		.loc 1 684 6 is_stmt 0 discriminator 3 view .LVU530
+ 1498 0254 40E0      		ldi r20,hi8(keyboard_keys+6)
+ 1499 0256 E030      		cpi r30,lo8(keyboard_keys+6)
+ 1500 0258 F407      		cpc r31,r20
+ 1501 025a 01F4      		brne .L103
+ 1502 025c 00C0      		rjmp .L132
+ 1503               	.LVL112:
+ 1504               	.L102:
  690:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1488               		.loc 1 690 5 is_stmt 1 view .LVU513
+ 1505               		.loc 1 690 5 is_stmt 1 view .LVU531
  690:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1489               		.loc 1 690 8 is_stmt 0 view .LVU514
- 1490 0260 C230      		cpi r28,lo8(2)
- 1491 0262 01F4      		brne .L104
+ 1506               		.loc 1 690 8 is_stmt 0 view .LVU532
+ 1507 025e C230      		cpi r28,lo8(2)
+ 1508 0260 01F4      		brne .L104
  691:usb_keyboard_debug.c **** 					UEDATX = keyboard_idle_config;
- 1492               		.loc 1 691 6 is_stmt 1 view .LVU515
- 1493 0264 0E94 0000 		call usb_wait_in_ready
- 1494               	.LVL113:
+ 1509               		.loc 1 691 6 is_stmt 1 view .LVU533
+ 1510 0262 0E94 0000 		call usb_wait_in_ready
+ 1511               	.LVL113:
  692:usb_keyboard_debug.c **** 					usb_send_in();
- 1495               		.loc 1 692 6 view .LVU516
+ 1512               		.loc 1 692 6 view .LVU534
  692:usb_keyboard_debug.c **** 					usb_send_in();
- 1496               		.loc 1 692 13 is_stmt 0 view .LVU517
- 1497 0268 8091 0000 		lds r24,keyboard_idle_config
- 1498 026c 00C0      		rjmp .L133
- 1499               	.LVL114:
- 1500               	.L104:
+ 1513               		.loc 1 692 13 is_stmt 0 view .LVU535
+ 1514 0266 8091 0000 		lds r24,keyboard_idle_config
+ 1515 026a 00C0      		rjmp .L133
+ 1516               	.LVL114:
+ 1517               	.L104:
  696:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1501               		.loc 1 696 5 is_stmt 1 view .LVU518
+ 1518               		.loc 1 696 5 is_stmt 1 view .LVU536
  696:usb_keyboard_debug.c **** 					usb_wait_in_ready();
- 1502               		.loc 1 696 8 is_stmt 0 view .LVU519
- 1503 026e C330      		cpi r28,lo8(3)
- 1504 0270 01F0      		breq .+2
- 1505 0272 00C0      		rjmp .L73
+ 1519               		.loc 1 696 8 is_stmt 0 view .LVU537
+ 1520 026c C330      		cpi r28,lo8(3)
+ 1521 026e 01F0      		breq .+2
+ 1522 0270 00C0      		rjmp .L73
  697:usb_keyboard_debug.c **** 					UEDATX = keyboard_protocol;
- 1506               		.loc 1 697 6 is_stmt 1 view .LVU520
- 1507 0274 0E94 0000 		call usb_wait_in_ready
- 1508               	.LVL115:
+ 1523               		.loc 1 697 6 is_stmt 1 view .LVU538
+ 1524 0272 0E94 0000 		call usb_wait_in_ready
+ 1525               	.LVL115:
  698:usb_keyboard_debug.c **** 					usb_send_in();
- 1509               		.loc 1 698 6 view .LVU521
+ 1526               		.loc 1 698 6 view .LVU539
  698:usb_keyboard_debug.c **** 					usb_send_in();
- 1510               		.loc 1 698 13 is_stmt 0 view .LVU522
- 1511 0278 8091 0000 		lds r24,keyboard_protocol
- 1512 027c 00C0      		rjmp .L133
- 1513               	.LVL116:
- 1514               	.L101:
+ 1527               		.loc 1 698 13 is_stmt 0 view .LVU540
+ 1528 0276 8091 0000 		lds r24,keyboard_protocol
+ 1529 027a 00C0      		rjmp .L133
+ 1530               	.LVL116:
+ 1531               	.L101:
  703:usb_keyboard_debug.c **** 				if (bRequest == HID_SET_REPORT) {
- 1515               		.loc 1 703 4 is_stmt 1 view .LVU523
+ 1532               		.loc 1 703 4 is_stmt 1 view .LVU541
  703:usb_keyboard_debug.c **** 				if (bRequest == HID_SET_REPORT) {
- 1516               		.loc 1 703 7 is_stmt 0 view .LVU524
- 1517 027e D132      		cpi r29,lo8(33)
- 1518 0280 01F0      		breq .+2
- 1519 0282 00C0      		rjmp .L73
+ 1533               		.loc 1 703 7 is_stmt 0 view .LVU542
+ 1534 027c D132      		cpi r29,lo8(33)
+ 1535 027e 01F0      		breq .+2
+ 1536 0280 00C0      		rjmp .L73
  704:usb_keyboard_debug.c **** 					usb_wait_receive_out();
- 1520               		.loc 1 704 5 is_stmt 1 view .LVU525
+ 1537               		.loc 1 704 5 is_stmt 1 view .LVU543
  704:usb_keyboard_debug.c **** 					usb_wait_receive_out();
- 1521               		.loc 1 704 8 is_stmt 0 view .LVU526
- 1522 0284 C930      		cpi r28,lo8(9)
- 1523 0286 01F4      		brne .L105
- 1524               	.L106:
- 1525               	.LBB103:
- 1526               	.LBB104:
+ 1538               		.loc 1 704 8 is_stmt 0 view .LVU544
+ 1539 0282 C930      		cpi r28,lo8(9)
+ 1540 0284 01F4      		brne .L105
+ 1541               	.L106:
+ 1542               	.LBB103:
+ 1543               	.LBB104:
  533:usb_keyboard_debug.c **** }
- 1527               		.loc 1 533 34 is_stmt 1 view .LVU527
+ 1544               		.loc 1 533 34 is_stmt 1 view .LVU545
  533:usb_keyboard_debug.c **** }
- 1528               		.loc 1 533 11 is_stmt 0 view .LVU528
- 1529 0288 8091 E800 		lds r24,232
+ 1545               		.loc 1 533 8 view .LVU546
  533:usb_keyboard_debug.c **** }
- 1530               		.loc 1 533 8 view .LVU529
- 1531 028c 82FF      		sbrs r24,2
- 1532 028e 00C0      		rjmp .L106
- 1533               	.LBE104:
- 1534               	.LBE103:
+ 1546               		.loc 1 533 11 is_stmt 0 view .LVU547
+ 1547 0286 8091 E800 		lds r24,232
+ 533:usb_keyboard_debug.c **** }
+ 1548               		.loc 1 533 8 view .LVU548
+ 1549 028a 82FF      		sbrs r24,2
+ 1550 028c 00C0      		rjmp .L106
+ 1551               	.LBE104:
+ 1552               	.LBE103:
  706:usb_keyboard_debug.c **** 					usb_ack_out();
- 1535               		.loc 1 706 6 is_stmt 1 view .LVU530
+ 1553               		.loc 1 706 6 is_stmt 1 view .LVU549
  706:usb_keyboard_debug.c **** 					usb_ack_out();
- 1536               		.loc 1 706 22 is_stmt 0 view .LVU531
- 1537 0290 8091 F100 		lds r24,241
+ 1554               		.loc 1 706 22 is_stmt 0 view .LVU550
+ 1555 028e 8091 F100 		lds r24,241
  706:usb_keyboard_debug.c **** 					usb_ack_out();
- 1538               		.loc 1 706 20 view .LVU532
- 1539 0294 8093 0000 		sts keyboard_leds,r24
+ 1556               		.loc 1 706 20 view .LVU551
+ 1557 0292 8093 0000 		sts keyboard_leds,r24
  707:usb_keyboard_debug.c **** 					usb_send_in();
- 1540               		.loc 1 707 6 is_stmt 1 view .LVU533
- 1541               	.LBB105:
- 1542               	.LBI105:
+ 1558               		.loc 1 707 6 is_stmt 1 view .LVU552
+ 1559               	.LBB105:
+ 1560               	.LBI105:
  535:usb_keyboard_debug.c **** {
- 1543               		.loc 1 535 20 view .LVU534
- 1544               	.LBB106:
+ 1561               		.loc 1 535 20 view .LVU553
+ 1562               	.LBB106:
  537:usb_keyboard_debug.c **** }
- 1545               		.loc 1 537 2 view .LVU535
+ 1563               		.loc 1 537 2 view .LVU554
  537:usb_keyboard_debug.c **** }
- 1546               		.loc 1 537 9 is_stmt 0 view .LVU536
- 1547 0298 8BEF      		ldi r24,lo8(-5)
- 1548 029a 8093 E800 		sts 232,r24
- 1549               	.LBE106:
- 1550               	.LBE105:
+ 1564               		.loc 1 537 9 is_stmt 0 view .LVU555
+ 1565 0296 8BEF      		ldi r24,lo8(-5)
+ 1566 0298 8093 E800 		sts 232,r24
+ 1567               	.LBE106:
+ 1568               	.LBE105:
  708:usb_keyboard_debug.c **** 					return;
- 1551               		.loc 1 708 6 is_stmt 1 view .LVU537
- 1552               	.LBB107:
- 1553               	.LBI107:
+ 1569               		.loc 1 708 6 is_stmt 1 view .LVU556
+ 1570               	.LBB107:
+ 1571               	.LBI107:
  527:usb_keyboard_debug.c **** {
- 1554               		.loc 1 527 20 view .LVU538
- 1555               	.LBB108:
+ 1572               		.loc 1 527 20 view .LVU557
+ 1573               	.LBB108:
  529:usb_keyboard_debug.c **** }
- 1556               		.loc 1 529 2 view .LVU539
- 1557 029e 00C0      		rjmp .L132
- 1558               	.L105:
- 1559               	.LBE108:
- 1560               	.LBE107:
+ 1574               		.loc 1 529 2 view .LVU558
+ 1575 029c 00C0      		rjmp .L132
+ 1576               	.L105:
+ 1577               	.LBE108:
+ 1578               	.LBE107:
  711:usb_keyboard_debug.c **** 					keyboard_idle_config = (wValue >> 8);
- 1561               		.loc 1 711 5 view .LVU540
+ 1579               		.loc 1 711 5 view .LVU559
  711:usb_keyboard_debug.c **** 					keyboard_idle_config = (wValue >> 8);
- 1562               		.loc 1 711 8 is_stmt 0 view .LVU541
- 1563 02a0 CA30      		cpi r28,lo8(10)
- 1564 02a2 01F4      		brne .L107
+ 1580               		.loc 1 711 8 is_stmt 0 view .LVU560
+ 1581 029e CA30      		cpi r28,lo8(10)
+ 1582 02a0 01F4      		brne .L107
  712:usb_keyboard_debug.c **** 					keyboard_idle_count = 0;
- 1565               		.loc 1 712 6 is_stmt 1 view .LVU542
+ 1583               		.loc 1 712 6 is_stmt 1 view .LVU561
  712:usb_keyboard_debug.c **** 					keyboard_idle_count = 0;
- 1566               		.loc 1 712 27 is_stmt 0 view .LVU543
- 1567 02a4 1093 0000 		sts keyboard_idle_config,r17
+ 1584               		.loc 1 712 27 is_stmt 0 view .LVU562
+ 1585 02a2 1093 0000 		sts keyboard_idle_config,r17
  713:usb_keyboard_debug.c **** 					//usb_wait_in_ready();
- 1568               		.loc 1 713 6 is_stmt 1 view .LVU544
+ 1586               		.loc 1 713 6 is_stmt 1 view .LVU563
  713:usb_keyboard_debug.c **** 					//usb_wait_in_ready();
- 1569               		.loc 1 713 26 is_stmt 0 view .LVU545
- 1570 02a8 1092 0000 		sts keyboard_idle_count,__zero_reg__
+ 1587               		.loc 1 713 26 is_stmt 0 view .LVU564
+ 1588 02a6 1092 0000 		sts keyboard_idle_count,__zero_reg__
  715:usb_keyboard_debug.c **** 					return;
- 1571               		.loc 1 715 6 is_stmt 1 view .LVU546
- 1572               	.LBB109:
- 1573               	.LBI109:
+ 1589               		.loc 1 715 6 is_stmt 1 view .LVU565
+ 1590               	.LBB109:
+ 1591               	.LBI109:
  527:usb_keyboard_debug.c **** {
- 1574               		.loc 1 527 20 view .LVU547
- 1575               	.LBB110:
+ 1592               		.loc 1 527 20 view .LVU566
+ 1593               	.LBB110:
  529:usb_keyboard_debug.c **** }
- 1576               		.loc 1 529 2 view .LVU548
- 1577 02ac 00C0      		rjmp .L132
- 1578               	.L107:
- 1579               	.LBE110:
- 1580               	.LBE109:
+ 1594               		.loc 1 529 2 view .LVU567
+ 1595 02aa 00C0      		rjmp .L132
+ 1596               	.L107:
+ 1597               	.LBE110:
+ 1598               	.LBE109:
  718:usb_keyboard_debug.c **** 					keyboard_protocol = wValue;
- 1581               		.loc 1 718 5 view .LVU549
+ 1599               		.loc 1 718 5 view .LVU568
  718:usb_keyboard_debug.c **** 					keyboard_protocol = wValue;
- 1582               		.loc 1 718 8 is_stmt 0 view .LVU550
- 1583 02ae CB30      		cpi r28,lo8(11)
- 1584 02b0 01F0      		breq .+2
- 1585 02b2 00C0      		rjmp .L73
+ 1600               		.loc 1 718 8 is_stmt 0 view .LVU569
+ 1601 02ac CB30      		cpi r28,lo8(11)
+ 1602 02ae 01F0      		breq .+2
+ 1603 02b0 00C0      		rjmp .L73
  719:usb_keyboard_debug.c **** 					//usb_wait_in_ready();
- 1586               		.loc 1 719 6 is_stmt 1 view .LVU551
+ 1604               		.loc 1 719 6 is_stmt 1 view .LVU570
  719:usb_keyboard_debug.c **** 					//usb_wait_in_ready();
- 1587               		.loc 1 719 24 is_stmt 0 view .LVU552
- 1588 02b4 0093 0000 		sts keyboard_protocol,r16
- 1589 02b8 00C0      		rjmp .L132
- 1590               	.LVL117:
- 1591               	.L112:
+ 1605               		.loc 1 719 24 is_stmt 0 view .LVU571
+ 1606 02b2 0093 0000 		sts keyboard_protocol,r16
+ 1607 02b6 00C0      		rjmp .L132
+ 1608               	.LVL117:
+ 1609               	.L112:
  738:usb_keyboard_debug.c **** 					}
- 1592               		.loc 1 738 7 is_stmt 1 discriminator 3 view .LVU553
+ 1610               		.loc 1 738 7 is_stmt 1 discriminator 3 view .LVU572
  738:usb_keyboard_debug.c **** 					}
- 1593               		.loc 1 738 14 is_stmt 0 discriminator 3 view .LVU554
- 1594 02ba 1092 F100 		sts 241,__zero_reg__
+ 1611               		.loc 1 738 14 is_stmt 0 discriminator 3 view .LVU573
+ 1612 02b8 1092 F100 		sts 241,__zero_reg__
  737:usb_keyboard_debug.c **** 						UEDATX = 0;
- 1595               		.loc 1 737 22 discriminator 3 view .LVU555
- 1596 02be 9150      		subi r25,lo8(-(-1))
- 1597               	.LVL118:
+ 1613               		.loc 1 737 21 is_stmt 1 discriminator 3 view .LVU574
  737:usb_keyboard_debug.c **** 						UEDATX = 0;
- 1598               		.loc 1 737 22 discriminator 3 view .LVU556
- 1599 02c0 00C0      		rjmp .L111
- 1600               	.LVL119:
- 1601               	.L98:
+ 1614               		.loc 1 737 22 is_stmt 0 discriminator 3 view .LVU575
+ 1615 02bc 9150      		subi r25,lo8(-(-1))
+ 1616               	.LVL118:
+ 737:usb_keyboard_debug.c **** 						UEDATX = 0;
+ 1617               		.loc 1 737 22 discriminator 3 view .LVU576
+ 1618 02be 00C0      		rjmp .L111
+ 1619               	.LVL119:
+ 1620               	.L98:
  678:usb_keyboard_debug.c **** 			if (bmRequestType == 0xA1) {
- 1602               		.loc 1 678 3 is_stmt 1 view .LVU557
+ 1621               		.loc 1 678 3 is_stmt 1 view .LVU577
  678:usb_keyboard_debug.c **** 			if (bmRequestType == 0xA1) {
- 1603               		.loc 1 678 6 is_stmt 0 view .LVU558
- 1604 02c2 E114      		cp r14,__zero_reg__
- 1605 02c4 F104      		cpc r15,__zero_reg__
- 1606 02c6 01F4      		brne .+2
- 1607 02c8 00C0      		rjmp .L73
- 1608               	.L100:
+ 1622               		.loc 1 678 6 is_stmt 0 view .LVU578
+ 1623 02c0 E114      		cp r14,__zero_reg__
+ 1624 02c2 F104      		cpc r15,__zero_reg__
+ 1625 02c4 01F4      		brne .+2
+ 1626 02c6 00C0      		rjmp .L73
+ 1627               	.L100:
  726:usb_keyboard_debug.c **** 			if (bRequest == HID_GET_REPORT && bmRequestType == 0xA1) {
- 1609               		.loc 1 726 3 is_stmt 1 view .LVU559
+ 1628               		.loc 1 726 3 is_stmt 1 view .LVU579
  726:usb_keyboard_debug.c **** 			if (bRequest == HID_GET_REPORT && bmRequestType == 0xA1) {
- 1610               		.loc 1 726 6 is_stmt 0 view .LVU560
- 1611 02ca EA94      		dec r14
- 1612 02cc EF28      		or r14,r15
- 1613 02ce 01F0      		breq .+2
- 1614 02d0 00C0      		rjmp .L73
+ 1629               		.loc 1 726 6 is_stmt 0 view .LVU580
+ 1630 02c8 EA94      		dec r14
+ 1631 02ca EF28      		or r14,r15
+ 1632 02cc 01F0      		breq .+2
+ 1633 02ce 00C0      		rjmp .L73
  727:usb_keyboard_debug.c **** 				len = wLength;
- 1615               		.loc 1 727 4 is_stmt 1 view .LVU561
+ 1634               		.loc 1 727 4 is_stmt 1 view .LVU581
  727:usb_keyboard_debug.c **** 				len = wLength;
- 1616               		.loc 1 727 7 is_stmt 0 view .LVU562
- 1617 02d2 C130      		cpi r28,lo8(1)
- 1618 02d4 01F0      		breq .+2
- 1619 02d6 00C0      		rjmp .L73
- 1620               	.LBB111:
- 1621               	.LBB112:
+ 1635               		.loc 1 727 7 is_stmt 0 view .LVU582
+ 1636 02d0 C130      		cpi r28,lo8(1)
+ 1637 02d2 01F0      		breq .+2
+ 1638 02d4 00C0      		rjmp .L73
+ 1639               	.LBB111:
+ 1640               	.LBB112:
  529:usb_keyboard_debug.c **** }
- 1622               		.loc 1 529 9 discriminator 1 view .LVU563
- 1623 02d8 3EEF      		ldi r19,lo8(-2)
- 1624               	.LVL120:
+ 1641               		.loc 1 529 9 discriminator 1 view .LVU583
+ 1642 02d6 3EEF      		ldi r19,lo8(-2)
+ 1643               	.LVL120:
  529:usb_keyboard_debug.c **** }
- 1625               		.loc 1 529 9 discriminator 1 view .LVU564
- 1626               	.LBE112:
- 1627               	.LBE111:
+ 1644               		.loc 1 529 9 discriminator 1 view .LVU584
+ 1645               	.LBE112:
+ 1646               	.LBE111:
  727:usb_keyboard_debug.c **** 				len = wLength;
- 1628               		.loc 1 727 35 discriminator 1 view .LVU565
- 1629 02da D13A      		cpi r29,lo8(-95)
- 1630 02dc 01F0      		breq .+2
- 1631 02de 00C0      		rjmp .L73
- 1632               	.L109:
- 1633               	.LVL121:
+ 1647               		.loc 1 727 35 discriminator 1 view .LVU585
+ 1648 02d8 D13A      		cpi r29,lo8(-95)
+ 1649 02da 01F0      		breq .+2
+ 1650 02dc 00C0      		rjmp .L73
+ 1651               	.L109:
+ 1652               	.LVL121:
  729:usb_keyboard_debug.c **** 					// wait for host ready for IN packet
- 1634               		.loc 1 729 5 is_stmt 1 discriminator 1 view .LVU566
+ 1653               		.loc 1 729 5 is_stmt 1 discriminator 1 view .LVU586
  731:usb_keyboard_debug.c **** 						i = UEINTX;
- 1635               		.loc 1 731 6 discriminator 1 view .LVU567
+ 1654               		.loc 1 731 6 discriminator 1 view .LVU587
  732:usb_keyboard_debug.c **** 					} while (!(i & ((1<<TXINI)|(1<<RXOUTI))));
- 1636               		.loc 1 732 7 discriminator 1 view .LVU568
+ 1655               		.loc 1 732 7 discriminator 1 view .LVU588
  732:usb_keyboard_debug.c **** 					} while (!(i & ((1<<TXINI)|(1<<RXOUTI))));
- 1637               		.loc 1 732 9 is_stmt 0 discriminator 1 view .LVU569
- 1638 02e0 8091 E800 		lds r24,232
- 1639               	.LVL122:
+ 1656               		.loc 1 732 9 is_stmt 0 discriminator 1 view .LVU589
+ 1657 02de 8091 E800 		lds r24,232
+ 1658               	.LVL122:
  733:usb_keyboard_debug.c **** 					if (i & (1<<RXOUTI)) return;	// abort
- 1640               		.loc 1 733 6 discriminator 1 view .LVU570
- 1641 02e4 982F      		mov r25,r24
- 1642 02e6 9570      		andi r25,lo8(5)
- 1643 02e8 01F0      		breq .L109
+ 1659               		.loc 1 733 14 is_stmt 1 discriminator 1 view .LVU590
+ 733:usb_keyboard_debug.c **** 					if (i & (1<<RXOUTI)) return;	// abort
+ 1660               		.loc 1 733 6 is_stmt 0 discriminator 1 view .LVU591
+ 1661 02e2 982F      		mov r25,r24
+ 1662 02e4 9570      		andi r25,lo8(5)
+ 1663 02e6 01F0      		breq .L109
  734:usb_keyboard_debug.c **** 					// send IN packet
- 1644               		.loc 1 734 6 is_stmt 1 view .LVU571
+ 1664               		.loc 1 734 6 is_stmt 1 view .LVU592
  734:usb_keyboard_debug.c **** 					// send IN packet
- 1645               		.loc 1 734 9 is_stmt 0 view .LVU572
- 1646 02ea 82FD      		sbrc r24,2
- 1647 02ec 00C0      		rjmp .L72
+ 1665               		.loc 1 734 9 is_stmt 0 view .LVU593
+ 1666 02e8 82FD      		sbrc r24,2
+ 1667 02ea 00C0      		rjmp .L72
  736:usb_keyboard_debug.c **** 					for (i = n; i; i--) {
- 1648               		.loc 1 736 6 is_stmt 1 view .LVU573
+ 1668               		.loc 1 736 6 is_stmt 1 view .LVU594
  736:usb_keyboard_debug.c **** 					for (i = n; i; i--) {
- 1649               		.loc 1 736 8 is_stmt 0 view .LVU574
- 1650 02ee 822F      		mov r24,r18
- 1651               	.LVL123:
+ 1669               		.loc 1 736 8 is_stmt 0 view .LVU595
+ 1670 02ec 822F      		mov r24,r18
+ 1671               	.LVL123:
  736:usb_keyboard_debug.c **** 					for (i = n; i; i--) {
- 1652               		.loc 1 736 8 view .LVU575
- 1653 02f0 2132      		cpi r18,lo8(33)
- 1654 02f2 00F0      		brlo .L110
- 1655 02f4 80E2      		ldi r24,lo8(32)
- 1656               	.L110:
- 1657               	.LVL124:
+ 1672               		.loc 1 736 8 view .LVU596
+ 1673 02ee 2132      		cpi r18,lo8(33)
+ 1674 02f0 00F0      		brlo .L110
+ 1675 02f2 80E2      		ldi r24,lo8(32)
+ 1676               	.L110:
+ 1677               	.LVL124:
  737:usb_keyboard_debug.c **** 						UEDATX = 0;
- 1658               		.loc 1 737 6 is_stmt 1 view .LVU576
+ 1678               		.loc 1 737 6 is_stmt 1 view .LVU597
  737:usb_keyboard_debug.c **** 						UEDATX = 0;
- 1659               		.loc 1 737 13 is_stmt 0 view .LVU577
- 1660 02f6 982F      		mov r25,r24
- 1661               	.LVL125:
- 1662               	.L111:
+ 1679               		.loc 1 737 13 is_stmt 0 view .LVU598
+ 1680 02f4 982F      		mov r25,r24
+ 1681               	.LVL125:
+ 1682               	.L111:
  737:usb_keyboard_debug.c **** 						UEDATX = 0;
- 1663               		.loc 1 737 6 discriminator 1 view .LVU578
- 1664 02f8 9111      		cpse r25,__zero_reg__
- 1665 02fa 00C0      		rjmp .L112
+ 1683               		.loc 1 737 18 is_stmt 1 discriminator 1 view .LVU599
+ 737:usb_keyboard_debug.c **** 						UEDATX = 0;
+ 1684               		.loc 1 737 6 is_stmt 0 discriminator 1 view .LVU600
+ 1685 02f6 9111      		cpse r25,__zero_reg__
+ 1686 02f8 00C0      		rjmp .L112
  740:usb_keyboard_debug.c **** 					usb_send_in();
- 1666               		.loc 1 740 6 is_stmt 1 view .LVU579
+ 1687               		.loc 1 740 6 is_stmt 1 view .LVU601
  740:usb_keyboard_debug.c **** 					usb_send_in();
- 1667               		.loc 1 740 10 is_stmt 0 view .LVU580
- 1668 02fc 922F      		mov r25,r18
- 1669               	.LVL126:
+ 1688               		.loc 1 740 10 is_stmt 0 view .LVU602
+ 1689 02fa 922F      		mov r25,r18
+ 1690               	.LVL126:
  740:usb_keyboard_debug.c **** 					usb_send_in();
- 1670               		.loc 1 740 10 view .LVU581
- 1671 02fe 981B      		sub r25,r24
- 1672 0300 892F      		mov r24,r25
- 1673               	.LVL127:
+ 1691               		.loc 1 740 10 view .LVU603
+ 1692 02fc 981B      		sub r25,r24
+ 1693               	.LVL127:
  741:usb_keyboard_debug.c **** 				} while (len || n == ENDPOINT0_SIZE);
- 1674               		.loc 1 741 6 is_stmt 1 view .LVU582
- 1675               	.LBB114:
- 1676               	.LBI111:
+ 1694               		.loc 1 741 6 is_stmt 1 view .LVU604
+ 1695               	.LBB114:
+ 1696               	.LBI111:
  527:usb_keyboard_debug.c **** {
- 1677               		.loc 1 527 20 view .LVU583
- 1678               	.LBB113:
+ 1697               		.loc 1 527 20 view .LVU605
+ 1698               	.LBB113:
  529:usb_keyboard_debug.c **** }
- 1679               		.loc 1 529 2 view .LVU584
+ 1699               		.loc 1 529 2 view .LVU606
  529:usb_keyboard_debug.c **** }
- 1680               		.loc 1 529 9 is_stmt 0 view .LVU585
- 1681 0302 3093 E800 		sts 232,r19
- 1682               	.LBE113:
- 1683               	.LBE114:
+ 1700               		.loc 1 529 9 is_stmt 0 view .LVU607
+ 1701 02fe 3093 E800 		sts 232,r19
+ 1702               	.LBE113:
+ 1703               	.LBE114:
  742:usb_keyboard_debug.c **** 				return;
- 1684               		.loc 1 742 5 view .LVU586
- 1685 0306 9111      		cpse r25,__zero_reg__
- 1686 0308 00C0      		rjmp .L113
+ 1704               		.loc 1 742 13 is_stmt 1 view .LVU608
  742:usb_keyboard_debug.c **** 				return;
- 1687               		.loc 1 742 18 discriminator 1 view .LVU587
- 1688 030a 2032      		cpi r18,lo8(32)
- 1689 030c 00F4      		brsh .+2
- 1690 030e 00C0      		rjmp .L72
- 1691               	.L113:
- 1692               	.LBB115:
+ 1705               		.loc 1 742 5 is_stmt 0 view .LVU609
+ 1706 0302 2813      		cpse r18,r24
+ 1707 0304 00C0      		rjmp .L113
+ 742:usb_keyboard_debug.c **** 				return;
+ 1708               		.loc 1 742 18 discriminator 1 view .LVU610
+ 1709 0306 2032      		cpi r18,lo8(32)
+ 1710 0308 00F4      		brsh .+2
+ 1711 030a 00C0      		rjmp .L72
+ 1712               	.L113:
+ 1713               	.LBB115:
  627:usb_keyboard_debug.c **** 				UECONX = en;
- 1693               		.loc 1 627 10 discriminator 1 view .LVU588
- 1694 0310 282F      		mov r18,r24
- 1695 0312 00C0      		rjmp .L109
- 1696               	.LBE115:
- 1697               		.cfi_endproc
- 1698               	.LFE12:
- 1700               		.local	div4.1792
- 1701               		.comm	div4.1792,1,1
- 1702               		.local	previous_timeout.1772
- 1703               		.comm	previous_timeout.1772,1,1
- 1704               	.global	keyboard_leds
- 1705               		.section .bss
- 1708               	keyboard_leds:
- 1709 0000 00        		.zero	1
- 1710               		.local	keyboard_idle_count
- 1711               		.comm	keyboard_idle_count,1,1
- 1712               		.data
- 1715               	keyboard_idle_config:
- 1716 0000 7D        		.byte	125
- 1719               	keyboard_protocol:
- 1720 0001 01        		.byte	1
- 1721               	.global	keyboard_keys
- 1722               		.section .bss
- 1725               	keyboard_keys:
- 1726 0001 0000 0000 		.zero	6
- 1726      0000 
- 1727               	.global	keyboard_modifier_keys
- 1730               	keyboard_modifier_keys:
- 1731 0007 00        		.zero	1
- 1732               		.local	debug_flush_timer
- 1733               		.comm	debug_flush_timer,1,1
- 1734               		.local	usb_configuration
- 1735               		.comm	usb_configuration,1,1
- 1736               		.section	.progmem.data,"a",@progbits
- 1739               	descriptor_list:
- 1740 0000 0001      		.word	256
- 1741 0002 0000      		.word	0
- 1742 0004 0000      		.word	device_descriptor
- 1743 0006 12        		.byte	18
- 1744 0007 0002      		.word	512
- 1745 0009 0000      		.word	0
- 1746 000b 0000      		.word	config1_descriptor
- 1747 000d 3B        		.byte	59
- 1748 000e 0022      		.word	8704
- 1749 0010 0000      		.word	0
- 1750 0012 0000      		.word	keyboard_hid_report_desc
- 1751 0014 3F        		.byte	63
- 1752 0015 0021      		.word	8448
- 1753 0017 0000      		.word	0
- 1754 0019 0000      		.word	config1_descriptor+18
- 1755 001b 09        		.byte	9
- 1756 001c 0022      		.word	8704
- 1757 001e 0100      		.word	1
- 1758 0020 0000      		.word	debug_hid_report_desc
- 1759 0022 15        		.byte	21
- 1760 0023 0021      		.word	8448
- 1761 0025 0100      		.word	1
- 1762 0027 0000      		.word	config1_descriptor+43
- 1763 0029 09        		.byte	9
- 1764 002a 0003      		.word	768
- 1765 002c 0000      		.word	0
- 1766 002e 0000      		.word	string0
- 1767 0030 04        		.byte	4
- 1768 0031 0103      		.word	769
- 1769 0033 0904      		.word	1033
- 1770 0035 0000      		.word	string1
- 1771 0037 10        		.byte	16
- 1772 0038 0203      		.word	770
- 1773 003a 0904      		.word	1033
- 1774 003c 0000      		.word	string2
- 1775 003e 12        		.byte	18
- 1778               	string2:
- 1779 003f 12        		.byte	18
- 1780 0040 03        		.byte	3
- 1781 0041 4B00      		.string	"K"
- 1782 0043 6500      		.string	"e"
- 1783 0045 7900      		.string	"y"
- 1784 0047 6200      		.string	"b"
- 1785 0049 6F00      		.string	"o"
- 1786 004b 6100      		.string	"a"
- 1787 004d 7200      		.string	"r"
- 1788 004f 6400      		.string	"d"
- 1789 0051 00        		.string	""
- 1790 0052 00        		.string	""
- 1793               	string1:
- 1794 0053 10        		.byte	16
- 1795 0054 03        		.byte	3
- 1796 0055 4D00      		.string	"M"
- 1797 0057 6600      		.string	"f"
- 1798 0059 6700      		.string	"g"
- 1799 005b 4E00      		.string	"N"
- 1800 005d 6100      		.string	"a"
- 1801 005f 6D00      		.string	"m"
- 1802 0061 6500      		.string	"e"
- 1803 0063 00        		.string	""
- 1804 0064 00        		.string	""
- 1807               	string0:
- 1808 0065 04        		.byte	4
- 1809 0066 03        		.byte	3
- 1810 0067 0904      		.word	1033
- 1813               	config1_descriptor:
- 1814 0069 09        		.byte	9
- 1815 006a 02        		.byte	2
- 1816 006b 3B        		.byte	59
- 1817 006c 00        		.byte	0
- 1818 006d 02        		.byte	2
- 1819 006e 01        		.byte	1
- 1820 006f 00        		.byte	0
- 1821 0070 C0        		.byte	-64
- 1822 0071 32        		.byte	50
- 1823 0072 09        		.byte	9
- 1824 0073 04        		.byte	4
- 1825 0074 00        		.byte	0
- 1826 0075 00        		.byte	0
- 1827 0076 01        		.byte	1
- 1828 0077 03        		.byte	3
- 1829 0078 01        		.byte	1
- 1830 0079 01        		.byte	1
- 1831 007a 00        		.byte	0
- 1832 007b 09        		.byte	9
- 1833 007c 21        		.byte	33
- 1834 007d 11        		.byte	17
- 1835 007e 01        		.byte	1
- 1836 007f 00        		.byte	0
- 1837 0080 01        		.byte	1
- 1838 0081 22        		.byte	34
- 1839 0082 3F        		.byte	63
- 1840 0083 00        		.byte	0
- 1841 0084 07        		.byte	7
- 1842 0085 05        		.byte	5
- 1843 0086 83        		.byte	-125
- 1844 0087 03        		.byte	3
- 1845 0088 08        		.byte	8
- 1846 0089 00        		.byte	0
- 1847 008a 01        		.byte	1
- 1848 008b 09        		.byte	9
- 1849 008c 04        		.byte	4
- 1850 008d 01        		.byte	1
- 1851 008e 00        		.byte	0
- 1852 008f 01        		.byte	1
- 1853 0090 03        		.byte	3
- 1854 0091 00        		.byte	0
- 1855 0092 00        		.byte	0
- 1856 0093 00        		.byte	0
- 1857 0094 09        		.byte	9
- 1858 0095 21        		.byte	33
- 1859 0096 11        		.byte	17
- 1860 0097 01        		.byte	1
- 1861 0098 00        		.byte	0
- 1862 0099 01        		.byte	1
- 1863 009a 22        		.byte	34
- 1864 009b 15        		.byte	21
- 1865 009c 00        		.byte	0
- 1866 009d 07        		.byte	7
- 1867 009e 05        		.byte	5
- 1868 009f 84        		.byte	-124
- 1869 00a0 03        		.byte	3
- 1870 00a1 20        		.byte	32
- 1871 00a2 00        		.byte	0
- 1872 00a3 01        		.byte	1
- 1875               	debug_hid_report_desc:
- 1876 00a4 06        		.byte	6
- 1877 00a5 31        		.byte	49
- 1878 00a6 FF        		.byte	-1
- 1879 00a7 09        		.byte	9
- 1880 00a8 74        		.byte	116
- 1881 00a9 A1        		.byte	-95
- 1882 00aa 53        		.byte	83
- 1883 00ab 75        		.byte	117
- 1884 00ac 08        		.byte	8
- 1885 00ad 15        		.byte	21
- 1886 00ae 00        		.byte	0
- 1887 00af 26        		.byte	38
- 1888 00b0 FF        		.byte	-1
- 1889 00b1 00        		.byte	0
- 1890 00b2 95        		.byte	-107
- 1891 00b3 20        		.byte	32
- 1892 00b4 09        		.byte	9
- 1893 00b5 75        		.byte	117
- 1894 00b6 81        		.byte	-127
- 1895 00b7 02        		.byte	2
- 1896 00b8 C0        		.byte	-64
- 1899               	keyboard_hid_report_desc:
- 1900 00b9 05        		.byte	5
- 1901 00ba 01        		.byte	1
- 1902 00bb 09        		.byte	9
- 1903 00bc 06        		.byte	6
- 1904 00bd A1        		.byte	-95
- 1905 00be 01        		.byte	1
- 1906 00bf 75        		.byte	117
- 1907 00c0 01        		.byte	1
- 1908 00c1 95        		.byte	-107
- 1909 00c2 08        		.byte	8
- 1910 00c3 05        		.byte	5
- 1911 00c4 07        		.byte	7
- 1912 00c5 19        		.byte	25
- 1913 00c6 E0        		.byte	-32
- 1914 00c7 29        		.byte	41
- 1915 00c8 E7        		.byte	-25
- 1916 00c9 15        		.byte	21
- 1917 00ca 00        		.byte	0
- 1918 00cb 25        		.byte	37
- 1919 00cc 01        		.byte	1
- 1920 00cd 81        		.byte	-127
- 1921 00ce 02        		.byte	2
- 1922 00cf 95        		.byte	-107
- 1923 00d0 01        		.byte	1
- 1924 00d1 75        		.byte	117
- 1925 00d2 08        		.byte	8
- 1926 00d3 81        		.byte	-127
- 1927 00d4 03        		.byte	3
- 1928 00d5 95        		.byte	-107
- 1929 00d6 05        		.byte	5
- 1930 00d7 75        		.byte	117
- 1931 00d8 01        		.byte	1
- 1932 00d9 05        		.byte	5
- 1933 00da 08        		.byte	8
- 1934 00db 19        		.byte	25
- 1935 00dc 01        		.byte	1
- 1936 00dd 29        		.byte	41
- 1937 00de 05        		.byte	5
- 1938 00df 91        		.byte	-111
- 1939 00e0 02        		.byte	2
- 1940 00e1 95        		.byte	-107
- 1941 00e2 01        		.byte	1
- 1942 00e3 75        		.byte	117
- 1943 00e4 03        		.byte	3
- 1944 00e5 91        		.byte	-111
- 1945 00e6 03        		.byte	3
- 1946 00e7 95        		.byte	-107
- 1947 00e8 06        		.byte	6
- 1948 00e9 75        		.byte	117
- 1949 00ea 08        		.byte	8
- 1950 00eb 15        		.byte	21
- 1951 00ec 00        		.byte	0
- 1952 00ed 25        		.byte	37
- 1953 00ee 68        		.byte	104
- 1954 00ef 05        		.byte	5
- 1955 00f0 07        		.byte	7
- 1956 00f1 19        		.byte	25
- 1957 00f2 00        		.byte	0
- 1958 00f3 29        		.byte	41
- 1959 00f4 68        		.byte	104
- 1960 00f5 81        		.byte	-127
- 1961 00f6 00        		.byte	0
- 1962 00f7 C0        		.byte	-64
- 1965               	device_descriptor:
- 1966 00f8 12        		.byte	18
- 1967 00f9 01        		.byte	1
- 1968 00fa 00        		.byte	0
- 1969 00fb 02        		.byte	2
- 1970 00fc 00        		.byte	0
- 1971 00fd 00        		.byte	0
- 1972 00fe 00        		.byte	0
- 1973 00ff 20        		.byte	32
- 1974 0100 C0        		.byte	-64
- 1975 0101 16        		.byte	22
- 1976 0102 7D        		.byte	125
- 1977 0103 04        		.byte	4
- 1978 0104 00        		.byte	0
- 1979 0105 01        		.byte	1
- 1980 0106 01        		.byte	1
- 1981 0107 02        		.byte	2
- 1982 0108 00        		.byte	0
- 1983 0109 01        		.byte	1
- 1986               	endpoint_config_table:
- 1987 010a 00        		.byte	0
- 1988 010b 00        		.byte	0
- 1989 010c 01        		.byte	1
- 1990 010d C1        		.byte	-63
- 1991 010e 06        		.byte	6
- 1992 010f 01        		.byte	1
- 1993 0110 C1        		.byte	-63
- 1994 0111 26        		.byte	38
- 1995               		.text
- 1996               	.Letext0:
- 1997               		.file 2 "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/stdint.h"
- 1998               		.file 3 "usb_keyboard_debug.h"
+ 1714               		.loc 1 627 10 discriminator 1 view .LVU611
+ 1715 030c 292F      		mov r18,r25
+ 1716 030e 00C0      		rjmp .L109
+ 1717               	.LBE115:
+ 1718               		.cfi_endproc
+ 1719               	.LFE12:
+ 1721               		.local	div4.1741
+ 1722               		.comm	div4.1741,1,1
+ 1723               		.local	previous_timeout.1721
+ 1724               		.comm	previous_timeout.1721,1,1
+ 1725               	.global	keyboard_leds
+ 1726               		.section .bss
+ 1729               	keyboard_leds:
+ 1730 0000 00        		.zero	1
+ 1731               		.local	keyboard_idle_count
+ 1732               		.comm	keyboard_idle_count,1,1
+ 1733               		.data
+ 1736               	keyboard_idle_config:
+ 1737 0000 7D        		.byte	125
+ 1740               	keyboard_protocol:
+ 1741 0001 01        		.byte	1
+ 1742               	.global	keyboard_keys
+ 1743               		.section .bss
+ 1746               	keyboard_keys:
+ 1747 0001 0000 0000 		.zero	6
+ 1747      0000 
+ 1748               	.global	keyboard_modifier_keys
+ 1751               	keyboard_modifier_keys:
+ 1752 0007 00        		.zero	1
+ 1753               		.local	debug_flush_timer
+ 1754               		.comm	debug_flush_timer,1,1
+ 1755               		.local	usb_configuration
+ 1756               		.comm	usb_configuration,1,1
+ 1757               		.section	.progmem.data,"a",@progbits
+ 1760               	descriptor_list:
+ 1761 0000 0001      		.word	256
+ 1762 0002 0000      		.word	0
+ 1763 0004 0000      		.word	device_descriptor
+ 1764 0006 12        		.byte	18
+ 1765 0007 0002      		.word	512
+ 1766 0009 0000      		.word	0
+ 1767 000b 0000      		.word	config1_descriptor
+ 1768 000d 3B        		.byte	59
+ 1769 000e 0022      		.word	8704
+ 1770 0010 0000      		.word	0
+ 1771 0012 0000      		.word	keyboard_hid_report_desc
+ 1772 0014 3F        		.byte	63
+ 1773 0015 0021      		.word	8448
+ 1774 0017 0000      		.word	0
+ 1775 0019 0000      		.word	config1_descriptor+18
+ 1776 001b 09        		.byte	9
+ 1777 001c 0022      		.word	8704
+ 1778 001e 0100      		.word	1
+ 1779 0020 0000      		.word	debug_hid_report_desc
+ 1780 0022 15        		.byte	21
+ 1781 0023 0021      		.word	8448
+ 1782 0025 0100      		.word	1
+ 1783 0027 0000      		.word	config1_descriptor+43
+ 1784 0029 09        		.byte	9
+ 1785 002a 0003      		.word	768
+ 1786 002c 0000      		.word	0
+ 1787 002e 0000      		.word	string0
+ 1788 0030 04        		.byte	4
+ 1789 0031 0103      		.word	769
+ 1790 0033 0904      		.word	1033
+ 1791 0035 0000      		.word	string1
+ 1792 0037 10        		.byte	16
+ 1793 0038 0203      		.word	770
+ 1794 003a 0904      		.word	1033
+ 1795 003c 0000      		.word	string2
+ 1796 003e 12        		.byte	18
+ 1799               	string2:
+ 1800 003f 12        		.byte	18
+ 1801 0040 03        		.byte	3
+ 1802 0041 4B00      		.string	"K"
+ 1803 0043 6500      		.string	"e"
+ 1804 0045 7900      		.string	"y"
+ 1805 0047 6200      		.string	"b"
+ 1806 0049 6F00      		.string	"o"
+ 1807 004b 6100      		.string	"a"
+ 1808 004d 7200      		.string	"r"
+ 1809 004f 6400      		.string	"d"
+ 1810 0051 00        		.string	""
+ 1811 0052 00        		.string	""
+ 1814               	string1:
+ 1815 0053 10        		.byte	16
+ 1816 0054 03        		.byte	3
+ 1817 0055 4D00      		.string	"M"
+ 1818 0057 6600      		.string	"f"
+ 1819 0059 6700      		.string	"g"
+ 1820 005b 4E00      		.string	"N"
+ 1821 005d 6100      		.string	"a"
+ 1822 005f 6D00      		.string	"m"
+ 1823 0061 6500      		.string	"e"
+ 1824 0063 00        		.string	""
+ 1825 0064 00        		.string	""
+ 1828               	string0:
+ 1829 0065 04        		.byte	4
+ 1830 0066 03        		.byte	3
+ 1831 0067 0904      		.word	1033
+ 1834               	config1_descriptor:
+ 1835 0069 0902 3B00 		.string	"\t\002;"
+ 1836 006d 0201 00   		.string	"\002\001"
+ 1837 0070 C032 0904 		.string	"\3002\t\004"
+ 1837      00
+ 1838 0075 00        		.string	""
+ 1839 0076 0103 0101 		.string	"\001\003\001\001"
+ 1839      00
+ 1840 007b 0921 1101 		.string	"\t!\021\001"
+ 1840      00
+ 1841 0080 0122 3F00 		.string	"\001\"?"
+ 1842 0084 0705 8303 		.string	"\007\005\203\003\b"
+ 1842      0800 
+ 1843 008a 0109 0401 		.string	"\001\t\004\001"
+ 1843      00
+ 1844 008f 0103 00   		.string	"\001\003"
+ 1845 0092 00        		.string	""
+ 1846 0093 00        		.string	""
+ 1847 0094 0921 1101 		.string	"\t!\021\001"
+ 1847      00
+ 1848 0099 0122 1500 		.string	"\001\"\025"
+ 1849 009d 0705 8403 		.string	"\007\005\204\003 "
+ 1849      2000 
+ 1850 00a3 01        		.ascii	"\001"
+ 1853               	debug_hid_report_desc:
+ 1854 00a4 0631 FF09 		.string	"\0061\377\tt\241Su\b\025"
+ 1854      74A1 5375 
+ 1854      0815 00
+ 1855 00af 26FF 00   		.string	"&\377"
+ 1856 00b2 9520 0975 		.ascii	"\225 \tu\201\002\300"
+ 1856      8102 C0
+ 1859               	keyboard_hid_report_desc:
+ 1860 00b9 0501 0906 		.string	"\005\001\t\006\241\001u\001\225\b\005\007\031\340)\347\025"
+ 1860      A101 7501 
+ 1860      9508 0507 
+ 1860      19E0 29E7 
+ 1860      1500 
+ 1861 00cb 2501 8102 		.string	"%\001\201\002\225\001u\b\201\003\225\005u\001\005\b\031\001)\005\221\002\225\001u\003\221
+ 1861      9501 7508 
+ 1861      8103 9505 
+ 1861      7501 0508 
+ 1861      1901 2905 
+ 1862 00ed 2568 0507 		.string	"%h\005\007\031"
+ 1862      1900 
+ 1863 00f3 2968 8100 		.string	")h\201"
+ 1864 00f7 C0        		.ascii	"\300"
+ 1867               	device_descriptor:
+ 1868 00f8 1201 00   		.string	"\022\001"
+ 1869 00fb 0200      		.string	"\002"
+ 1870 00fd 00        		.string	""
+ 1871 00fe 00        		.string	""
+ 1872 00ff 20C0 167D 		.string	" \300\026}\004"
+ 1872      0400 
+ 1873 0105 0101 0200 		.string	"\001\001\002"
+ 1874 0109 01        		.ascii	"\001"
+ 1877               	endpoint_config_table:
+ 1878 010a 00        		.string	""
+ 1879 010b 00        		.string	""
+ 1880 010c 01C1 0601 		.ascii	"\001\301\006\001\301&"
+ 1880      C126 
+ 1881               		.text
+ 1882               	.Letext0:
+ 1883               		.file 2 "/usr/local/Cellar/avr-gcc/9.2.0_1/avr/include/stdint.h"
+ 1884               		.file 3 "usb_keyboard_debug.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 usb_keyboard_debug.c
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:12     .text.usb_wait_in_ready:0000000000000000 usb_wait_in_ready
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:37     .text.usb_init:0000000000000000 usb_init
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1733   .bss:000000000000000c usb_configuration
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:89     .text.usb_configured:0000000000000000 usb_configured
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:109    .text.usb_keyboard_send:0000000000000000 usb_keyboard_send
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1730   .bss:0000000000000007 keyboard_modifier_keys
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1725   .bss:0000000000000001 keyboard_keys
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1703   .bss:000000000000000a keyboard_idle_count
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:242    .text.usb_keyboard_press:0000000000000000 usb_keyboard_press
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:286    .text.usb_debug_putchar:0000000000000000 usb_debug_putchar
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1701   .bss:0000000000000009 previous_timeout.1772
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1711   .bss:000000000000000b debug_flush_timer
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:447    .text.usb_debug_flush_output:0000000000000000 usb_debug_flush_output
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:508    .text.__vector_10:0000000000000000 __vector_10
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:12     .text.usb_wait_in_ready:0000000000000000 usb_wait_in_ready
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:38     .text.usb_init:0000000000000000 usb_init
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1754   .bss:000000000000000c usb_configuration
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:90     .text.usb_configured:0000000000000000 usb_configured
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:110    .text.usb_keyboard_send:0000000000000000 usb_keyboard_send
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1751   .bss:0000000000000007 keyboard_modifier_keys
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1746   .bss:0000000000000001 keyboard_keys
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1724   .bss:000000000000000a keyboard_idle_count
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:246    .text.usb_keyboard_press:0000000000000000 usb_keyboard_press
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:290    .text.usb_debug_putchar:0000000000000000 usb_debug_putchar
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1722   .bss:0000000000000009 previous_timeout.1721
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1732   .bss:000000000000000b debug_flush_timer
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:452    .text.usb_debug_flush_output:0000000000000000 usb_debug_flush_output
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:514    .text.__vector_10:0000000000000000 __vector_10
                             *ABS*:0000000000000003 __gcc_isr.n_pushed.001
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1715   .data:0000000000000000 keyboard_idle_config
-                             .bss:0000000000000008 div4.1792
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:698    .text.__vector_11:0000000000000000 __vector_11
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1739   .progmem.data:0000000000000000 descriptor_list
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1986   .progmem.data:000000000000010a endpoint_config_table
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1719   .data:0000000000000001 keyboard_protocol
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1708   .bss:0000000000000000 keyboard_leds
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1965   .progmem.data:00000000000000f8 device_descriptor
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1813   .progmem.data:0000000000000069 config1_descriptor
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1899   .progmem.data:00000000000000b9 keyboard_hid_report_desc
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1875   .progmem.data:00000000000000a4 debug_hid_report_desc
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1807   .progmem.data:0000000000000065 string0
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1793   .progmem.data:0000000000000053 string1
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//cc015cg9.s:1778   .progmem.data:000000000000003f string2
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1736   .data:0000000000000000 keyboard_idle_config
+                             .bss:0000000000000008 div4.1741
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:707    .text.__vector_11:0000000000000000 __vector_11
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1760   .progmem.data:0000000000000000 descriptor_list
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1877   .progmem.data:000000000000010a endpoint_config_table
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1740   .data:0000000000000001 keyboard_protocol
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1729   .bss:0000000000000000 keyboard_leds
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1867   .progmem.data:00000000000000f8 device_descriptor
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1834   .progmem.data:0000000000000069 config1_descriptor
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1859   .progmem.data:00000000000000b9 keyboard_hid_report_desc
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1853   .progmem.data:00000000000000a4 debug_hid_report_desc
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1828   .progmem.data:0000000000000065 string0
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1814   .progmem.data:0000000000000053 string1
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//cccCzkdg.s:1799   .progmem.data:000000000000003f string2
 
 UNDEFINED SYMBOLS
 __do_copy_data

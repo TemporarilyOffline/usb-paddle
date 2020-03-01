@@ -109,129 +109,130 @@
   71 001a 812F      		mov r24,r17
   72 001c 0E94 0000 		call usb_debug_putchar
   73               	.LVL4:
-  74 0020 2196      		adiw r28,1
-  75               	.LVL5:
+  35:print.c       **** 		c = pgm_read_byte(s++);
+  74               		.loc 1 35 8 view .LVU16
+  75 0020 2196      		adiw r28,1
+  76               	.LVL5:
   36:print.c       **** 		if (!c) break;
-  76               		.loc 1 36 5 is_stmt 0 view .LVU16
-  77 0022 00C0      		rjmp .L4
-  78               	.LVL6:
-  79               	.L1:
-  80               	/* epilogue start */
+  77               		.loc 1 36 5 is_stmt 0 view .LVU17
+  78 0022 00C0      		rjmp .L4
+  79               	.LVL6:
+  80               	.L1:
+  81               	/* epilogue start */
   40:print.c       **** 	}
   41:print.c       **** }
-  81               		.loc 1 41 1 view .LVU17
-  82 0024 DF91      		pop r29
-  83 0026 CF91      		pop r28
-  84               	.LVL7:
-  85               		.loc 1 41 1 view .LVU18
-  86 0028 1F91      		pop r17
-  87               	.LVL8:
-  88               		.loc 1 41 1 view .LVU19
-  89 002a 0895      		ret
-  90               		.cfi_endproc
-  91               	.LFE1:
-  93               		.section	.text.phex1,"ax",@progbits
-  94               	.global	phex1
-  96               	phex1:
-  97               	.LVL9:
-  98               	.LFB2:
+  82               		.loc 1 41 1 view .LVU18
+  83 0024 DF91      		pop r29
+  84 0026 CF91      		pop r28
+  85               	.LVL7:
+  86               		.loc 1 41 1 view .LVU19
+  87 0028 1F91      		pop r17
+  88               	.LVL8:
+  89               		.loc 1 41 1 view .LVU20
+  90 002a 0895      		ret
+  91               		.cfi_endproc
+  92               	.LFE1:
+  94               		.section	.text.phex1,"ax",@progbits
+  95               	.global	phex1
+  97               	phex1:
+  98               	.LVL9:
+  99               	.LFB2:
   42:print.c       **** 
   43:print.c       **** void phex1(unsigned char c)
   44:print.c       **** {
-  99               		.loc 1 44 1 is_stmt 1 view -0
- 100               		.cfi_startproc
- 101               	/* prologue: function */
- 102               	/* frame size = 0 */
- 103               	/* stack size = 0 */
- 104               	.L__stack_usage = 0
+ 100               		.loc 1 44 1 is_stmt 1 view -0
+ 101               		.cfi_startproc
+ 102               	/* prologue: function */
+ 103               	/* frame size = 0 */
+ 104               	/* stack size = 0 */
+ 105               	.L__stack_usage = 0
   45:print.c       **** 	usb_debug_putchar(c + ((c < 10) ? '0' : 'A' - 10));
- 105               		.loc 1 45 2 view .LVU21
- 106 0000 97E3      		ldi r25,lo8(55)
- 107 0002 8A30      		cpi r24,lo8(10)
- 108 0004 00F4      		brsh .L6
- 109 0006 90E3      		ldi r25,lo8(48)
- 110               	.L6:
- 111               		.loc 1 45 2 is_stmt 0 discriminator 4 view .LVU22
- 112 0008 890F      		add r24,r25
- 113               	.LVL10:
- 114               		.loc 1 45 2 discriminator 4 view .LVU23
- 115 000a 0C94 0000 		jmp usb_debug_putchar
- 116               	.LVL11:
- 117               		.cfi_endproc
- 118               	.LFE2:
- 120               		.section	.text.phex,"ax",@progbits
- 121               	.global	phex
- 123               	phex:
- 124               	.LVL12:
- 125               	.LFB3:
+ 106               		.loc 1 45 2 view .LVU22
+ 107 0000 97E3      		ldi r25,lo8(55)
+ 108 0002 8A30      		cpi r24,lo8(10)
+ 109 0004 00F4      		brsh .L6
+ 110 0006 90E3      		ldi r25,lo8(48)
+ 111               	.L6:
+ 112               		.loc 1 45 2 is_stmt 0 discriminator 4 view .LVU23
+ 113 0008 890F      		add r24,r25
+ 114               	.LVL10:
+ 115               		.loc 1 45 2 discriminator 4 view .LVU24
+ 116 000a 0C94 0000 		jmp usb_debug_putchar
+ 117               	.LVL11:
+ 118               		.cfi_endproc
+ 119               	.LFE2:
+ 121               		.section	.text.phex,"ax",@progbits
+ 122               	.global	phex
+ 124               	phex:
+ 125               	.LVL12:
+ 126               	.LFB3:
   46:print.c       **** }
   47:print.c       **** 
   48:print.c       **** void phex(unsigned char c)
   49:print.c       **** {
- 126               		.loc 1 49 1 is_stmt 1 view -0
- 127               		.cfi_startproc
- 128               		.loc 1 49 1 is_stmt 0 view .LVU25
- 129 0000 CF93      		push r28
- 130               	.LCFI3:
- 131               		.cfi_def_cfa_offset 3
- 132               		.cfi_offset 28, -2
- 133               	/* prologue: function */
- 134               	/* frame size = 0 */
- 135               	/* stack size = 1 */
- 136               	.L__stack_usage = 1
- 137 0002 C82F      		mov r28,r24
+ 127               		.loc 1 49 1 is_stmt 1 view -0
+ 128               		.cfi_startproc
+ 129               		.loc 1 49 1 is_stmt 0 view .LVU26
+ 130 0000 CF93      		push r28
+ 131               	.LCFI3:
+ 132               		.cfi_def_cfa_offset 3
+ 133               		.cfi_offset 28, -2
+ 134               	/* prologue: function */
+ 135               	/* frame size = 0 */
+ 136               	/* stack size = 1 */
+ 137               	.L__stack_usage = 1
+ 138 0002 C82F      		mov r28,r24
   50:print.c       **** 	phex1(c >> 4);
- 138               		.loc 1 50 2 is_stmt 1 view .LVU26
- 139 0004 8295      		swap r24
- 140               	.LVL13:
- 141               		.loc 1 50 2 is_stmt 0 view .LVU27
- 142 0006 8F70      		andi r24,lo8(15)
- 143 0008 0E94 0000 		call phex1
- 144               	.LVL14:
+ 139               		.loc 1 50 2 is_stmt 1 view .LVU27
+ 140 0004 8295      		swap r24
+ 141               	.LVL13:
+ 142               		.loc 1 50 2 is_stmt 0 view .LVU28
+ 143 0006 8F70      		andi r24,lo8(15)
+ 144 0008 0E94 0000 		call phex1
+ 145               	.LVL14:
   51:print.c       **** 	phex1(c & 15);
- 145               		.loc 1 51 2 is_stmt 1 view .LVU28
- 146 000c 8C2F      		mov r24,r28
- 147 000e 8F70      		andi r24,lo8(15)
- 148               	/* epilogue start */
+ 146               		.loc 1 51 2 is_stmt 1 view .LVU29
+ 147 000c 8C2F      		mov r24,r28
+ 148 000e 8F70      		andi r24,lo8(15)
+ 149               	/* epilogue start */
   52:print.c       **** }
- 149               		.loc 1 52 1 is_stmt 0 view .LVU29
- 150 0010 CF91      		pop r28
- 151               	.LVL15:
+ 150               		.loc 1 52 1 is_stmt 0 view .LVU30
+ 151 0010 CF91      		pop r28
+ 152               	.LVL15:
   51:print.c       **** 	phex1(c & 15);
- 152               		.loc 1 51 2 view .LVU30
- 153 0012 0C94 0000 		jmp phex1
- 154               	.LVL16:
- 155               		.cfi_endproc
- 156               	.LFE3:
- 158               		.section	.text.phex16,"ax",@progbits
- 159               	.global	phex16
- 161               	phex16:
- 162               	.LVL17:
- 163               	.LFB4:
+ 153               		.loc 1 51 2 view .LVU31
+ 154 0012 0C94 0000 		jmp phex1
+ 155               	.LVL16:
+ 156               		.cfi_endproc
+ 157               	.LFE3:
+ 159               		.section	.text.phex16,"ax",@progbits
+ 160               	.global	phex16
+ 162               	phex16:
+ 163               	.LVL17:
+ 164               	.LFB4:
   53:print.c       **** 
   54:print.c       **** void phex16(unsigned int i)
   55:print.c       **** {
- 164               		.loc 1 55 1 is_stmt 1 view -0
- 165               		.cfi_startproc
- 166               		.loc 1 55 1 is_stmt 0 view .LVU32
- 167 0000 CF93      		push r28
- 168               	.LCFI4:
- 169               		.cfi_def_cfa_offset 3
- 170               		.cfi_offset 28, -2
- 171               	/* prologue: function */
- 172               	/* frame size = 0 */
- 173               	/* stack size = 1 */
- 174               	.L__stack_usage = 1
- 175 0002 C82F      		mov r28,r24
-  56:print.c       **** 	phex(i >> 8);
- 176               		.loc 1 56 2 is_stmt 1 view .LVU33
+ 165               		.loc 1 55 1 is_stmt 1 view -0
+ 166               		.cfi_startproc
+ 167               		.loc 1 55 1 is_stmt 0 view .LVU33
+ 168 0000 CF93      		push r28
+ 169               	.LCFI4:
+ 170               		.cfi_def_cfa_offset 3
+ 171               		.cfi_offset 28, -2
+ 172               	/* prologue: function */
+ 173               	/* frame size = 0 */
+ 174               	/* stack size = 1 */
+ 175               	.L__stack_usage = 1
+ 176 0002 C82F      		mov r28,r24
  177 0004 892F      		mov r24,r25
  178               	.LVL18:
- 179               		.loc 1 56 2 is_stmt 0 view .LVU34
+  56:print.c       **** 	phex(i >> 8);
+ 179               		.loc 1 56 2 is_stmt 1 view .LVU34
  180 0006 0E94 0000 		call phex
  181               	.LVL19:
   57:print.c       **** 	phex(i);
- 182               		.loc 1 57 2 is_stmt 1 view .LVU35
+ 182               		.loc 1 57 2 view .LVU35
  183 000a 8C2F      		mov r24,r28
  184               	/* epilogue start */
   58:print.c       **** }
@@ -245,19 +246,19 @@
  191               	.LFE4:
  193               		.text
  194               	.Letext0:
- 195               		.file 2 "/usr/local/Cellar/avr-gcc/8.2.0/avr/include/stdint.h"
+ 195               		.file 2 "/usr/local/Cellar/avr-gcc/9.2.0_1/avr/include/stdint.h"
  196               		.file 3 "usb_keyboard_debug.h"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 print.c
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:2      *ABS*:000000000000003e __SP_H__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:3      *ABS*:000000000000003d __SP_L__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:4      *ABS*:000000000000003f __SREG__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:5      *ABS*:0000000000000000 __tmp_reg__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:6      *ABS*:0000000000000001 __zero_reg__
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:13     .text.print_P:0000000000000000 print_P
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:96     .text.phex1:0000000000000000 phex1
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:123    .text.phex:0000000000000000 phex
-/var/folders/23/wvt6v3l54gl5gf_hvx67m41h0000gn/T//ccAjlQM1.s:161    .text.phex16:0000000000000000 phex16
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:2      *ABS*:000000000000003e __SP_H__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:3      *ABS*:000000000000003d __SP_L__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:4      *ABS*:000000000000003f __SREG__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:5      *ABS*:0000000000000000 __tmp_reg__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:6      *ABS*:0000000000000001 __zero_reg__
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:13     .text.print_P:0000000000000000 print_P
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:97     .text.phex1:0000000000000000 phex1
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:124    .text.phex:0000000000000000 phex
+/var/folders/cf/2ytwk0ds25l23zw7m7955dkm0000gn/T//ccxxn1vs.s:162    .text.phex16:0000000000000000 phex16
 
 UNDEFINED SYMBOLS
 usb_debug_putchar
