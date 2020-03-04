@@ -1,2 +1,17 @@
 # Editor Backups
 *~
+
+# build artifacts
+.dep/*
+*.o
+*.hex
+*.eep
+*.cof
+*.elf
+*.map
+*.sym
+*.lss
+*.lst
+*.s
+*.d
+*.i
