@@ -17,7 +17,7 @@ I ordered a Teensy 2.0 off of amazon fairly easy enough.  The code loaded on muc
 
 Edit `iambic.c` to set key speed
 
-`make` and then open the Arduino IDE and setup for your Teensy and download the `.hex` file.
+`make` and then open the Teensy Loader and plugin your Teensy and download the `.hex` file.
 
 After that, plug into your USB port, plug in your Paddle and get to keying!
 
@@ -29,6 +29,9 @@ Speaker gets plugged into VCC and pin OC0A which was labled B7 on the board. It 
 
 # The video
 
-Video link here: https://youtu.be/SAqfvn5xvzI
+Video link here: 
+
+#1 https://youtu.be/SAqfvn5xvzI - Overview
+#2 https://youtu.be/dA1FuITq8fY - How to modify, build, upload code
 
 
